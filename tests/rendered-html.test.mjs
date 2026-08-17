@@ -14,29 +14,32 @@ async function render() {
   );
 }
 
-test("server-renders the O Mandarim experience", async () => {
+test("server-renders the Chinese O Mandarim experience", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>O Mandarim · 交互叙事<\/title>/i);
-  assert.match(html, /O MANDARIM/);
-  assert.match(html, /TI-LI-TIM/);
+  assert.match(html, /<title>《满大人》· 交互叙事<\/title>/i);
+  assert.match(html, /《满大人》/);
+  assert.match(html, /序章/);
   assert.doesNotMatch(html, /Your site is taking shape|react-loading-skeleton/);
 });
 
 test("ships the complete narrative and its visual assets", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  assert.match(page, /A Página Fechada/);
-  assert.match(page, /O Palácio-Prisão/);
-  assert.match(page, /Ti Chin-Fu/);
-  assert.match(page, /Camilloff/);
+  assert.match(page, /合上的书页/);
+  assert.match(page, /奢华的牢笼/);
+  assert.match(page, /狄青福/);
+  assert.match(page, /卡米洛夫/);
   assert.match(page, /Tien-Hó/);
-  assert.match(page, /No fundo da China existe um mandarim/);
+  assert.match(page, /来吧，特奥多罗，我的朋友/);
   assert.match(page, /nunca mates o Mandarim/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
-  assert.match(page, /横陈的尸身/);
+  assert.match(page, /devil-v1\.png/);
+  assert.match(page, /bell-v1\.png/);
+  assert.match(page, /返回上一页/);
+  assert.match(page, /物件摘录/);
   assert.match(page, /开启声音并翻开书页/);
 
   await Promise.all([
@@ -47,6 +50,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/tienho-inn-v2.png", import.meta.url)),
     access(new URL("../public/mission-cloister-v2.png", import.meta.url)),
     access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
-    access(new URL("../public/og.png", import.meta.url)),
+    access(new URL("../public/devil-v1.png", import.meta.url)),
+    access(new URL("../public/bell-v1.png", import.meta.url)),
   ]);
 });
