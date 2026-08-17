@@ -45,6 +45,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
   assert.match(page, /佟亲王带来的线索指向北京以北/);
   assert.match(page, /与萨托前往天河村/);
+  assert.match(page, /洛雷托的一夜/);
+  assert.match(page, /像罪恶的饰物一样从身上甩掉/);
+  assert.match(page, /抛下这笔财产/);
   assert.match(page, /nunca mates o Mandarim/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
   assert.match(page, /devil-v1\.png/);
@@ -55,7 +58,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /这是什么？/);
   assert.match(page, /还是不看见为好/);
   assert.match(page, /stageMusic/);
-  assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿|看向镜子里的第四个人|小说直到上海才重新标出地点|哥萨克与译员萨托/);
+  assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿|看向镜子里的第四个人|小说直到上海才重新标出地点|哥萨克与译员萨托|原作让“后代”|选择“再寻找一次”并没有制造|特奥多罗只在脑中排演|原作没有给特奥多罗|原作提供的稳定出口|终局并不是“享受或悔恨”的二选一|告诫因此也沾染了自我开脱/);
 
   await Promise.all([
     access(new URL("../public/lisbon-room-v2.png", import.meta.url)),

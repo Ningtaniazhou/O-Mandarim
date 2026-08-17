@@ -76,6 +76,7 @@ button:focus-visible {
 .stage-luxury .scene-image,
 .stage-ghost .scene-image,
 .stage-return .scene-image,
+.stage-reckoning .scene-image,
 .stage-renounce .scene-image,
 .stage-humiliation .scene-image,
 .stage-prison .scene-image {
@@ -88,6 +89,10 @@ button:focus-visible {
 .stage-mission .scene-image,
 .stage-letter .scene-image {
   filter: saturate(0.62) contrast(1.07) brightness(0.65);
+}
+
+.game-shell.has-hotspots .scene-image {
+  filter: saturate(0.82) contrast(1.04) brightness(0.77);
 }
 
 .scene-vignette {
@@ -275,6 +280,7 @@ button:focus-visible {
 .stage-luxury .scene-card,
 .stage-ghost .scene-card,
 .stage-return .scene-card,
+.stage-reckoning .scene-card,
 .stage-renounce .scene-card,
 .stage-humiliation .scene-card,
 .stage-prison .scene-card {
@@ -664,7 +670,9 @@ blockquote {
 .scene-hotspot {
   position: absolute;
   display: flex;
-  padding: 0;
+  min-width: 46px;
+  min-height: 46px;
+  padding: 7px;
   align-items: center;
   border: 0;
   background: none;
@@ -675,16 +683,33 @@ blockquote {
   transform: translate(-50%, -50%);
 }
 
-.scene-hotspot i {
-  display: grid;
-  width: 31px;
-  height: 31px;
-  place-items: center;
-  border: 1px solid rgba(243, 228, 193, 0.76);
+.scene-hotspot::before {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 26px;
+  width: 118px;
+  height: 118px;
   border-radius: 50%;
-  background: rgba(6, 13, 13, 0.66);
-  box-shadow: 0 0 0 5px rgba(6, 13, 13, 0.25);
-  font: normal 700 8px Arial, sans-serif;
+  background: radial-gradient(circle, rgba(238, 207, 133, 0.28) 0%, rgba(211, 173, 91, 0.13) 34%, transparent 70%);
+  content: "";
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.scene-hotspot i {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border: 2px solid rgba(243, 228, 193, 0.92);
+  border-radius: 50%;
+  background: rgba(6, 13, 13, 0.88);
+  box-shadow: 0 0 0 6px rgba(6, 13, 13, 0.42), 0 0 28px rgba(213, 173, 91, 0.3);
+  font: normal 700 9px Arial, sans-serif;
   transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
@@ -693,11 +718,15 @@ blockquote {
 }
 
 .scene-hotspot span {
-  padding: 5px 7px;
-  background: rgba(6, 13, 13, 0.78);
-  font: 700 9px Arial, "Noto Sans CJK SC", sans-serif;
+  position: relative;
+  z-index: 1;
+  padding: 7px 9px;
+  border: 1px solid rgba(211, 173, 91, 0.32);
+  background: rgba(6, 13, 13, 0.9);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+  font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.05em;
-  opacity: 0;
+  opacity: 0.88;
   transition: opacity 0.2s ease;
   white-space: nowrap;
 }
@@ -726,22 +755,36 @@ blockquote {
 }
 
 .hotspot-index {
-  display: flex;
+  display: grid;
   margin: 17px 0;
-  flex-wrap: wrap;
-  gap: 7px;
+  padding: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+  gap: 8px;
+  border: 1px solid rgba(184, 149, 82, 0.24);
+  background: rgba(4, 10, 10, 0.5);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.2);
+}
+
+.hotspot-index::before {
+  grid-column: 1 / -1;
+  color: rgba(224, 200, 135, 0.75);
+  content: "眼前的物件";
+  font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.18em;
 }
 
 .hotspot-index button {
   display: inline-flex;
-  padding: 8px 10px;
+  min-height: 46px;
+  padding: 11px 13px;
   align-items: center;
   border: 1px solid rgba(220, 205, 171, 0.28);
   background: rgba(5, 12, 12, 0.58);
   color: rgba(236, 227, 205, 0.78);
   cursor: pointer;
-  font: 10px Arial, "Noto Sans CJK SC", sans-serif;
+  font: 11px Arial, "Noto Sans CJK SC", sans-serif;
   gap: 6px;
+  text-align: left;
 }
 
 .hotspot-index button:not(.is-found) {
@@ -757,8 +800,8 @@ blockquote {
 }
 
 @keyframes hotspot-breathe {
-  0%, 100% { box-shadow: 0 0 0 5px rgba(6, 13, 13, 0.25), 0 0 0 rgba(213, 173, 91, 0); }
-  50% { box-shadow: 0 0 0 8px rgba(184, 149, 82, 0.1), 0 0 24px rgba(213, 173, 91, 0.35); }
+  0%, 100% { box-shadow: 0 0 0 6px rgba(6, 13, 13, 0.42), 0 0 18px rgba(213, 173, 91, 0.2); }
+  50% { box-shadow: 0 0 0 10px rgba(184, 149, 82, 0.15), 0 0 38px rgba(238, 207, 133, 0.56); }
 }
 
 @keyframes object-breathe {
@@ -1414,6 +1457,7 @@ blockquote {
   opacity: calc(var(--ti-opacity) * 0.92);
 }
 
+.stage-reckoning .ti-figure,
 .stage-renounce .ti-figure,
 .stage-humiliation .ti-figure,
 .stage-prison .ti-figure {
@@ -1737,6 +1781,7 @@ blockquote {
   .stage-luxury .scene-image,
   .stage-ghost .scene-image,
   .stage-return .scene-image,
+  .stage-reckoning .scene-image,
   .stage-renounce .scene-image,
   .stage-humiliation .scene-image,
   .stage-prison .scene-image {
@@ -1748,6 +1793,7 @@ blockquote {
   .stage-luxury .scene-card,
   .stage-ghost .scene-card,
   .stage-return .scene-card,
+  .stage-reckoning .scene-card,
   .stage-renounce .scene-card,
   .stage-humiliation .scene-card,
   .stage-prison .scene-card {
@@ -1792,6 +1838,7 @@ blockquote {
   .stage-inheritance .ti-figure,
   .stage-luxury .ti-figure,
   .stage-return .ti-figure,
+  .stage-reckoning .ti-figure,
   .stage-renounce .ti-figure,
   .stage-humiliation .ti-figure,
   .stage-prison .ti-figure {
@@ -1861,6 +1908,7 @@ blockquote {
   .stage-luxury .scene-card,
   .stage-ghost .scene-card,
   .stage-return .scene-card,
+  .stage-reckoning .scene-card,
   .stage-renounce .scene-card,
   .stage-humiliation .scene-card,
   .stage-prison .scene-card {
@@ -1949,6 +1997,10 @@ blockquote {
   .letter-sheet button {
     grid-template-columns: 1fr;
     gap: 5px;
+  }
+
+  .hotspot-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .game-footer {
