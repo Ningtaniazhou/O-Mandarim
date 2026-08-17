@@ -75,7 +75,7 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
     { id: "gold-bed", label: "金床", x: 63, y: 67, page: 29, quote: "Tornou-se famoso na Europa o meu leito, de um gosto exuberante e bárbaro, com a barra recoberta de lâminas de ouro lavrado", note: "床成为被欧洲观看和报道的奢华标本。" },
     { id: "decanter", label: "酒与水晶", x: 78, y: 59, page: 13, quote: "há vinhos de Borgonha, como por exemplo o Romanée-Conti de 58 e o Chambertin, de 61", note: "魔鬼最先用可以被消费的具体事物，而不是抽象权力，引诱Teodoro。" },
     { id: "coins", label: "金币", x: 86, y: 72, page: 23, quote: "sentindo o mundo aos meus pés — bocejei como um leão farto.", note: "财富立即带来的不是满足，而是饱食后的无聊。" },
-    { id: "door-ghost", label: "门后的黄袍", x: 48, y: 42, page: 34, quote: "lá jazia a figura bojuda, de rabicho negro e túnica amarela, com o seu papagaio nos braços", note: "Ti Chin-Fu不断以同一姿态占据门槛、床铺和家具。" },
+    { id: "door-ghost", label: "横陈的黄袍尸身", x: 48, y: 42, page: 34, quote: "ou estirada no limiar da porta, ou atravessada sobre o leito de ouro — lá jazia a figura bojuda, de rabicho negro e túnica amarela, com o seu papagaio nos braços", note: "Ti Chin-Fu不是站立的幽灵：尸身横陈在门槛或金床上，始终保持死亡时的同一姿态。" },
   ],
   beijing: [
     { id: "robe", label: "文人服饰", x: 25, y: 81, page: 52, quote: "eu devia desde já vestir-me como um chinês opulento, da classe letrada", note: "外交建议首先把赎罪转化为服装、礼仪与扮演。" },
@@ -193,12 +193,12 @@ function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; 
       className={`ti-figure ${revealed ? "is-revealed" : "is-silhouette"}`}
       style={{ "--ti-opacity": String(Math.min(0.28 + intensity * 0.2, 0.94)) } as React.CSSProperties}
       onClick={onInspect}
-      aria-label="查看Ti Chin-Fu"
+      aria-label="查看横卧的Ti Chin-Fu尸身"
     >
-      {/* A raw img keeps the transparent character cutout portable in the edge build. */}
+      {/* A raw img keeps the transparent corpse cutout portable in the edge build. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/ti-chin-fu-v2.png" alt="Ti Chin-Fu身穿黄袍、怀抱纸鸢的全身形象" />
-      <span>{revealed ? "TI CHIN-FU · 点击退回剪影" : "触碰黄袍剪影"}</span>
+      <img src="/ti-chin-fu-corpse-v3.png" alt="Ti Chin-Fu身穿黄绸、仰卧而死，冷臂抱着纸鸢" />
+      <span>{revealed ? "TI CHIN-FU · 点击退回尸影" : "触碰横陈的死者"}</span>
     </button>
   );
 }
@@ -514,10 +514,10 @@ export default function Home() {
 
         {stage === "ghost" && (
           <div className="scene-body ghost-scene">
-            <blockquote className="source-inline" lang="pt">“Era o mandarim Ti Chin-Fu!... Preciso matar este morto!” <cite>CAP. III · PDF p. 34</cite></blockquote>
-            <p>这一次，Ti Chin-Fu不再是抽象光影。他有具体的身体、黄袍、辫子、白髭和纸鸢。点击画面中的剪影，让他显出原貌。</p>
+            <blockquote className="source-inline" lang="pt">“ou estirada no limiar da porta, ou atravessada sobre o leito de ouro — lá jazia a figura bojuda, de rabicho negro e túnica amarela, com o seu papagaio nos braços... Era o mandarim Ti Chin-Fu!” <cite>CAP. III · PDF p. 34</cite></blockquote>
+            <p>这一次，Ti Chin-Fu不再是站立的抽象光影。他是一具横陈的尸身：肥胖的老文人，白色长髭遮住嘴唇，黑辫拖在身后，黄绸包裹着朝上的肚腹，冰冷的双臂仍抱着纸鸢。</p>
             {!ghostRevealed ? (
-              <p className="instruction">先触碰Ti Chin-Fu。只有看清死者，补偿问题才会出现。</p>
+              <p className="instruction">先触碰门槛或金床上横卧的Ti Chin-Fu。只有看清死者，补偿问题才会出现。</p>
             ) : !avoidance ? (
               <>
                 <blockquote className="source-inline compact" lang="pt">“Tinha eliminado a criatura, de longe, com uma campainha... eu assassinara um velho!” <cite>PDF p. 35</cite></blockquote>
@@ -679,7 +679,7 @@ export default function Home() {
         {stage === "return" && (
           <div className="scene-body ghost-scene">
             <blockquote className="source-inline" lang="pt">“Era ele, outra vez! E foi ele, perpetuamente!” <cite>CAP. VII · PDF p. 95</cite></blockquote>
-            <p>点击每一个返航地点。画面中的Ti Chin-Fu会跟随你穿过所有港口，不再受地理距离约束。</p>
+            <p>点击每一个返航地点。Ti Chin-Fu始终保持同一个死亡姿态：横卧在船舱、码头、沙地与城市拱门之前，不再受地理距离约束。</p>
             <div className="return-stamps" aria-label="返航地点">
               {["新加坡", "锡兰", "苏伊士", "马耳他", "直布罗陀", "里斯本"].map((place, index) => (
                 <button key={place} className={returnStops.includes(place) ? "is-read" : ""} style={{ animationDelay: `${index * 0.16}s` }} onClick={() => {
@@ -752,7 +752,7 @@ export default function Home() {
                 <blockquote className="ending-quote" lang="pt">“Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!”</blockquote>
                 <p className="devil-final" lang="pt">“Não pode ser, meu prezado senhor, não pode ser...” <span>— PDF p. 99</span></p>
                 <blockquote className="last-words" lang="pt">“Só sabe bem o pão que dia a dia ganham as nossas mãos: nunca mates o Mandarim!” <cite>PDF p. 100</cite></blockquote>
-                <p className="translation">然而Teodoro在最后一句又转向读者：如果同样轻易地杀人并继承财产，整个中国不会剩下一个mandarim。告诫因此也沾染了自我开脱。</p>
+                <p className="translation">Ti Chin-Fu横陈在镜中宴席之间；然而Teodoro在最后一句又转向读者：如果同样轻易地杀人并继承财产，整个中国不会剩下一个mandarim。告诫因此也沾染了自我开脱。</p>
                 <button className="primary-action" onClick={reset}>从未响起的铃开始</button>
               </div>
             ) : <p className="instruction">还需检查 {3 - currentVisited.length} 件终局物品。</p>}
@@ -784,7 +784,7 @@ export default function Home() {
             <h2 id="about-title">关于这个校订版</h2>
             <p>这是一个可完整通关的浏览器交互叙事，根据Eça de Queirós的《O Mandarim》(1880)改编。它保留“按铃—暴富—幽灵—远东之旅—返欧—奢华牢笼”的主线，并加入“三次拒绝”的特别结局。</p>
             <p>校订版把葡文原句与所用PDF页码直接放进场景：第一幕的房间物件、您标出的两段诱惑文字，以及北京、天和村、修道院、返航和终局都可以通过图像热点逐项阅读。</p>
-            <p>Ti Chin-Fu使用同一个有透明背景的具体角色形象反复进入画面；点击剪影可以显出黄袍、白髭与纸鸢。背景音乐与铃声由浏览器实时合成，必须在“开启声音”按钮或封面按钮上进行一次用户操作后播放。</p>
+            <p>Ti Chin-Fu使用同一个有透明背景的横卧尸身反复进入画面：肥胖的老文人、遮唇白髭、黑辫、黄绸、朝上的肚腹与冷臂间的纸鸢。无论出现在门槛、金床、船舱或返欧途中，他都不再站立；点击尸影可以显出原貌。</p>
             <p>葡文原作进入公版。拒绝结局中的魔鬼台词等新增文字均明确标为本项目原创；视觉中的中国是对Teodoro及十九世纪欧洲“东方想象”的批判性呈现，不作为历史中国的写实复原。</p>
             <p className="credits">文字与交互设计：为本研究原型制作<br />插画与角色设定：AI辅助生成、透明背景处理后用于本项目<br />音乐与音效：浏览器实时合成，不使用外部录音</p>
           </section>

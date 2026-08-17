@@ -35,7 +35,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /Tien-Hó/);
   assert.match(page, /No fundo da China existe um mandarim/);
   assert.match(page, /nunca mates o Mandarim/);
-  assert.match(page, /ti-chin-fu-v2\.png/);
+  assert.match(page, /ti-chin-fu-corpse-v3\.png/);
+  assert.match(page, /横陈的尸身/);
   assert.match(page, /开启声音并翻开书页/);
 
   await Promise.all([
@@ -45,7 +46,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/pequim-embassy-v2.png", import.meta.url)),
     access(new URL("../public/tienho-inn-v2.png", import.meta.url)),
     access(new URL("../public/mission-cloister-v2.png", import.meta.url)),
-    access(new URL("../public/ti-chin-fu-v2.png", import.meta.url)),
+    access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
     access(new URL("../public/og.png", import.meta.url)),
   ]);
 });

@@ -1101,24 +1101,24 @@ blockquote {
   --ti-opacity: 0.84;
   position: fixed;
   z-index: 4;
-  right: 5vw;
-  bottom: 2.5vh;
-  width: clamp(210px, 24vw, 390px);
-  height: min(78svh, 700px);
+  right: -1vw;
+  bottom: 5vh;
+  width: clamp(500px, 53vw, 920px);
+  aspect-ratio: 2 / 1;
   padding: 0;
   border: 0;
   background: none;
   cursor: pointer;
   opacity: var(--ti-opacity);
-  animation: ti-float 5.4s ease-in-out infinite;
-  transform-origin: center bottom;
+  transform-origin: center;
 }
 
 .ti-figure img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: center bottom;
+  object-position: center;
   transition: filter 0.55s ease, opacity 0.4s ease;
 }
 
@@ -1134,8 +1134,8 @@ blockquote {
 
 .ti-figure > span {
   position: absolute;
-  right: 7%;
-  bottom: 4%;
+  right: 12%;
+  bottom: 2%;
   padding: 7px 9px;
   border: 1px solid rgba(211, 175, 79, 0.52);
   background: rgba(4, 9, 9, 0.76);
@@ -1155,9 +1155,29 @@ blockquote {
   opacity: 1;
 }
 
-@keyframes ti-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+.stage-inheritance .ti-figure {
+  right: auto;
+  bottom: 7vh;
+  left: -3vw;
+  width: clamp(470px, 51vw, 850px);
+}
+
+.stage-luxury .ti-figure {
+  right: -4vw;
+  bottom: 6vh;
+}
+
+.stage-return .ti-figure {
+  right: -5vw;
+  bottom: 11vh;
+  opacity: calc(var(--ti-opacity) * 0.92);
+}
+
+.stage-renounce .ti-figure,
+.stage-humiliation .ti-figure,
+.stage-prison .ti-figure {
+  right: -4vw;
+  bottom: 7vh;
 }
 
 .route {
@@ -1474,13 +1494,35 @@ blockquote {
   }
 
   .ti-figure {
-    top: 14vh;
-    right: 2vw;
+    top: 12vh;
+    right: -4vw;
     bottom: auto;
     left: auto;
-    width: min(34vw, 290px);
-    height: 42svh;
-    transform-origin: top right;
+    width: min(78vw, 690px);
+    height: auto;
+    aspect-ratio: 2 / 1;
+    transform-origin: center;
+  }
+
+  .stage-inheritance .ti-figure,
+  .stage-luxury .ti-figure,
+  .stage-return .ti-figure,
+  .stage-renounce .ti-figure,
+  .stage-humiliation .ti-figure,
+  .stage-prison .ti-figure {
+    top: 12vh;
+    right: -4vw;
+    bottom: auto;
+    left: auto;
+    width: min(78vw, 690px);
+  }
+
+  .scene-card {
+    pointer-events: none;
+  }
+
+  .scene-card > * {
+    pointer-events: auto;
   }
 
   .hotspot-layer {
