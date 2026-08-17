@@ -371,13 +371,20 @@ button:focus-visible {
   cursor: pointer;
   font-size: 14px;
   letter-spacing: 0.06em;
+  animation: action-breathe 3.2s ease-in-out infinite;
   transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
 .primary-action:hover {
+  animation: none;
   background: var(--gold);
   color: #10110e;
   transform: translateY(-2px);
+}
+
+@keyframes action-breathe {
+  0%, 100% { box-shadow: 0 0 0 rgba(184, 149, 82, 0); }
+  50% { box-shadow: 0 0 28px rgba(184, 149, 82, 0.16); }
 }
 
 .primary-action small {
@@ -634,6 +641,10 @@ blockquote {
   transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
+.scene-hotspot:not(.is-visited) i {
+  animation: hotspot-breathe 2.4s ease-in-out infinite;
+}
+
 .scene-hotspot span {
   padding: 5px 7px;
   background: rgba(6, 13, 13, 0.78);
@@ -686,6 +697,28 @@ blockquote {
   gap: 6px;
 }
 
+.hotspot-index button:not(.is-found) {
+  animation: object-breathe 3s ease-in-out infinite;
+}
+
+.hotspot-index button:nth-child(2n) {
+  animation-delay: 0.45s;
+}
+
+.hotspot-index button:nth-child(3n) {
+  animation-delay: 0.9s;
+}
+
+@keyframes hotspot-breathe {
+  0%, 100% { box-shadow: 0 0 0 5px rgba(6, 13, 13, 0.25), 0 0 0 rgba(213, 173, 91, 0); }
+  50% { box-shadow: 0 0 0 8px rgba(184, 149, 82, 0.1), 0 0 24px rgba(213, 173, 91, 0.35); }
+}
+
+@keyframes object-breathe {
+  0%, 100% { border-color: rgba(220, 205, 171, 0.28); background: rgba(5, 12, 12, 0.58); }
+  50% { border-color: rgba(184, 149, 82, 0.68); background: rgba(184, 149, 82, 0.1); }
+}
+
 .hotspot-index button span {
   color: var(--gold);
   font-weight: 700;
@@ -693,6 +726,7 @@ blockquote {
 
 .hotspot-index button:hover,
 .hotspot-index button.is-found {
+  animation: none;
   border-color: var(--gold);
   background: rgba(184, 149, 82, 0.16);
   color: #f0e2c5;
@@ -1282,9 +1316,9 @@ blockquote {
   border: 1px solid rgba(211, 175, 79, 0.52);
   background: rgba(4, 9, 9, 0.76);
   color: #e0c887;
-  font: 700 8px Arial, "Noto Sans CJK SC", sans-serif;
+  font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.1em;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s ease;
 }
 
@@ -1295,6 +1329,15 @@ blockquote {
 
 .stage-ghost .ti-figure > span {
   opacity: 1;
+}
+
+.ti-figure.is-silhouette > span {
+  animation: corpse-prompt 2.8s ease-in-out infinite;
+}
+
+@keyframes corpse-prompt {
+  0%, 100% { border-color: rgba(211, 175, 79, 0.42); box-shadow: 0 0 0 rgba(211, 175, 79, 0); }
+  50% { border-color: rgba(231, 202, 125, 0.9); box-shadow: 0 0 24px rgba(211, 175, 79, 0.24); }
 }
 
 .stage-inheritance .ti-figure {
@@ -1563,6 +1606,32 @@ blockquote {
   color: #c9bea7;
   font-size: 14px;
   line-height: 1.8;
+}
+
+.music-credits {
+  display: grid;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(184, 149, 82, 0.24);
+  gap: 7px;
+}
+
+.music-credits span {
+  margin-bottom: 3px;
+  color: var(--red-light);
+  font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.16em;
+}
+
+.music-credits a {
+  color: rgba(221, 209, 183, 0.68);
+  font: 11px/1.55 Arial, "Noto Sans CJK SC", sans-serif;
+  text-decoration-color: rgba(184, 149, 82, 0.35);
+  text-underline-offset: 3px;
+}
+
+.music-credits a:hover {
+  color: #ead8b4;
 }
 
 .modal-close {

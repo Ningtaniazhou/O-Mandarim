@@ -30,7 +30,7 @@ test("ships the complete narrative and its visual assets", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   assert.match(page, /合上的书页/);
   assert.match(page, /奢华的牢笼/);
-  assert.match(page, /狄青福/);
+  assert.match(page, /狄鑫福/);
   assert.match(page, /卡米洛夫/);
   assert.match(page, /Tien-Hó/);
   assert.match(page, /来吧，特奥多罗，我的朋友/);
@@ -40,7 +40,11 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /bell-v1\.png/);
   assert.match(page, /返回上一页/);
   assert.match(page, /物件摘录/);
-  assert.match(page, /开启声音并翻开书页/);
+  assert.match(page, /翻开书页/);
+  assert.match(page, /这是什么？/);
+  assert.match(page, /还是不看见为好/);
+  assert.match(page, /stageMusic/);
+  assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成/);
 
   await Promise.all([
     access(new URL("../public/lisbon-room-v2.png", import.meta.url)),
@@ -52,5 +56,11 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
     access(new URL("../public/devil-v1.png", import.meta.url)),
     access(new URL("../public/bell-v1.png", import.meta.url)),
+    access(new URL("../public/audio/mystery-dark.mp3", import.meta.url)),
+    access(new URL("../public/audio/apparitions-ball.mp3", import.meta.url)),
+    access(new URL("../public/audio/i-swear-i-saw-it.ogg", import.meta.url)),
+    access(new URL("../public/audio/the-journey-begins.ogg", import.meta.url)),
+    access(new URL("../public/audio/pursuit.mp3", import.meta.url)),
+    access(new URL("../public/audio/contemplation.mp3", import.meta.url)),
   ]);
 });

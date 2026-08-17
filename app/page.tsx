@@ -44,7 +44,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   refusalEnding: { act: "特别结局", title: "合上的书页", subtitle: "拒绝诱惑" },
   inheritance: { act: "第二章 · 财富", title: "陌生人的遗产", subtitle: "一个满大人死了" },
   luxury: { act: "第三章 · 黄金", title: "洛雷托的盛宴", subtitle: "百万富翁" },
-  ghost: { act: "第三章 · 亡者", title: "宴席上的客人", subtitle: "狄青福" },
+  ghost: { act: "第三章 · 亡者", title: "宴席上的客人", subtitle: "狄鑫福" },
   map: { act: "第四章 · 远行", title: "向东方去", subtitle: "从里斯本到北京" },
   beijing: { act: "第五章 · 北京", title: "卡米洛夫的办法", subtitle: "赎罪的官僚程序" },
   tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
@@ -54,6 +54,34 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   renounce: { act: "第八章 · 里斯本", title: "放弃一切", subtitle: "重返贫穷" },
   humiliation: { act: "第八章 · 里斯本", title: "贫穷的代价", subtitle: "社会的惩罚" },
   prison: { act: "正篇结局", title: "奢华的牢笼", subtitle: "无法撤销的交易" },
+};
+
+const musicCues = {
+  mystery: { src: "/audio/mystery-dark.mp3", volume: 0.24 },
+  ballroom: { src: "/audio/apparitions-ball.mp3", volume: 0.2 },
+  haunting: { src: "/audio/i-swear-i-saw-it.ogg", volume: 0.23 },
+  journey: { src: "/audio/the-journey-begins.ogg", volume: 0.22 },
+  pursuit: { src: "/audio/pursuit.mp3", volume: 0.2 },
+  contemplation: { src: "/audio/contemplation.mp3", volume: 0.25 },
+} as const;
+
+const stageMusic: Record<Stage, { src: string; volume: number }> = {
+  intro: musicCues.mystery,
+  room: musicCues.mystery,
+  bell: musicCues.mystery,
+  refusalEnding: musicCues.mystery,
+  inheritance: musicCues.ballroom,
+  luxury: musicCues.ballroom,
+  ghost: musicCues.haunting,
+  map: musicCues.journey,
+  beijing: musicCues.journey,
+  tienho: musicCues.pursuit,
+  mission: musicCues.contemplation,
+  letter: musicCues.contemplation,
+  return: musicCues.haunting,
+  renounce: musicCues.haunting,
+  humiliation: musicCues.haunting,
+  prison: musicCues.haunting,
 };
 
 const refusalLines = [
@@ -80,7 +108,7 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
     { id: "map", label: "天河村路线图", x: 53, y: 71, translation: "热心的卡米洛夫手持铅笔，已在地图上标出我前往天河村的路线！" },
     { id: "tea", label: "茶具", x: 70, y: 62, translation: "面对这一切，您只有一个‘茶’字可用。太少了。" },
     { id: "dossiers", label: "档案", x: 78, y: 82, translation: "数百名书吏昼夜执笔，在宣纸上写满报告，脸色日渐苍白。" },
-    { id: "sabre", label: "卡米洛夫的军刀", x: 86, y: 63, translation: "做一件事吧。去寻找狄青福的家人……" },
+    { id: "sabre", label: "卡米洛夫的军刀", x: 86, y: 63, translation: "做一件事吧。去寻找狄鑫福的家人……" },
   ],
   tienho: [
     { id: "arrow", label: "箭与破洞", x: 15, y: 28, translation: "一块石头从我身旁飞来，击穿了窗格上的油纸；随后一支箭呼啸而过。" },
@@ -92,7 +120,7 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
     { id: "bandage", label: "绷带", x: 22, y: 80, translation: "两位遣使会神父正慢慢清洗我的耳朵。" },
     { id: "well", label: "井与滑轮", x: 42, y: 45, translation: "井上的滑轮缓慢作响；晨祷的钟声响了起来。" },
     { id: "breviary", label: "《日课经》", x: 66, y: 75, translation: "我把一卷英格兰银行钞票放在他的《日课经》上，那书正翻到《贫穷福音》的一页。" },
-    { id: "letter", label: "卡米洛夫的信", x: 83, y: 83, translation: "关于狄青福的遗孀和家人，事情弄错了。" },
+    { id: "letter", label: "卡米洛夫的信", x: 83, y: 83, translation: "关于狄鑫福的遗孀和家人，事情弄错了。" },
     { id: "found-child", label: "拾得儿", x: 89, y: 56, translation: "他发现她赤裸着被遗弃在路旁，眼看就要死去。" },
   ],
   renounce: [
@@ -116,9 +144,13 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
 function useSound() {
   const context = useRef<AudioContext | null>(null);
   const master = useRef<GainNode | null>(null);
+  const players = useRef<[HTMLAudioElement | null, HTMLAudioElement | null]>([null, null]);
+  const activePlayer = useRef(0);
+  const currentTrack = useRef("");
+  const currentVolume = useRef(0.22);
+  const fadeFrame = useRef<number | null>(null);
   const enabledRef = useRef(false);
   const [enabled, setEnabled] = useState(false);
-  const [ready, setReady] = useState(false);
 
   const ensure = () => {
     if (typeof window === "undefined") return null;
@@ -130,10 +162,81 @@ function useSound() {
       master.current = context.current.createGain();
       master.current.gain.value = 0;
       master.current.connect(context.current.destination);
-      setReady(true);
     }
     void context.current.resume();
     return context.current;
+  };
+
+  const ensurePlayers = () => {
+    if (typeof window === "undefined") return null;
+    if (!players.current[0] || !players.current[1]) {
+      players.current = [new Audio(), new Audio()];
+      players.current.forEach((player) => {
+        if (!player) return;
+        player.loop = true;
+        player.preload = "auto";
+        player.volume = 0;
+      });
+    }
+    return players.current as [HTMLAudioElement, HTMLAudioElement];
+  };
+
+  const cancelFade = () => {
+    if (fadeFrame.current !== null && typeof window !== "undefined") {
+      window.cancelAnimationFrame(fadeFrame.current);
+      fadeFrame.current = null;
+    }
+  };
+
+  const fade = (incoming: HTMLAudioElement, outgoing: HTMLAudioElement | null, target: number, duration = 1200) => {
+    cancelFade();
+    const started = performance.now();
+    const outgoingStart = outgoing?.volume ?? 0;
+    const step = (now: number) => {
+      const ratio = Math.min((now - started) / duration, 1);
+      incoming.volume = target * ratio;
+      if (outgoing) outgoing.volume = outgoingStart * (1 - ratio);
+      if (ratio < 1) {
+        fadeFrame.current = window.requestAnimationFrame(step);
+      } else {
+        fadeFrame.current = null;
+        if (outgoing) {
+          outgoing.pause();
+          outgoing.currentTime = 0;
+        }
+      }
+    };
+    fadeFrame.current = window.requestAnimationFrame(step);
+  };
+
+  const playTrack = (src: string, volume: number) => {
+    const audioPlayers = ensurePlayers();
+    if (!audioPlayers) return;
+    currentVolume.current = volume;
+    if (currentTrack.current === src) {
+      const active = audioPlayers[activePlayer.current];
+      if (enabledRef.current && active.paused) {
+        void active.play().then(() => fade(active, null, volume, 500)).catch(() => undefined);
+      }
+      return;
+    }
+
+    const outgoing = audioPlayers[activePlayer.current];
+    const nextIndex = activePlayer.current === 0 ? 1 : 0;
+    const incoming = audioPlayers[nextIndex];
+    incoming.pause();
+    incoming.src = src;
+    incoming.currentTime = 0;
+    incoming.volume = 0;
+    incoming.load();
+    currentTrack.current = src;
+    activePlayer.current = nextIndex;
+
+    if (!enabledRef.current) {
+      outgoing.pause();
+      return;
+    }
+    void incoming.play().then(() => fade(incoming, outgoing, volume)).catch(() => undefined);
   };
 
   const tone = (frequency: number, duration = 0.8, volume = 0.12, delay = 0, type: OscillatorType = "sine") => {
@@ -165,24 +268,31 @@ function useSound() {
 
   const setAudio = (next: boolean) => {
     const ctx = ensure();
+    const audioPlayers = ensurePlayers();
     enabledRef.current = next;
     setEnabled(next);
     if (master.current && ctx) {
       master.current.gain.cancelScheduledValues(ctx.currentTime);
       master.current.gain.setTargetAtTime(next ? 0.72 : 0, ctx.currentTime, 0.04);
     }
-    if (next) {
-      window.setTimeout(() => {
-        tone(220, 1.25, 0.11, 0, "triangle");
-        tone(329.63, 1.5, 0.07, 0.08, "sine");
-      }, 80);
+    if (!audioPlayers) return;
+    const active = audioPlayers[activePlayer.current];
+    if (next && active.src) {
+      active.volume = 0;
+      void active.play().then(() => fade(active, null, currentVolume.current, 650)).catch(() => undefined);
+    } else if (!next) {
+      cancelFade();
+      audioPlayers.forEach((player) => {
+        player.pause();
+        player.volume = 0;
+      });
     }
   };
 
   const toggle = () => setAudio(!enabledRef.current);
   const enable = () => setAudio(true);
 
-  return { enabled, ready, ensure, enable, tone, bell, thud, toggle };
+  return { enabled, enable, playTrack, tone, bell, thud, toggle };
 }
 
 function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; revealed: boolean; onInspect: () => void }) {
@@ -191,12 +301,12 @@ function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; 
       className={`ti-figure ${revealed ? "is-revealed" : "is-silhouette"}`}
       style={{ "--ti-opacity": String(Math.min(0.28 + intensity * 0.2, 0.94)) } as React.CSSProperties}
       onClick={onInspect}
-      aria-label="查看横卧的狄青福尸身"
+      aria-label={revealed ? "还是不看见为好" : "这是什么？"}
     >
       {/* A raw img keeps the transparent corpse cutout portable in the edge build. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/ti-chin-fu-corpse-v3.png" alt="狄青福身穿黄绸、仰卧而死，冷臂抱着纸鸢" />
-      <span>{revealed ? "狄青福 · 点击退回尸影" : "触碰横陈的死者"}</span>
+      <img src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福身穿黄绸、仰卧而死，冷臂抱着纸鸢" />
+      <span>{revealed ? "还是不看见为好" : "这是什么？"}</span>
     </button>
   );
 }
@@ -346,33 +456,11 @@ export default function Home() {
   }, [stage]);
 
   useEffect(() => {
-    if (!sound.enabled || !sound.ready) return;
-    const dark = ["ghost", "return", "renounce", "humiliation", "prison"].includes(stage);
-    const east = ["map", "beijing", "tienho", "mission", "letter"].includes(stage);
-    const tense = stage === "tienho";
-    const notes = tense
-      ? [73.42, 77.78, 110, 116.54]
-      : dark
-        ? [73.42, 110, 130.81, 146.83]
-        : east
-          ? [98, 123.47, 146.83, 196]
-          : [87.31, 110, 130.81, 174.61];
-    let beat = 0;
-    const playMeasure = () => {
-      const root = notes[beat % notes.length];
-      sound.tone(root, 2.6, tense ? 0.12 : 0.075, 0, "sine");
-      sound.tone(root * 2, 0.72, tense ? 0.1 : 0.075, 0.12, "triangle");
-      if (beat % 2 === 0) sound.tone(notes[(beat + 2) % notes.length] * 2, 1.15, 0.055, 0.42, "sine");
-      beat += 1;
-    };
-    playMeasure();
-    const interval = window.setInterval(() => {
-      playMeasure();
-    }, tense ? 980 : 1450);
-    return () => window.clearInterval(interval);
-    // The procedural score is rebuilt only when the scene or audio state changes.
+    const cue = stageMusic[stage];
+    sound.playTrack(cue.src, cue.volume);
+    // Track transitions follow narrative stages; the sound controller persists between renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage, sound.enabled, sound.ready]);
+  }, [stage]);
 
   const inspectHotspot = (item: HotspotItem) => {
     const existing = visualFinds[stage] ?? [];
@@ -444,9 +532,9 @@ export default function Home() {
 
         {stage === "intro" && (
           <div className="intro-content">
-            <p className="lede">一只铃，一条从里斯本通往北京的航线，<br />以及一笔永远无法花清的债。</p>
+            <p className="lede">一只铃，一条从里斯本通往北京的航线，<br />以及一笔永远无法还清的债。</p>
             <button className="primary-action bell-action" onClick={() => { sound.enable(); go("room"); }}>
-              <span>开启声音并翻开书页</span><small>原创程序化配乐将在手势后播放</small>
+              <span>翻开书页</span>
             </button>
             <p className="edition-note">根据埃萨·德·凯罗斯的小说改编 · 中文交互版</p>
           </div>
@@ -456,7 +544,6 @@ export default function Home() {
           <div className="scene-body">
             <BilingualQuote pt="Eu chamo-me Teodoro — e fui amanuense do Ministério do Reino." zh="我叫特奥多罗——曾是王国内政部的一名抄写员。" />
             <p>每周，特奥多罗弯着背替国家誊写恭敬的公文；每月二万雷斯。夜晚，他回到孔塞桑巷一百零六号，让祷告、彩票和旧书替自己想象幸福。</p>
-            <p className="instruction">点击桌上的物件查看。</p>
             <div className="hotspot-index">
               {(sceneHotspots.room ?? []).map((item) => (
                 <button key={item.id} className={roomFinds.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -526,10 +613,10 @@ export default function Home() {
               </div>
             ) : (
               <>
-                <BilingualQuote pt="Pobre Ti Chin-Fu!... Estava no seu jardim, sossegado, armando, para o lançar ao ar, um papagaio de papel..." zh="可怜的狄青福！……他本来安静地待在花园里，正扎着一只准备放飞的纸鸢……" />
-                <p>铃声之后，魔鬼第一次说出死者的名字。狄青福身穿黄绸，倒在溪边的草地上，怀中仍抱着尚未放飞的纸鸢。</p>
+                <BilingualQuote pt="Pobre Ti Chin-Fu!... Estava no seu jardim, sossegado, armando, para o lançar ao ar, um papagaio de papel..." zh="可怜的狄鑫福！……他本来安静地待在花园里，正扎着一只准备放飞的纸鸢……" />
+                <p>铃声之后，魔鬼第一次说出死者的名字。狄鑫福身穿黄绸，倒在溪边的草地上，怀中仍抱着尚未放飞的纸鸢。</p>
                 <div className="money-number">106,000 <small>孔托雷斯</small></div>
-                <BilingualQuote compact pt="São cento e seis mil contos, senhor!... da herança depositada do mandarim Ti Chin-Fu!" zh="是十万六千孔托，先生！……那是满大人狄青福存下的遗产！" />
+                <BilingualQuote compact pt="São cento e seis mil contos, senhor!... da herança depositada do mandarim Ti Chin-Fu!" zh="是十万六千孔托，先生！……那是满大人狄鑫福存下的遗产！" />
                 <button className="primary-action" onClick={() => go("luxury")}>入住洛雷托的宫殿 <span>→</span></button>
               </>
             )}
@@ -555,8 +642,8 @@ export default function Home() {
 
         {stage === "ghost" && (
           <div className="scene-body ghost-scene">
-            <BilingualQuote pt="ou estirada no limiar da porta, ou atravessada sobre o leito de ouro — lá jazia a figura bojuda, de rabicho negro e túnica amarela, com o seu papagaio nos braços... Era o mandarim Ti Chin-Fu!" zh="他不是横卧在门槛上，就是横陈在金床上——那肥胖的身躯拖着黑辫，穿着黄袍，怀中抱着纸鸢……正是满大人狄青福！" />
-            <p>狄青福不是站立的抽象光影。他是一具横陈的尸身：肥胖的老文人，白色长髭遮住嘴唇，黑辫拖在身后，黄绸包裹着朝上的肚腹，冰冷的双臂仍抱着纸鸢。</p>
+            <BilingualQuote pt="ou estirada no limiar da porta, ou atravessada sobre o leito de ouro — lá jazia a figura bojuda, de rabicho negro e túnica amarela, com o seu papagaio nos braços... Era o mandarim Ti Chin-Fu!" zh="他不是横卧在门槛上，就是横陈在金床上——那肥胖的身躯拖着黑辫，穿着黄袍，怀中抱着纸鸢……正是满大人狄鑫福！" />
+            <p>狄鑫福不是站立的抽象光影。他是一具横陈的尸身：肥胖的老文人，白色长髭遮住嘴唇，黑辫拖在身后，黄绸包裹着朝上的肚腹，冰冷的双臂仍抱着纸鸢。</p>
             {!ghostRevealed ? (
               <p className="discovery-count">尸影尚未显出原貌。</p>
             ) : !avoidance ? (
@@ -570,8 +657,8 @@ export default function Home() {
               </>
             ) : (
               <div className="consequence">
-                <p>{avoidance === "pleasure" ? "乐队演奏得更响。狄青福不需要耳朵。" : avoidance === "church" ? "神父答应祈祷，却不能替你解释财富的来源。" : "你的名字刻上医院的石墙；死者的名字仍无人念出。"}</p>
-                <BilingualQuote compact pt="Partiria para Pequim; descobriria a família de Ti Chin-Fu..." zh="我要去北京；找到狄青福的家人……" />
+                <p>{avoidance === "pleasure" ? "乐队演奏得更响。狄鑫福不需要耳朵。" : avoidance === "church" ? "神父答应祈祷，却不能替你解释财富的来源。" : "你的名字刻上医院的石墙；死者的名字仍无人念出。"}</p>
+                <BilingualQuote compact pt="Partiria para Pequim; descobriria a família de Ti Chin-Fu..." zh="我要去北京；找到狄鑫福的家人……" />
                 <button className="primary-action" onClick={() => { setRouteIndex(0); go("map"); }}>登上去往中国的轮船 <span>→</span></button>
               </div>
             )}
@@ -597,7 +684,7 @@ export default function Home() {
             ) : (
               <button className="primary-action" onClick={() => go("beijing")}>进入北京 <span>→</span></button>
             )}
-            <p className="perspective-note">视觉提示：这里呈现的是特奥多罗及十九世纪欧洲叙述中的“东方想象”，并非现实中国的复原。</p>
+            <p className="perspective-note">这里呈现的是特奥多罗及十九世纪欧洲叙述中的“东方想象”，并非现实中国的复原。</p>
           </div>
         )}
 
@@ -616,14 +703,14 @@ export default function Home() {
               <p className="discovery-count">已查看 {currentVisited.length} / 3</p>
             ) : !camilloff ? (
               <div className="choice-stack">
-                <button className="choice-button" onClick={() => setCamilloff("treasury")}><span>把一半巨款交给国库</span><small>也许狄青福会因此平静</small></button>
+                <button className="choice-button" onClick={() => setCamilloff("treasury")}><span>把一半巨款交给国库</span><small>也许狄鑫福会因此平静</small></button>
                 <button className="choice-button" onClick={() => setCamilloff("rice")}><span>私人向饥民分发大米</span><small>以慈善绕开国家</small></button>
-                <button className="choice-button" onClick={() => setCamilloff("family")}><span>寻找狄青福的家族</span><small>把巨款直接还给后代</small></button>
+                <button className="choice-button" onClick={() => setCamilloff("family")}><span>寻找狄鑫福的家族</span><small>把巨款直接还给后代</small></button>
               </div>
             ) : (
               <div className="dialogue-result">
                 <div className="speaker">卡米洛夫</div>
-                <BilingualQuote compact pt={camilloff === "treasury" ? "Erro, considerável erro, mancebo! Esses milhões nunca chegariam ao Tesouro imperial." : camilloff === "rice" ? "Funesta... A corte imperial veria aí imediatamente uma ambição política." : "Faça uma coisa. Procure a família de Ti Chin-Fu..."} zh={camilloff === "treasury" ? "错了，大错特错，年轻人！这些钱永远到不了帝国国库。" : camilloff === "rice" ? "这会招致灾祸……朝廷会立刻从中看出政治野心。" : "做一件事吧。去寻找狄青福的家人……"} />
+                <BilingualQuote compact pt={camilloff === "treasury" ? "Erro, considerável erro, mancebo! Esses milhões nunca chegariam ao Tesouro imperial." : camilloff === "rice" ? "Funesta... A corte imperial veria aí imediatamente uma ambição política." : "Faça uma coisa. Procure a família de Ti Chin-Fu..."} zh={camilloff === "treasury" ? "错了，大错特错，年轻人！这些钱永远到不了帝国国库。" : camilloff === "rice" ? "这会招致灾祸……朝廷会立刻从中看出政治野心。" : "做一件事吧。去寻找狄鑫福的家人……"} />
                 <p>{camilloff === "treasury" ? "他认为钱只会落进统治阶层‘深不可测的口袋’。" : camilloff === "rice" ? "他认为朝廷会把赈米视为收买民众、威胁王朝的政治野心。" : "这是唯一暂时不会让特奥多罗被斩首的方案。"} 最终，你必须乔装成富有文人，等待行政机器找出家族地址。</p>
                 <button className="primary-action" onClick={() => go("tienho")}>随向导萨托出发 <span>→</span></button>
               </div>
@@ -685,19 +772,19 @@ export default function Home() {
           <div className="scene-body">
             <div className="letter-sheet">
               <span>附言 · 卡米洛夫将军</span>
-              <p><span lang="pt">“Enquanto à viúva e família de Ti Chin-Fu, houve um engano...”</span><span>“关于狄青福的遗孀和家人，事情弄错了……”</span></p>
+              <p><span lang="pt">“Enquanto à viúva e família de Ti Chin-Fu, houve um engano...”</span><span>“关于狄鑫福的遗孀和家人，事情弄错了……”</span></p>
               <button className={letterClues.includes("cantao") ? "is-read" : ""} onClick={() => !letterClues.includes("cantao") && setLetterClues([...letterClues, "cantao"])}>
                 <b>广东</b><em><span lang="pt">“É no Sul da China, na província de Cantão.”</span><span>“他们住在中国南方的广东省。”</span></em>
               </button>
               <button className={letterClues.includes("kaoli") ? "is-read" : ""} onClick={() => !letterClues.includes("kaoli") && setLetterClues([...letterClues, "kaoli"])}>
-                <b>高丽</b><em><span lang="pt">“Mas também há uma família Ti Chin-Fu para além da Grande Muralha...”</span><span>“但长城之外也有一个狄青福家族……”</span></em>
+                <b>高丽</b><em><span lang="pt">“Mas também há uma família Ti Chin-Fu para além da Grande Muralha...”</span><span>“但长城之外也有一个狄鑫福家族……”</span></em>
               </button>
             </div>
             {letterClues.length < 2 ? (
               <p className="discovery-count">已展开 {letterClues.length} / 2</p>
             ) : !searchAgain ? (
               <>
-                <p>同一封信给出两个狄青福家族、两个死去的家长、两处贫困。原作让“后代”从可补偿的对象重新变成无法验证的名字。</p>
+                <p>同一封信给出两个狄鑫福家族、两个死去的家长、两处贫困。原作让“后代”从可补偿的对象重新变成无法验证的名字。</p>
                 <div className="choice-stack horizontal">
                   <button className="choice-button" onClick={() => setSearchAgain(true)}><span>再寻找一次</span><small>去广东，或去高丽</small></button>
                   <button className="choice-button dangerous" onClick={() => go("return")}><span>返回欧洲</span><small>我已经尽力了</small></button>
@@ -716,13 +803,13 @@ export default function Home() {
         {stage === "return" && (
           <div className="scene-body ghost-scene">
             <BilingualQuote pt="Era ele, outra vez! E foi ele, perpetuamente!" zh="又是他！从此以后，永远都是他！" />
-            <p>狄青福始终保持同一个死亡姿态，横卧在船舱、码头、沙地与城市拱门之前，不再受地理距离约束。</p>
+            <p>狄鑫福始终保持同一个死亡姿态，横卧在船舱、码头、沙地与城市拱门之前，不再受地理距离约束。</p>
             <div className="return-stamps" aria-label="返航地点">
               {["新加坡", "锡兰", "苏伊士", "马耳他", "直布罗陀", "里斯本"].map((place, index) => (
                 <button key={place} className={returnStops.includes(place) ? "is-read" : ""} style={{ animationDelay: `${index * 0.16}s` }} onClick={() => {
                   if (!returnStops.includes(place)) setReturnStops([...returnStops, place]);
                   sound.tone(110 + index * 14, 0.7, 0.11, 0, "triangle");
-                }}>{returnStops.includes(place) ? "狄青福 · " : ""}{place}</button>
+                }}>{returnStops.includes(place) ? "狄鑫福 · " : ""}{place}</button>
               ))}
             </div>
             {returnStops.length >= 5 ? (
@@ -764,7 +851,7 @@ export default function Home() {
             {currentVisited.length >= 2 ? (
               <div className="consequence">
                 <BilingualQuote compact pt="Então, indignado, um dia subitamente reentrei com estrondo no meu palacete e no meu luxo." zh="终于有一天，我愤怒地轰然闯回自己的宫殿和奢华生活。" />
-                <p>“继续忍受”并不是原作提供的稳定出口：银行里的财富仍属于特奥多罗，狄青福也仍在身旁。叙述最终把他推回唯一真实发生的行动。</p>
+                <p>“继续忍受”并不是原作提供的稳定出口：银行里的财富仍属于特奥多罗，狄鑫福也仍在身旁。叙述最终把他推回唯一真实发生的行动。</p>
                 <button className="primary-action" onClick={() => go("prison")}>推开洛雷托宫殿的大门 <span>→</span></button>
               </div>
             ) : <p className="discovery-count">已查看 {currentVisited.length} / 2</p>}
@@ -789,7 +876,7 @@ export default function Home() {
                 <BilingualQuote pt="Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!" zh="把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！" className="ending-quote" />
                 <BilingualQuote compact pt="Não pode ser, meu prezado senhor, não pode ser..." zh="不行，我尊贵的先生，不行……" className="devil-final" />
                 <BilingualQuote pt="Só sabe bem o pão que dia a dia ganham as nossas mãos: nunca mates o Mandarim!" zh="只有双手每日挣来的面包才真正甘美：永远不要杀死满大人！" className="last-words" />
-                <p className="translation">狄青福横陈在镜中宴席之间；然而特奥多罗在最后一句又转向读者：如果同样轻易地杀人并继承财产，整个中国不会剩下一个满大人。告诫因此也沾染了自我开脱。</p>
+                <p className="translation">狄鑫福横陈在镜中宴席之间；然而特奥多罗在最后一句又转向读者：如果同样轻易地杀人并继承财产，整个中国不会剩下一个满大人。告诫因此也沾染了自我开脱。</p>
                 <button className="primary-action" onClick={reset}>从未响起的铃开始</button>
               </div>
             ) : <p className="discovery-count">已查看 {currentVisited.length} / 3</p>}
@@ -822,10 +909,19 @@ export default function Home() {
             <div className="scene-kicker">版本说明</div>
             <h2 id="about-title">关于这个校订版</h2>
             <p>这是一个可完整通关的浏览器交互叙事，根据埃萨·德·凯罗斯一八八〇年的小说《满大人》改编。它保留“摇铃—暴富—亡者—远东之旅—返欧—奢华牢笼”的主线，并加入“三次拒绝”的特别结局。</p>
-            <p>小说引文采用葡萄牙语与中文对照，不再显示书中位置；点击物件时则只呈现与物件有关的中文译文。</p>
-            <p>狄青福以横卧尸身反复进入画面；魔鬼则依照原作成为一个黑衣、高礼帽、戴黑手套并把双手按在雨伞柄上的中产人物。两者都以透明背景角色素材融入场景。</p>
+            <p>小说引文采用葡萄牙语与中文对照，不再显示书中位置；物件展开后只呈现与之有关的中文译文。</p>
+            <p>狄鑫福以横卧尸身反复进入画面；魔鬼则依照原作成为一个黑衣、高礼帽、戴黑手套并把双手按在雨伞柄上的中产人物。两者都以透明背景角色素材融入场景。</p>
             <p>拒绝结局中的新增文字均明确标为本项目原创；视觉中的中国是对特奥多罗及十九世纪欧洲“东方想象”的批判性呈现，不作为历史中国的写实复原。</p>
-            <p className="credits">文字与交互设计：本研究原型<br />插画与角色设定：人工智能辅助生成并完成透明背景处理<br />音乐与音效：浏览器实时合成，不使用外部录音</p>
+            <p className="credits">文字与交互设计：本研究原型<br />插画与角色设定：人工智能辅助生成并完成透明背景处理</p>
+            <div className="music-credits">
+              <span>分幕配乐</span>
+              <a href="https://pixabay.com/music/ambient-mystery-dark-375266/" target="_blank" rel="noreferrer">《Mystery Dark》· leberch · Pixabay Content License</a>
+              <a href="https://opengameart.org/content/apparitions-ball" target="_blank" rel="noreferrer">《Apparitions Ball》· Bobjt · CC0</a>
+              <a href="https://opengameart.org/content/i-swear-i-saw-it-background-track" target="_blank" rel="noreferrer">《I Swear I Saw It》· yd · CC0</a>
+              <a href="https://opengameart.org/content/the-journey-begins" target="_blank" rel="noreferrer">《The Journey Begins》· Igor Gundarev · CC0</a>
+              <a href="https://opengameart.org/content/pursuit" target="_blank" rel="noreferrer">《Pursuit》· Sudocolon · CC0</a>
+              <a href="https://opengameart.org/content/contemplation-0" target="_blank" rel="noreferrer">《Contemplation》· Joth · CC0</a>
+            </div>
           </section>
         </div>
       )}
