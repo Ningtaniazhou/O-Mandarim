@@ -30,12 +30,12 @@ type HotspotItem = {
 };
 
 const routes = [
-  ["里斯本", "你离开宫殿；死者先一步登船。"],
+  ["里斯本", "特奥多罗离开洛雷托豪宅，决意亲赴北京寻找狄鑫福的家族。"],
   ["马赛", "特奥多罗包下整艘名为“锡兰号”的邮船，从马赛向东方启航。"],
-  ["上海", "“锡兰号”的航行平静而单调；小说直到上海才重新标出地点。"],
+  ["上海", "“锡兰号”平静而单调地航行到上海；特奥多罗一路没有观光的兴致，只想着此行的目的。"],
   ["天津", "从上海沿河乘罗素公司的小轮船抵达天津。"],
-  ["通州", "卡米洛夫派出的哥萨克与译员萨托在这里迎接。"],
-  ["北京", "城门在最后一道夕阳离开天坛塔楼时关闭。"],
+  ["通州", "卡米洛夫派出的翻译萨托在此处迎接。"],
+  ["北京", "在俄罗斯公使卡米洛夫的协助下，特奥多罗开始寻找狄鑫福的后代。"],
 ];
 
 const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }> = {
@@ -108,7 +108,7 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
   ],
   beijing: [
     { id: "robe", label: "文人服饰", x: 25, y: 81, translation: "我从此应当打扮成一个富有的中国文人。" },
-    { id: "map", label: "天河村路线图", x: 53, y: 71, translation: "热心的卡米洛夫手持铅笔，已在地图上标出我前往天河村的路线！" },
+    { id: "map", label: "中国北方地图", x: 53, y: 71, translation: "卡米洛夫把地图铺在桌上；只有查明狄鑫福家族的住处，赎罪之旅才有具体方向。" },
     { id: "tea", label: "茶具", x: 70, y: 62, translation: "面对这一切，您只有一个‘茶’字可用。太少了。" },
     { id: "dossiers", label: "档案", x: 78, y: 82, translation: "数百名书吏昼夜执笔，在宣纸上写满报告，脸色日渐苍白。" },
     { id: "sabre", label: "卡米洛夫的军刀", x: 86, y: 63, translation: "做一件事吧。去寻找狄鑫福的家人……" },
@@ -421,6 +421,7 @@ export default function Home() {
   const goBack = () => {
     const previous = stageHistory.at(-1);
     if (!previous) return;
+    if (stage === "ghost") setAvoidance("");
     setTransitioning(true);
     setStageHistory((history) => history.slice(0, -1));
     window.setTimeout(() => {
@@ -638,7 +639,7 @@ export default function Home() {
               ))}
             </div>
             {currentVisited.length >= 3 && (
-              <button className="primary-action" onClick={() => { sound.tone(110, 2.4, 0.08); go("ghost"); }}>看向镜子里的第四个人 <span>→</span></button>
+              <button className="primary-action" onClick={() => { sound.tone(110, 2.4, 0.08); go("ghost"); }}>我无法忽视…… <span>→</span></button>
             )}
           </div>
         )}
@@ -660,7 +661,7 @@ export default function Home() {
               </>
             ) : (
               <div className="consequence">
-                <p>{avoidance === "pleasure" ? "乐队演奏得更响。狄鑫福不需要耳朵。" : avoidance === "church" ? "神父答应祈祷，却不能替你解释财富的来源。" : "你的名字刻上医院的石墙；死者的名字仍无人念出。"}</p>
+                <p>{avoidance === "pleasure" ? "音乐、酒宴和彻夜狂欢只能暂时淹没罪疚；宾客散去后，狄鑫福仍横陈在门槛。特奥多罗明白，留在欧洲无法摆脱他。" : avoidance === "church" ? "弥撒可以为亡魂祈祷，却不能把财产归还给被夺走一切的家族。若要真正补偿死者，特奥多罗必须亲自找到狄鑫福的后代。" : "捐款救济了许多陌生人，却始终没有抵达狄鑫福的家族。特奥多罗终于决定追查他们的下落，把这笔财富交还给真正的继承人。"}</p>
                 <BilingualQuote compact pt="Partiria para Pequim; descobriria a família de Ti Chin-Fu..." zh="我要去北京；找到狄鑫福的家人……" />
                 <button className="primary-action" onClick={() => { setRouteIndex(0); go("map"); }}>登上去往中国的轮船 <span>→</span></button>
               </div>
@@ -671,7 +672,7 @@ export default function Home() {
         {stage === "map" && (
           <div className="scene-body map-scene">
             <BilingualQuote pt="Anelei, suspirei por pisar a terra da China!... pus a proa ao Oriente." zh="我渴望着、叹息着，想要踏上中国的土地！……于是船头转向东方。" />
-            <p>邮船名为“锡兰号”，并不是一次锡兰停靠；从上海以后，旅程转入河流、驳船、陆路和外交接待。</p>
+            <p>为了查明狄鑫福后代的下落，特奥多罗用成把的金币匆忙办妥准备，从里斯本赶到马赛，包下整艘名为“锡兰号”的邮船。第二天清晨，他迎着海鸥与初升的阳光驶离马赛，船头转向东方。</p>
             <div className="route" role="img" aria-label={`航线进度：${routes[routeIndex][0]}`}>
               <div className="route-line"><span style={{ width: `${(routeIndex / (routes.length - 1)) * 100}%` }} /></div>
               {routes.map((stop, index) => (
@@ -714,8 +715,10 @@ export default function Home() {
               <div className="dialogue-result">
                 <div className="speaker">卡米洛夫</div>
                 <BilingualQuote compact pt={camilloff === "treasury" ? "Erro, considerável erro, mancebo! Esses milhões nunca chegariam ao Tesouro imperial." : camilloff === "rice" ? "Funesta... A corte imperial veria aí imediatamente uma ambição política." : "Faça uma coisa. Procure a família de Ti Chin-Fu..."} zh={camilloff === "treasury" ? "错了，大错特错，年轻人！这些钱永远到不了帝国国库。" : camilloff === "rice" ? "这会招致灾祸……朝廷会立刻从中看出政治野心。" : "做一件事吧。去寻找狄鑫福的家人……"} />
-                <p>{camilloff === "treasury" ? "他认为钱只会落进统治阶层‘深不可测的口袋’。" : camilloff === "rice" ? "他认为朝廷会把赈米视为收买民众、威胁王朝的政治野心。" : "这是唯一暂时不会让特奥多罗被斩首的方案。"} 最终，你必须乔装成富有文人，等待行政机器找出家族地址。</p>
-                <button className="primary-action" onClick={() => go("tienho")}>随向导萨托出发 <span>→</span></button>
+                <p>{camilloff === "treasury" ? "他认为钱只会落进统治阶层‘深不可测的口袋’。" : camilloff === "rice" ? "他认为朝廷会把赈米视为收买民众、威胁王朝的政治野心。" : "这是唯一暂时不会让特奥多罗被斩首的方案。"} 特奥多罗只得乔装成富有文人，等待狄鑫福家族的消息。</p>
+                <BilingualQuote compact pt="Descobrira-se enfim que um opulento mandarim, de nome Ti Chin-Fu, vivera outrora nos confins da Mongólia, na vila de Tien-Hó! Tinha morrido subitamente: e a sua larga descendência residia lá, em miséria, num casebre vil..." zh="终于查明，一位名叫狄鑫福的富有满大人曾住在蒙古边境的天河村。他猝然去世；众多后代仍住在那里，穷困地挤在一间破屋里……" />
+                <p>佟亲王带来的线索指向北京以北、越过长城后的天河村。卡米洛夫认定那正是特奥多罗要找的家族，立刻用铅笔标出路线：先沿白河北上，再换船、骑马穿过长城，最后还要步行两天才能抵达。</p>
+                <button className="primary-action" onClick={() => go("tienho")}>与萨托前往天河村 <span>→</span></button>
               </div>
             )}
           </div>

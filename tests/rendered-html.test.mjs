@@ -38,6 +38,13 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /仔细翻阅旧书/);
   assert.match(page, /听见桌子另一侧的声音/);
   assert.match(page, /搬入洛雷托豪宅/);
+  assert.match(page, /我无法忽视……/);
+  assert.match(page, /if \(stage === "ghost"\) setAvoidance\(""\)/);
+  assert.match(page, /音乐、酒宴和彻夜狂欢只能暂时淹没罪疚/);
+  assert.match(page, /用成把的金币匆忙办妥准备/);
+  assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
+  assert.match(page, /佟亲王带来的线索指向北京以北/);
+  assert.match(page, /与萨托前往天河村/);
   assert.match(page, /nunca mates o Mandarim/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
   assert.match(page, /devil-v1\.png/);
@@ -48,7 +55,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /这是什么？/);
   assert.match(page, /还是不看见为好/);
   assert.match(page, /stageMusic/);
-  assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿/);
+  assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿|看向镜子里的第四个人|小说直到上海才重新标出地点|哥萨克与译员萨托/);
 
   await Promise.all([
     access(new URL("../public/lisbon-room-v2.png", import.meta.url)),
