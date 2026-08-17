@@ -47,7 +47,7 @@ const routes = [
 const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }> = {
   intro: { act: "序章", title: "未响的铃", subtitle: "一声轻响" },
   room: { act: "第一章 · 里斯本", title: "特奥多罗的房间", subtitle: "一个贫穷的小职员" },
-  book: { act: "第一章 · 旧书", title: "发亮的字句", subtitle: "《灵魂的裂缝》" },
+  book: { act: "第一章 · 旧书", title: "发亮的字句", subtitle: "" },
   bell: { act: "第一章 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
   refusalEnding: { act: "特别结局", title: "合上的书页", subtitle: "拒绝诱惑" },
   inheritance: { act: "第二章 · 财富", title: "陌生人的遗产", subtitle: "" },
@@ -58,7 +58,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
   wilderness: { act: "第六章 · 远东", title: "荒野上的路", subtitle: "马匹消失之后" },
   mission: { act: "第七章 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
-  letter: { act: "第七章 · 远东", title: "地址不存在", subtitle: "消失的家族" },
+  letter: { act: "第七章 · 远东", title: "地址之谜", subtitle: "" },
   return: { act: "第七章 · 返航", title: "死者同行", subtitle: "从中国返回欧洲" },
   reckoning: { act: "第八章 · 里斯本", title: "洛雷托的一夜", subtitle: "无法平息的亡灵" },
   renounce: { act: "第八章 · 里斯本", title: "放弃一切", subtitle: "重返贫穷" },
@@ -122,7 +122,6 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
     { id: "gold-bed", label: "金床", x: 63, y: 67, translation: "我的床以铺满錾花金片的床沿闻名欧洲，趣味夸张而野蛮。" },
     { id: "decanter", label: "酒与水晶", x: 78, y: 59, translation: "世上有勃艮第葡萄酒，例如一八五八年的罗曼尼·康帝和一八六一年的香贝丹。" },
     { id: "coins", label: "金币", x: 86, y: 72, translation: "我感到整个世界都在脚下——像一头餍足的狮子般打了个哈欠。" },
-    { id: "door-ghost", label: "横陈的黄袍尸身", x: 58, y: 42, translation: "他横卧在门槛，或横陈在金床上——那肥胖的身躯拖着黑辫，穿着黄袍，怀中抱着纸鸢。" },
   ],
   beijing: [
     { id: "robe", label: "文人服饰", x: 60, y: 82, translation: "我从此应当打扮成一个富有的中国文人。" },
@@ -458,6 +457,7 @@ export default function Home() {
   const [visualFinds, setVisualFinds] = useState<Partial<Record<Stage, string[]>>>({});
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotItem | null>(null);
   const [ghostRevealed, setGhostRevealed] = useState(false);
+  const [ghostChoiceSeen, setGhostChoiceSeen] = useState(false);
   const [stageHistory, setStageHistory] = useState<Stage[]>([]);
   const sound = useSound();
   const ringing = bellSequence === "ringing";
@@ -477,8 +477,8 @@ export default function Home() {
     beijing: "/pequim-embassy-v2.png",
     tienho: "/tienho-inn-v3.png",
     wilderness: "/wilderness-v1.png",
-    mission: "/mission-cloister-v4.png",
-    letter: "/mission-cloister-v4.png",
+    mission: "/mission-cloister-v5.png",
+    letter: "/mission-cloister-v5.png",
     return: "/east-journey.png",
     reckoning: "/palace-ghost.png",
     renounce: "/renounce-room-v1.png",
@@ -495,13 +495,26 @@ export default function Home() {
   const currentVisited = visualFinds[stage] ?? [];
   const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
 
+  const resetRevisitableStage = (next: Stage) => {
+    if (next === "bell" && !bellRung) setRefusals(0);
+    if (next === "ghost") setAvoidance("");
+    if (next === "beijing") setCamilloff("");
+    if (next === "tienho") setAttackChoice("");
+    if (next === "wilderness") {
+      setCollapseSeen(false);
+      setCollapsePhase("");
+    }
+    if (next === "letter") setLetterDecision("");
+  };
+
   const go = (next: Stage) => {
+    resetRevisitableStage(next);
     setTransitioning(true);
     setStageHistory((history) => [...history, stage]);
     window.setTimeout(() => {
       setStage(next);
       setSelectedHotspot(null);
-      setGhostRevealed(false);
+      setGhostRevealed(next === "ghost" && ghostChoiceSeen);
       setTransitioning(false);
     }, 280);
   };
@@ -509,12 +522,13 @@ export default function Home() {
   const goBack = () => {
     const previous = stageHistory.at(-1);
     if (!previous) return;
+    resetRevisitableStage(previous);
     setTransitioning(true);
     setStageHistory((history) => history.slice(0, -1));
     window.setTimeout(() => {
       setStage(previous);
       setSelectedHotspot(null);
-      setGhostRevealed(false);
+      setGhostRevealed(previous === "ghost" && ghostChoiceSeen);
       setTransitioning(false);
     }, 280);
   };
@@ -543,6 +557,7 @@ export default function Home() {
     setVisualFinds({});
     setSelectedHotspot(null);
     setGhostRevealed(false);
+    setGhostChoiceSeen(false);
     setStageHistory([]);
   };
 
@@ -598,11 +613,12 @@ export default function Home() {
   };
 
   const chooseAvoidance = (choice: string) => {
-    setAvoidance((current) => current || choice);
+    setGhostChoiceSeen(true);
+    setAvoidance(choice);
   };
 
   const chooseCamilloff = (choice: string) => {
-    setCamilloff((current) => current || choice);
+    setCamilloff(choice);
   };
 
   const chooseAttack = () => {
@@ -621,7 +637,7 @@ export default function Home() {
   };
 
   const chooseLetterDecision = (choice: "search" | "return") => {
-    setLetterDecision((current) => current || choice);
+    setLetterDecision(choice);
   };
 
   const wakeAtMission = () => {
@@ -708,7 +724,7 @@ export default function Home() {
               <blockquote lang="pt">«No fundo da China existe um mandarim mais rico que todos os reis de que a fábula ou a história contam. Dele nada conheces, nem o nome, nem o semblante, nem a seda de que se veste. Para que tu herdes os seus cabedais infindáveis, basta que toques essa campainha, posta a teu lado, sobre um livro. Ele soltará apenas um suspiro, nesses confins da Mongólia. Será então um cadáver: e tu verás a teus pés mais ouro do que pode sonhar a ambição de um avaro. Tu, que me lês e és um homem mortal, tocarás tu a campainha?»</blockquote>
               <p>“中国深处有一个满大人，比传说或历史中的所有国王都更富有。你对他一无所知：不知道他的名字、容貌，也不知道他身穿怎样的绸缎。要继承他无穷无尽的财产，只须摇响放在你身旁一本书上的这只铃。他只会在遥远的蒙古边地发出一声叹息。随后他便成为一具尸体，而你脚下的黄金将多得超出守财奴的野心所能梦想。正在读我的你，也是一个凡人——你会摇响铃吗？”</p>
             </article>
-            <button className="primary-action" onClick={() => { sound.tone(164.81, 0.8, 0.08, 0, "triangle"); go("bell"); }}>听见桌子另一侧的声音 <span>→</span></button>
+            <button className="primary-action" onClick={() => { sound.tone(164.81, 0.8, 0.08, 0, "triangle"); go("bell"); }}>桌旁传来人声 <span>→</span></button>
           </div>
         )}
 
@@ -764,7 +780,7 @@ export default function Home() {
             {!inheritanceOpened ? (
               <>
                 <BilingualQuote compact pt="Decorreu um mês." zh="一个月过去了。" />
-                <p>八月的一个星期日早晨，我穿着衬衫躺在床上打盹，熄灭的香烟还粘在唇边。门轻轻作响；我半睁开困倦的眼睛，看见一颗恭敬的秃头俯到床前。</p>
+                <p>八月的一个星期日早晨，我穿着衬衫躺在床上打盹，熄灭的香烟还粘在唇边。门轻轻作响；我半睁开困倦的眼睛，看见一个秃顶的老头在我的床前俯下身。</p>
                 <div className="messenger-dialogue">
                   <span>西尔维斯特</span>
                   <BilingualQuote compact pt="O Sr. Teodoro?... O Sr. Teodoro do Ministério do Reino?" zh="您是特奥多罗先生？……王国内政部的特奥多罗先生？" />
@@ -773,7 +789,7 @@ export default function Home() {
                 <div className="sealed-letter">
                   <button onClick={() => { setInheritanceOpened(true); sound.tone(329.63, 0.9, 0.08); }}>
                     <span className="wax-seal">S</span>
-                    <strong>接过黑蜡封缄的信</strong>
+                    <strong>黑蜡封缄的信</strong>
                     <small>拆开</small>
                   </button>
                 </div>
@@ -794,7 +810,7 @@ export default function Home() {
         {stage === "luxury" && (
           <div className="scene-body">
             <BilingualQuote pt="Então começou a minha vida de milionário." zh="于是，我的百万富翁生活开始了。" />
-            <p>洛雷托豪宅的金床、酒器和金币把巨款变成我触手可及的快感；门后的黄袍却让享乐渐渐失去滋味。</p>
+            <p>洛雷托豪宅的金床、酒器和金币把巨款变成我触手可及的快感；横陈在地的尸体却让享乐渐渐失去滋味。</p>
             <div className="hotspot-index">
               {(sceneHotspots.luxury ?? []).map((item) => (
                 <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -996,7 +1012,7 @@ export default function Home() {
               pt="Eram onze horas quando desci ao meu beliche. As luzes já estavam apagadas: mas a Lua que se erguia ao nível da água, redonda e branca, batia o vidro da cabina com um raio de claridade: e então, a essa meia-tinta pálida, lá vi, estirada sobre a maca, a figura pançuda, vestida de seda amarela, com o seu papagaio nos braços!"
               zh="十一点钟，我回到自己的卧舱。灯已经熄灭；圆而苍白的月亮从水面升起，一道清光照在舷窗上。就在那片惨淡的半明半暗中，我看见吊床上横陈着那肥胖的身躯：身穿黄绸，怀里抱着纸鸢！"
             />
-            <BilingualQuote compact pt="Era ele, outra vez! E foi ele, perpetuamente!" zh="又是他！从此以后，永远都是他！" />
+            <BilingualQuote compact pt="Era ele, outra vez! E foi ele, perpetuamente!" zh="又是他！阴魂不散！" />
             <p>狄鑫福是在返程的船上突然重新出现的。从此，无论船停靠哪里，他都保持着同一个死亡姿态，仿佛距离再也不能把我们分开。</p>
             <div className="return-stamps" aria-label="返航地点">
               {["新加坡", "锡兰", "苏伊士", "马耳他", "直布罗陀", "里斯本"].map((place, index) => (

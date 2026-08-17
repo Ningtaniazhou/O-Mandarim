@@ -42,15 +42,21 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /神父捡到的弃婴/);
   assert.match(page, /狄鑫福和他的纸鸢始终没有再出现/);
   assert.match(page, /好吧，狄鑫福已经满意了/);
+  assert.match(page, /地址之谜/);
   assert.match(page, /狄鑫福是在返程的船上突然重新出现的/);
   assert.doesNotMatch(page, /狄鑫福 · \{place\}/);
   assert.match(page, /来吧，特奥多罗，我的朋友/);
   assert.match(page, /No fundo da China existe um mandarim/);
   assert.match(page, /仔细翻阅旧书/);
-  assert.match(page, /听见桌子另一侧的声音/);
+  assert.match(page, /桌旁传来人声/);
+  assert.match(page, /book: \{ act: "第一章 · 旧书", title: "发亮的字句", subtitle: "" \}/);
+  assert.match(page, /看见一个秃顶的老头在我的床前俯下身/);
+  assert.match(page, /<strong>黑蜡封缄的信<\/strong>/);
   assert.match(page, /搬入洛雷托豪宅/);
   assert.match(page, /我无法忽视……/);
   assert.doesNotMatch(page, /if \(stage === "ghost"\) setAvoidance\(""\)/);
+  assert.match(page, /横陈在地的尸体却让享乐渐渐失去滋味/);
+  assert.doesNotMatch(page, /door-ghost|横陈的黄袍尸身|门后的黄袍/);
   assert.match(page, /音乐、酒宴和彻夜狂欢只能暂时淹没罪疚/);
   assert.match(page, /用成把的金币匆忙办妥准备/);
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
@@ -64,6 +70,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /Livra-me das minhas riquezas! Ressuscita o Mandarim!/);
   assert.match(page, /Não pode ser, meu prezado senhor, não pode ser/);
   assert.match(page, /Eu atirei-me aos seus pés numa suplicação abjecta/);
+  assert.match(page, /又是他！阴魂不散！/);
   assert.match(page, /乞求/);
   assert.match(page, /supplicated/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
@@ -86,6 +93,14 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /chooseAvoidance/);
   assert.match(page, /chooseCamilloff/);
   assert.match(page, /chooseLetterDecision/);
+  assert.match(page, /resetRevisitableStage/);
+  assert.match(page, /if \(next === "ghost"\) setAvoidance\(""\)/);
+  assert.match(page, /if \(next === "beijing"\) setCamilloff\(""\)/);
+  assert.match(page, /if \(next === "tienho"\) setAttackChoice\(""\)/);
+  assert.match(page, /if \(next === "letter"\) setLetterDecision\(""\)/);
+  assert.match(page, /setAvoidance\(choice\)/);
+  assert.match(page, /setCamilloff\(choice\)/);
+  assert.match(page, /setLetterDecision\(choice\)/);
   assert.match(page, /unsolved-investigation-v1\.ogg/);
   assert.match(page, /volume: 0\.74/);
   assert.match(page, /西尔维斯特/);
@@ -100,6 +115,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
     access(new URL("../public/tienho-inn-v3.png", import.meta.url)),
     access(new URL("../public/mission-cloister-v4.png", import.meta.url)),
+    access(new URL("../public/mission-cloister-v5.png", import.meta.url)),
     access(new URL("../public/wilderness-v1.png", import.meta.url)),
     access(new URL("../public/renounce-room-v1.png", import.meta.url)),
     access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
