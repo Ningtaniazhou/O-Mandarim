@@ -28,6 +28,7 @@ test("server-renders the Chinese O Mandarim experience", async () => {
 
 test("ships the complete narrative and its visual assets", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(page, /合上的书页/);
   assert.match(page, /里斯本俯首/);
   assert.match(page, /荒街上的黑衣人/);
@@ -35,6 +36,12 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /留给世人的话/);
   assert.match(page, /狄鑫福/);
   assert.match(page, /卡米洛夫/);
+  assert.match(page, /隐逸之亭/);
+  assert.match(page, /弗拉基米拉/);
+  assert.match(page, /我已经很久没有看见狄鑫福的尸影/);
+  assert.match(page, /听见军刀落在沙发上/);
+  assert.match(page, /beijingDrift/);
+  assert.match(page, /reposeInterrupted/);
   assert.match(page, /Tien-Hó/);
   assert.match(page, /荒野上的路/);
   assert.match(page, /马匹已经跑得很远/);
@@ -60,8 +67,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /音乐、酒宴和彻夜狂欢只能暂时淹没罪疚/);
   assert.match(page, /用成把的金币匆忙办妥准备/);
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
-  assert.match(page, /佟亲王带来的线索指向北京以北/);
-  assert.match(page, /与萨托前往天河村/);
+  assert.match(page, /线索指向北京以北、越过长城后的天河村/);
+  assert.match(page, /告别弗拉基米拉，前往天河村/);
   assert.match(page, /洛雷托的一夜/);
   assert.match(page, /像罪恶的饰物一样从身上甩掉/);
   assert.match(page, /抛下这笔财产/);
@@ -89,6 +96,10 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /letterDecision/);
   assert.match(page, /collapsePhase/);
   assert.match(page, /bellSequence/);
+  assert.match(styles, /bell-cinematic-swing/);
+  assert.doesNotMatch(styles, /bell-cinematic-grow/);
+  assert.doesNotMatch(styles, /scale\(7\.6\)/);
+  assert.doesNotMatch(styles, /\.devil-final span\s*\{[^}]*font:\s*700 9px/s);
   assert.match(page, /hasInspectedAll/);
   assert.match(page, /chooseAvoidance/);
   assert.match(page, /chooseCamilloff/);
@@ -111,6 +122,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/palace-ghost.png", import.meta.url)),
     access(new URL("../public/east-journey.png", import.meta.url)),
     access(new URL("../public/pequim-embassy-v2.png", import.meta.url)),
+    access(new URL("../public/pequim-repose-v1.png", import.meta.url)),
     access(new URL("../public/intro-cover-v1.png", import.meta.url)),
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
     access(new URL("../public/tienho-inn-v3.png", import.meta.url)),
