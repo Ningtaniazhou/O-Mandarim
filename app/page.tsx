@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 type Stage =
   | "intro"
   | "room"
+  | "book"
   | "bell"
   | "refusalEnding"
   | "inheritance"
@@ -40,9 +41,10 @@ const routes = [
 const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }> = {
   intro: { act: "序章", title: "未响的铃", subtitle: "一声轻响" },
   room: { act: "第一章 · 里斯本", title: "特奥多罗的房间", subtitle: "一个贫穷的小职员" },
+  book: { act: "第一章 · 旧书", title: "发亮的字句", subtitle: "《灵魂的裂缝》" },
   bell: { act: "第一章 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
   refusalEnding: { act: "特别结局", title: "合上的书页", subtitle: "拒绝诱惑" },
-  inheritance: { act: "第二章 · 财富", title: "陌生人的遗产", subtitle: "一个满大人死了" },
+  inheritance: { act: "第二章 · 财富", title: "陌生人的遗产", subtitle: "" },
   luxury: { act: "第三章 · 黄金", title: "洛雷托的盛宴", subtitle: "百万富翁" },
   ghost: { act: "第三章 · 亡者", title: "宴席上的客人", subtitle: "狄鑫福" },
   map: { act: "第四章 · 远行", title: "向东方去", subtitle: "从里斯本到北京" },
@@ -68,6 +70,7 @@ const musicCues = {
 const stageMusic: Record<Stage, { src: string; volume: number }> = {
   intro: musicCues.mystery,
   room: musicCues.mystery,
+  book: musicCues.mystery,
   bell: musicCues.mystery,
   refusalEnding: musicCues.mystery,
   inheritance: musicCues.ballroom,
@@ -376,7 +379,6 @@ export default function Home() {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotItem | null>(null);
   const [ghostRevealed, setGhostRevealed] = useState(false);
   const [stageHistory, setStageHistory] = useState<Stage[]>([]);
-  const [devilStep, setDevilStep] = useState(0);
   const sound = useSound();
 
   const info = stageInfo[stage];
@@ -384,6 +386,7 @@ export default function Home() {
   const backgrounds: Record<Stage, string> = {
     intro: "/lisbon-room-v2.png",
     room: "/lisbon-room-v2.png",
+    book: "/lisbon-room-v2.png",
     bell: "/lisbon-room-v2.png",
     refusalEnding: "/lisbon-room-v2.png",
     inheritance: "/lisbon-room-v2.png",
@@ -409,7 +412,6 @@ export default function Home() {
     setStageHistory((history) => [...history, stage]);
     window.setTimeout(() => {
       setStage(next);
-      if (next === "bell") setDevilStep(0);
       setSelectedHotspot(null);
       setGhostRevealed(false);
       setTransitioning(false);
@@ -446,11 +448,10 @@ export default function Home() {
     setSelectedHotspot(null);
     setGhostRevealed(false);
     setStageHistory([]);
-    setDevilStep(0);
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "room", "bell", "inheritance", "luxury", "ghost", "map", "beijing", "tienho", "mission", "letter", "return", "renounce", "humiliation", "prison"];
+    const order: Stage[] = ["intro", "room", "book", "bell", "inheritance", "luxury", "ghost", "map", "beijing", "tienho", "mission", "letter", "return", "renounce", "humiliation", "prison"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -527,7 +528,7 @@ export default function Home() {
       <section className={`scene-card ${isEast ? "scene-card-east" : ""}`} aria-live="polite">
         <div className="scene-kicker">{info.act}</div>
         <h1>{stage === "intro" ? "《满大人》" : info.title}</h1>
-        <div className="scene-pt">{info.subtitle}</div>
+        {info.subtitle && <div className="scene-pt">{info.subtitle}</div>}
         {selectedHotspot && <SourceSlip item={selectedHotspot} />}
 
         {stage === "intro" && (
@@ -552,8 +553,19 @@ export default function Home() {
               ))}
             </div>
             {roomFinds.length >= 3 && (
-              <button className="primary-action" onClick={() => go("bell")}>翻到黄色高亮的书页 <span>→</span></button>
+              <button className="primary-action" onClick={() => go("book")}>仔细翻阅旧书 <span>→</span></button>
             )}
+          </div>
+        )}
+
+        {stage === "book" && (
+          <div className="scene-body book-scene">
+            <article className="book-leaf featured-book-page">
+              <span>《灵魂的裂缝》</span>
+              <blockquote lang="pt">«No fundo da China existe um mandarim mais rico que todos os reis de que a fábula ou a história contam. Dele nada conheces, nem o nome, nem o semblante, nem a seda de que se veste. Para que tu herdes os seus cabedais infindáveis, basta que toques essa campainha, posta a teu lado, sobre um livro. Ele soltará apenas um suspiro, nesses confins da Mongólia. Será então um cadáver: e tu verás a teus pés mais ouro do que pode sonhar a ambição de um avaro. Tu, que me lês e és um homem mortal, tocarás tu a campainha?»</blockquote>
+              <p>“中国深处有一个满大人，比传说或历史中的所有国王都更富有。你对他一无所知：不知道他的名字、容貌，也不知道他身穿怎样的绸缎。要继承他无穷无尽的财产，只须摇响放在你身旁一本书上的这只铃。他只会在遥远的蒙古边地发出一声叹息。随后他便成为一具尸体，而你脚下的黄金将多得超出守财奴的野心所能梦想。正在读我的你，也是一个凡人——你会摇响铃吗？”</p>
+            </article>
+            <button className="primary-action" onClick={() => { sound.tone(164.81, 0.8, 0.08, 0, "triangle"); go("bell"); }}>听见桌子另一侧的声音 <span>→</span></button>
           </div>
         )}
 
@@ -561,33 +573,24 @@ export default function Home() {
           <div className="scene-body bell-scene">
             <div className="devil-dialogue-card">
               <span>魔鬼</span>
-              {devilStep === 0 ? (
-                <>
-                  <p>“中国深处有一个比传奇和历史中的所有国王都更富有的满大人。你不知道他的名字、容貌，也不知道他身穿怎样的绸缎。只要摇响身旁的铃，他便只会在遥远的蒙古边地发出一声叹息；而你将继承他无穷的财富。”</p>
-                  <button className="dialogue-continue" onClick={() => { setDevilStep(1); sound.tone(164.81, 0.8, 0.08, 0, "triangle"); }}>继续听他说 <span>→</span></button>
-                </>
-              ) : (
-                <p className="devil-final-line">“来吧，特奥多罗，我的朋友，伸出手来，摇响铃，做个强者！”</p>
-              )}
+              <p className="devil-final-line">“来吧，特奥多罗，我的朋友，伸出手来，摇响铃，做个强者！”</p>
             </div>
             {refusals > 0 && refusals < 3 && (
               <div className="devil-reply">
-                <span>魔鬼 · 第 {refusals + 1} 次</span>
+                <span>魔鬼</span>
                 <p>“{refusalLines[refusals - 1]}”</p>
               </div>
             )}
-            {devilStep > 0 && (
-              <div className="bell-choice">
-                <button className="bell-object" onClick={ringBell} aria-label="摇铃">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/bell-v1.png" alt="一只精致的十九世纪黄铜手铃" />
-                </button>
-                <div className="choice-stack">
-                  <button className="choice-button dangerous" onClick={ringBell}><span>摇铃</span></button>
-                  <button className="choice-button" onClick={refuse}><span>拒绝</span></button>
-                </div>
+            <div className="bell-choice">
+              <button className="bell-object" onClick={ringBell} aria-label="摇铃">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/bell-v1.png" alt="一只精致的十九世纪黄铜手铃" />
+              </button>
+              <div className="choice-stack">
+                <button className="choice-button dangerous" onClick={ringBell}><span>摇铃</span></button>
+                <button className="choice-button" onClick={refuse}><span>拒绝</span></button>
               </div>
-            )}
+            </div>
           </div>
         )}
 
@@ -596,7 +599,7 @@ export default function Home() {
             <div className="ending-mark">I</div>
             <p className="ending-label">特别结局 · 合上的书页</p>
             <blockquote className="ending-quote">“好极了，我亲爱的朋友。你没有摇铃。你保住了良心——也保住了贫困。合上书吧；明天我们再谈谈它们各自的价钱。”</blockquote>
-            <p className="original-note">魔鬼退回页缝。你赢得了今晚；他拥有所有明天。<br />以上为游戏原创台词，并非艾萨原文。</p>
+            <p className="original-note">魔鬼退回页缝。你赢得了今晚；他拥有所有明天。<br />（以上为游戏原创台词，并非艾萨原文。）</p>
             <button className="primary-action" onClick={reset}>重新打开书页</button>
           </div>
         )}
@@ -617,7 +620,7 @@ export default function Home() {
                 <p>铃声之后，魔鬼第一次说出死者的名字。狄鑫福身穿黄绸，倒在溪边的草地上，怀中仍抱着尚未放飞的纸鸢。</p>
                 <div className="money-number">106,000 <small>孔托雷斯</small></div>
                 <BilingualQuote compact pt="São cento e seis mil contos, senhor!... da herança depositada do mandarim Ti Chin-Fu!" zh="是十万六千孔托，先生！……那是满大人狄鑫福存下的遗产！" />
-                <button className="primary-action" onClick={() => go("luxury")}>入住洛雷托的宫殿 <span>→</span></button>
+                <button className="primary-action" onClick={() => go("luxury")}>搬入洛雷托豪宅 <span>→</span></button>
               </>
             )}
           </div>
@@ -898,7 +901,7 @@ export default function Home() {
       {(stage === "bell" || stage === "prison") && <DevilFigure />}
 
       <footer className="game-footer">
-        <span>{stage === "intro" ? "一八八〇 / 二〇二六" : `${info.act} · ${info.subtitle}`}</span>
+        <span>{stage === "intro" ? "一八八〇 / 二〇二六" : info.subtitle ? `${info.act} · ${info.subtitle}` : info.act}</span>
         <span>{sound.enabled ? "声音开启" : "静音模式"}</span>
       </footer>
 

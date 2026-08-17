@@ -34,6 +34,10 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /卡米洛夫/);
   assert.match(page, /Tien-Hó/);
   assert.match(page, /来吧，特奥多罗，我的朋友/);
+  assert.match(page, /No fundo da China existe um mandarim/);
+  assert.match(page, /仔细翻阅旧书/);
+  assert.match(page, /听见桌子另一侧的声音/);
+  assert.match(page, /搬入洛雷托豪宅/);
   assert.match(page, /nunca mates o Mandarim/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
   assert.match(page, /devil-v1\.png/);
@@ -44,7 +48,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /这是什么？/);
   assert.match(page, /还是不看见为好/);
   assert.match(page, /stageMusic/);
-  assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成/);
+  assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿/);
 
   await Promise.all([
     access(new URL("../public/lisbon-room-v2.png", import.meta.url)),
