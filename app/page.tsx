@@ -21,7 +21,11 @@ type Stage =
   | "reckoning"
   | "renounce"
   | "humiliation"
-  | "prison";
+  | "prison"
+  | "devilReturn"
+  | "devilDialogue"
+  | "supplication"
+  | "testament";
 
 type HotspotItem = {
   id: string;
@@ -59,7 +63,11 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   reckoning: { act: "第八章 · 里斯本", title: "洛雷托的一夜", subtitle: "无法平息的亡灵" },
   renounce: { act: "第八章 · 里斯本", title: "放弃一切", subtitle: "重返贫穷" },
   humiliation: { act: "第八章 · 里斯本", title: "贫穷的代价", subtitle: "社会的惩罚" },
-  prison: { act: "正篇结局", title: "奢华的牢笼", subtitle: "无法撤销的交易" },
+  prison: { act: "第八章 · 里斯本", title: "里斯本俯首", subtitle: "回到洛雷托之后" },
+  devilReturn: { act: "第八章 · 夜路", title: "荒街上的黑衣人", subtitle: "魔鬼再度出现" },
+  devilDialogue: { act: "第八章 · 夜路", title: "不能", subtitle: "无法撤销的交易" },
+  supplication: { act: "第八章 · 夜路", title: "空无一人", subtitle: "乞求之后" },
+  testament: { act: "正篇结局", title: "留给世人的话", subtitle: "遗嘱与告诫" },
 };
 
 const musicCues = {
@@ -91,6 +99,10 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   renounce: musicCues.haunting,
   humiliation: musicCues.haunting,
   prison: musicCues.haunting,
+  devilReturn: musicCues.haunting,
+  devilDialogue: musicCues.haunting,
+  supplication: musicCues.haunting,
+  testament: musicCues.contemplation,
 };
 
 const refusalLines = [
@@ -141,12 +153,6 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
     { id: "newspaper", label: "报纸", x: 78, y: 76, translation: "报纸以胜利般的讥讽嘲弄我的穷困。" },
     { id: "window", label: "里斯本的窗口", x: 84, y: 25, translation: "里斯本毫不迟疑地重新匍匐在我脚下。" },
     { id: "bell-again", label: "仍在桌上的铃", x: 57, y: 59, translation: "把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！" },
-  ],
-  prison: [
-    { id: "mirror", label: "镜中宴会", x: 88, y: 28, translation: "贵族像面对暴君般亲吻我的手指；教士像供奉偶像般向我献香。" },
-    { id: "devil", label: "魔鬼的回答", x: 69, y: 47, translation: "不行，我尊贵的先生，不行……" },
-    { id: "testament", label: "遗嘱", x: 84, y: 76, translation: "我在遗嘱中把千万财富留给魔鬼；它们本来就属于他。" },
-    { id: "last-page", label: "最后一页", x: 63, y: 77, translation: "永远不要杀死满大人！" },
   ],
 };
 
@@ -446,6 +452,7 @@ export default function Home() {
   const [letterDecision, setLetterDecision] = useState<"" | "search" | "return">("");
   const [letterClues, setLetterClues] = useState<string[]>([]);
   const [returnStops, setReturnStops] = useState<string[]>([]);
+  const [supplicated, setSupplicated] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [shake, setShake] = useState(false);
   const [visualFinds, setVisualFinds] = useState<Partial<Record<Stage, string[]>>>({});
@@ -476,10 +483,14 @@ export default function Home() {
     reckoning: "/palace-ghost.png",
     renounce: "/renounce-room-v1.png",
     humiliation: "/teodoro-desk-v1.png",
-    prison: "/palace-ghost.png",
+    prison: "/loreto-restored-v1.png",
+    devilReturn: "/devil-street-v1.png",
+    devilDialogue: "/devil-street-v1.png",
+    supplication: "/devil-vanished-v1.png",
+    testament: "/testament-ending-v1.png",
   };
   const background = backgrounds[stage];
-  const ghostIntensity = stage === "inheritance" && inheritanceOpened ? 1 : stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce", "humiliation", "prison"].includes(stage) ? 3 : 0;
+  const ghostIntensity = stage === "inheritance" && inheritanceOpened ? 1 : stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce", "humiliation"].includes(stage) ? 3 : 0;
   const currentHotspots = sceneHotspots[stage] ?? [];
   const currentVisited = visualFinds[stage] ?? [];
   const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
@@ -526,6 +537,7 @@ export default function Home() {
     setLetterDecision("");
     setLetterClues([]);
     setReturnStops([]);
+    setSupplicated(false);
     setInfoOpen(false);
     setShake(false);
     setVisualFinds({});
@@ -535,7 +547,7 @@ export default function Home() {
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "room", "book", "bell", "inheritance", "luxury", "ghost", "map", "beijing", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison"];
+    const order: Stage[] = ["intro", "room", "book", "bell", "inheritance", "luxury", "ghost", "map", "beijing", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -617,6 +629,14 @@ export default function Home() {
     setCollapsePhase("waking");
     go("mission");
     window.setTimeout(() => setCollapsePhase(""), 460);
+  };
+
+  const begTheDevil = () => {
+    if (!supplicated) {
+      setSupplicated(true);
+      sound.tone(92, 1.7, 0.11, 0, "sine");
+    }
+    go("supplication");
   };
 
   return (
@@ -971,14 +991,19 @@ export default function Home() {
 
         {stage === "return" && (
           <div className="scene-body ghost-scene">
-            <BilingualQuote pt="Era ele, outra vez! E foi ele, perpetuamente!" zh="又是他！从此以后，永远都是他！" />
-            <p>无论我走到哪里，狄鑫福都保持着同一个死亡姿态：横卧在船舱、码头、沙地与城市拱门之前，仿佛距离已不再能够把我们分开。</p>
+            <p>“爪哇号”载着我离开香港，向欧洲返航。直到那天夜里，我都以为狄鑫福已经平息了怨怼；十一点，我走进熄灯后的船舱，月光正穿过舷窗。</p>
+            <BilingualQuote
+              pt="Eram onze horas quando desci ao meu beliche. As luzes já estavam apagadas: mas a Lua que se erguia ao nível da água, redonda e branca, batia o vidro da cabina com um raio de claridade: e então, a essa meia-tinta pálida, lá vi, estirada sobre a maca, a figura pançuda, vestida de seda amarela, com o seu papagaio nos braços!"
+              zh="十一点钟，我回到自己的卧舱。灯已经熄灭；圆而苍白的月亮从水面升起，一道清光照在舷窗上。就在那片惨淡的半明半暗中，我看见吊床上横陈着那肥胖的身躯：身穿黄绸，怀里抱着纸鸢！"
+            />
+            <BilingualQuote compact pt="Era ele, outra vez! E foi ele, perpetuamente!" zh="又是他！从此以后，永远都是他！" />
+            <p>狄鑫福是在返程的船上突然重新出现的。从此，无论船停靠哪里，他都保持着同一个死亡姿态，仿佛距离再也不能把我们分开。</p>
             <div className="return-stamps" aria-label="返航地点">
               {["新加坡", "锡兰", "苏伊士", "马耳他", "直布罗陀", "里斯本"].map((place, index) => (
                 <button key={place} className={returnStops.includes(place) ? "is-read" : ""} style={{ animationDelay: `${index * 0.16}s` }} onClick={() => {
                   setReturnStops((stops) => stops.includes(place) ? stops : [...stops, place]);
                   sound.tone(110 + index * 14, 0.7, 0.11, 0, "triangle");
-                }}>{returnStops.includes(place) ? "狄鑫福 · " : ""}{place}</button>
+                }}>{place}</button>
               ))}
             </div>
             {returnStops.length >= 6 ? (
@@ -1040,27 +1065,58 @@ export default function Home() {
         )}
 
         {stage === "prison" && (
-          <div className="scene-body ending-body prison-body">
+          <div className="scene-body loreto-restored-body">
+            <BilingualQuote
+              pt="Logo, Lisboa, sem hesitar, se rojou aos meus pés. A Madame Marques chamou-me, chorando, «filho do seu coração». Os jornais deram-me os qualificativos que, de antiga tradição, pertencem à Divindade: fui o Omnipotente, fui o Omnisciente! A Aristocracia beijou-me os dedos como a um tirano: e o Clero incensou-me como a um ídolo."
+              zh="里斯本立即毫不迟疑地匍匐在我脚下。马克斯太太哭着称我为‘她心爱的儿子’。报纸把按古老传统属于神明的称号送给我：我是全能者，我是全知者！贵族像面对暴君般亲吻我的手指；教士像供奉偶像般向我献香。"
+            />
+            <p>长窗重新放出灯火，身穿黑绸制服的仆人又在洛雷托豪宅中穿行。我重新拥有了整个里斯本，却只在它的敬畏里感到厌倦。</p>
+            <BilingualQuote compact pt="Desde então uma saciedade enervante mantém-me semanas inteiras num sofá, mudo e soturno, pensando na felicidade do não-ser..." zh="从那以后，一种令人虚弱的餍足让我一连数周躺在沙发上，沉默而阴郁，想着不存在的幸福……" />
+            <button className="primary-action" onClick={() => go("devilReturn")}>独自走入夜色 <span>→</span></button>
+          </div>
+        )}
+
+        {stage === "devilReturn" && (
+          <div className="scene-body devil-street-body">
+            <BilingualQuote
+              pt="Uma noite, recolhendo só por uma rua deserta, vi diante de mim o Personagem vestido de preto com o guarda-chuva debaixo do braço, o mesmo que no meu quarto feliz da Travessa da Conceição me fizera, a um ti-li-tim de campainha, herdar tantos milhões detestáveis."
+              zh="一天夜里，我独自走在一条荒无人烟的街上，忽然看见前方那个一身黑衣、腋下夹着雨伞的人——正是他，曾在孔塞桑巷那间幸福的小屋里，让我随着铃的一声轻响继承了那些可憎的千万财富。"
+            />
+            <p>煤气灯的微光落在他的礼帽和黑色外套上。他仍然像第一次出现时那样庄重、平静，仿佛我们之间从未横过一具尸体与半个世界。</p>
+            <button className="primary-action dangerous-action" onClick={() => go("devilDialogue")}>追上他 <span>→</span></button>
+          </div>
+        )}
+
+        {stage === "devilDialogue" && (
+          <div className="scene-body devil-dialogue-body">
+            <p>我向他冲去，死死抓住他那件市民式长外套的衣襟，喊道：</p>
+            <BilingualQuote pt="Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!" zh="把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！" className="ending-quote" />
+            <p>他庄重地把雨伞移到另一只胳膊下，和善地回答：</p>
+            <BilingualQuote compact pt="Não pode ser, meu prezado senhor, não pode ser..." zh="不行，我尊贵的先生，不行……" className="devil-final" />
+            <button className="primary-action supplication-action" onClick={begTheDevil}>{supplicated ? "回到魔鬼消失的一刻" : "乞求"} <span>→</span></button>
+          </div>
+        )}
+
+        {stage === "supplication" && (
+          <div className="scene-body supplication-body">
+            <BilingualQuote
+              pt="Eu atirei-me aos seus pés numa suplicação abjecta: mas só vi diante de mim, sob uma luz mortiça de gás, a forma magra de um cão farejando o lixo."
+              zh="我扑倒在他脚下，卑微地哀求；可当我抬起头，在煤气灯将熄的微光里，面前只剩一条瘦狗，正在垃圾堆中嗅闻。"
+            />
+            <p>我跪在湿冷的石路上，伸出的双手抓不住任何衣角。魔鬼消失了；他的回答却留了下来。</p>
+            <BilingualQuote compact pt="Nunca mais encontrei este indivíduo." zh="我再也没有遇见过这个人。" />
+            <button className="primary-action" onClick={() => go("testament")}>回到洛雷托写下遗嘱 <span>→</span></button>
+          </div>
+        )}
+
+        {stage === "testament" && (
+          <div className="scene-body ending-body testament-body">
             <div className="ending-mark">II</div>
-            <p className="ending-label">正篇结局 · 奢华的牢笼</p>
-            <BilingualQuote pt="Desde então uma saciedade enervante mantém-me semanas inteiras num sofá, mudo e soturno, pensando na felicidade do não-ser..." zh="从那以后，一种令人虚弱的餍足让我一连数周躺在沙发上，沉默而阴郁，想着不存在的幸福……" />
-            <p>吊灯重新点亮，里斯本再次匍匐在我脚下。财富回来了，痛苦也没有离开；它们从此住在同一座宫殿里。</p>
-            <div className="hotspot-index final-index">
-              {(sceneHotspots.prison ?? []).map((item) => (
-                <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
-                  <span>{currentVisited.includes(item.id) ? "✓" : "+"}</span>{item.label}
-                </button>
-              ))}
-            </div>
-            {hasInspectedAll ? (
-              <div className="final-testament">
-                <BilingualQuote pt="Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!" zh="把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！" className="ending-quote" />
-                <BilingualQuote compact pt="Não pode ser, meu prezado senhor, não pode ser..." zh="不行，我尊贵的先生，不行……" className="devil-final" />
-                <BilingualQuote pt="Só sabe bem o pão que dia a dia ganham as nossas mãos: nunca mates o Mandarim!" zh="只有双手每日挣来的面包才真正甘美：永远不要杀死满大人！" className="last-words" />
-                <p className="translation">狄鑫福横陈在镜中的宴席之间。我的财富仍在，生命却渐渐耗尽；留在纸上的，只剩这句迟来的告诫。</p>
-                <button className="primary-action" onClick={reset}>从未响起的铃开始</button>
-              </div>
-            ) : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
+            <p className="ending-label">正篇结局 · 遗嘱</p>
+            <BilingualQuote pt="Sinto-me morrer. Tenho o meu testamento feito. Nele lego os meus milhões ao Demónio; pertencem-lhe; ele que os reclame e que os reparta..." zh="我感到自己就要死了。我已经写好遗嘱，把千万财富留给魔鬼；它们本就属于他——让他来认领，再由他分配吧……" />
+            <p>我绝望地坐在洛雷托豪宅里，把自己的经历写成一本书。遗嘱放在桌上；财富仍在烛光下闪耀，我能留给世人的却只剩一句话：</p>
+            <BilingualQuote pt="Só sabe bem o pão que dia a dia ganham as nossas mãos: nunca mates o Mandarim!" zh="只有双手每日挣来的面包才真正甘美：永远不要杀死满大人！" className="last-words" />
+            <button className="primary-action" onClick={reset}>返回故事世界的起点</button>
           </div>
         )}
       </section>
@@ -1087,7 +1143,7 @@ export default function Home() {
         />
       )}
 
-      {(stage === "bell" || stage === "prison") && <DevilFigure />}
+      {stage === "bell" && <DevilFigure />}
 
       {collapsePhase && (
         <div className={`faint-overlay is-${collapsePhase}`} role={collapsePhase === "dark" ? "dialog" : undefined} aria-live="assertive">

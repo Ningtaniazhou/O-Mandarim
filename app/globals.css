@@ -79,8 +79,20 @@ button:focus-visible {
 .stage-reckoning .scene-image,
 .stage-renounce .scene-image,
 .stage-humiliation .scene-image,
-.stage-prison .scene-image {
+.stage-prison .scene-image,
+.stage-devilReturn .scene-image,
+.stage-devilDialogue .scene-image,
+.stage-supplication .scene-image,
+.stage-testament .scene-image {
   background-position: center right;
+}
+
+.stage-prison .scene-image,
+.stage-devilReturn .scene-image,
+.stage-devilDialogue .scene-image,
+.stage-supplication .scene-image,
+.stage-testament .scene-image {
+  filter: saturate(0.8) contrast(1.06) brightness(0.72);
 }
 
 .stage-map .scene-image,
@@ -284,12 +296,24 @@ button:focus-visible {
 .stage-reckoning .scene-card,
 .stage-renounce .scene-card,
 .stage-humiliation .scene-card,
-.stage-prison .scene-card {
+.stage-prison .scene-card,
+.stage-devilReturn .scene-card,
+.stage-devilDialogue .scene-card,
+.stage-supplication .scene-card,
+.stage-testament .scene-card {
   width: min(760px, 54vw);
   margin-right: auto;
   margin-left: 0;
   padding-right: 2.5vw;
   padding-left: 6vw;
+}
+
+.stage-prison .scene-card,
+.stage-devilReturn .scene-card,
+.stage-devilDialogue .scene-card,
+.stage-supplication .scene-card,
+.stage-testament .scene-card {
+  width: min(780px, 48vw);
 }
 
 /* Padre Giulio and every mission object live in the right half of the new plate. */
@@ -402,6 +426,24 @@ button:focus-visible {
   background: var(--gold);
   color: #10110e;
   transform: translateY(-2px);
+}
+
+.dangerous-action,
+.supplication-action {
+  border-color: rgba(211, 90, 72, 0.78);
+  background: rgba(62, 13, 11, 0.7);
+}
+
+.dangerous-action:hover,
+.supplication-action:hover {
+  background: var(--red-light);
+  color: #130a08;
+}
+
+.supplication-action {
+  min-width: 210px;
+  font-size: 17px;
+  letter-spacing: 0.22em;
 }
 
 @keyframes action-breathe {
@@ -1979,7 +2021,11 @@ blockquote {
   .stage-reckoning .scene-image,
   .stage-renounce .scene-image,
   .stage-humiliation .scene-image,
-  .stage-prison .scene-image {
+  .stage-prison .scene-image,
+  .stage-devilReturn .scene-image,
+  .stage-devilDialogue .scene-image,
+  .stage-supplication .scene-image,
+  .stage-testament .scene-image {
     background-position: 47% center;
   }
 
@@ -1992,7 +2038,11 @@ blockquote {
   .stage-reckoning .scene-card,
   .stage-renounce .scene-card,
   .stage-humiliation .scene-card,
-  .stage-prison .scene-card {
+  .stage-prison .scene-card,
+  .stage-devilReturn .scene-card,
+  .stage-devilDialogue .scene-card,
+  .stage-supplication .scene-card,
+  .stage-testament .scene-card {
     width: 100%;
     margin: 0;
     padding: 132px 7vw 100px;
@@ -2107,7 +2157,11 @@ blockquote {
   .stage-reckoning .scene-card,
   .stage-renounce .scene-card,
   .stage-humiliation .scene-card,
-  .stage-prison .scene-card {
+  .stage-prison .scene-card,
+  .stage-devilReturn .scene-card,
+  .stage-devilDialogue .scene-card,
+  .stage-supplication .scene-card,
+  .stage-testament .scene-card {
     min-height: 100svh;
     padding: 114px 20px 86px;
   }

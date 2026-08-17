@@ -29,7 +29,10 @@ test("server-renders the Chinese O Mandarim experience", async () => {
 test("ships the complete narrative and its visual assets", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   assert.match(page, /合上的书页/);
-  assert.match(page, /奢华的牢笼/);
+  assert.match(page, /里斯本俯首/);
+  assert.match(page, /荒街上的黑衣人/);
+  assert.match(page, /空无一人/);
+  assert.match(page, /留给世人的话/);
   assert.match(page, /狄鑫福/);
   assert.match(page, /卡米洛夫/);
   assert.match(page, /Tien-Hó/);
@@ -39,6 +42,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /神父捡到的弃婴/);
   assert.match(page, /狄鑫福和他的纸鸢始终没有再出现/);
   assert.match(page, /好吧，狄鑫福已经满意了/);
+  assert.match(page, /狄鑫福是在返程的船上突然重新出现的/);
+  assert.doesNotMatch(page, /狄鑫福 · \{place\}/);
   assert.match(page, /来吧，特奥多罗，我的朋友/);
   assert.match(page, /No fundo da China existe um mandarim/);
   assert.match(page, /仔细翻阅旧书/);
@@ -55,6 +60,12 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /像罪恶的饰物一样从身上甩掉/);
   assert.match(page, /抛下这笔财产/);
   assert.match(page, /nunca mates o Mandarim/);
+  assert.match(page, /Uma noite, recolhendo só por uma rua deserta/);
+  assert.match(page, /Livra-me das minhas riquezas! Ressuscita o Mandarim!/);
+  assert.match(page, /Não pode ser, meu prezado senhor, não pode ser/);
+  assert.match(page, /Eu atirei-me aos seus pés numa suplicação abjecta/);
+  assert.match(page, /乞求/);
+  assert.match(page, /supplicated/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
   assert.match(page, /devil-v1\.png/);
   assert.match(page, /bell-v1\.png/);
@@ -92,6 +103,10 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/wilderness-v1.png", import.meta.url)),
     access(new URL("../public/renounce-room-v1.png", import.meta.url)),
     access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
+    access(new URL("../public/loreto-restored-v1.png", import.meta.url)),
+    access(new URL("../public/devil-street-v1.png", import.meta.url)),
+    access(new URL("../public/devil-vanished-v1.png", import.meta.url)),
+    access(new URL("../public/testament-ending-v1.png", import.meta.url)),
     access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
     access(new URL("../public/devil-v1.png", import.meta.url)),
     access(new URL("../public/bell-v1.png", import.meta.url)),
