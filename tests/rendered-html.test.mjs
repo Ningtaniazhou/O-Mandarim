@@ -33,6 +33,12 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /狄鑫福/);
   assert.match(page, /卡米洛夫/);
   assert.match(page, /Tien-Hó/);
+  assert.match(page, /荒野上的路/);
+  assert.match(page, /马匹已经跑得很远/);
+  assert.match(page, /朱利奥神父/);
+  assert.match(page, /神父捡到的弃婴/);
+  assert.match(page, /狄鑫福和他的纸鸢始终没有再出现/);
+  assert.match(page, /好吧，狄鑫福已经满意了/);
   assert.match(page, /来吧，特奥多罗，我的朋友/);
   assert.match(page, /No fundo da China existe um mandarim/);
   assert.match(page, /仔细翻阅旧书/);
@@ -64,24 +70,32 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /bellRung/);
   assert.match(page, /letterDecision/);
   assert.match(page, /collapsePhase/);
+  assert.match(page, /bellSequence/);
+  assert.match(page, /hasInspectedAll/);
+  assert.match(page, /chooseAvoidance/);
+  assert.match(page, /chooseCamilloff/);
+  assert.match(page, /chooseLetterDecision/);
+  assert.match(page, /unsolved-investigation-v1\.ogg/);
+  assert.match(page, /volume: 0\.74/);
   assert.match(page, /西尔维斯特/);
   assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿|看向镜子里的第四个人|小说直到上海才重新标出地点|哥萨克与译员萨托|原作让“后代”|选择“再寻找一次”并没有制造|特奥多罗只在脑中排演|原作没有给特奥多罗|原作提供的稳定出口|终局并不是“享受或悔恨”的二选一|告诫因此也沾染了自我开脱/);
 
   await Promise.all([
-    access(new URL("../public/lisbon-room-v2.png", import.meta.url)),
+    access(new URL("../public/lisbon-room-v3.png", import.meta.url)),
     access(new URL("../public/palace-ghost.png", import.meta.url)),
     access(new URL("../public/east-journey.png", import.meta.url)),
     access(new URL("../public/pequim-embassy-v2.png", import.meta.url)),
     access(new URL("../public/intro-cover-v1.png", import.meta.url)),
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
     access(new URL("../public/tienho-inn-v3.png", import.meta.url)),
-    access(new URL("../public/mission-cloister-v3.png", import.meta.url)),
+    access(new URL("../public/mission-cloister-v4.png", import.meta.url)),
+    access(new URL("../public/wilderness-v1.png", import.meta.url)),
     access(new URL("../public/renounce-room-v1.png", import.meta.url)),
     access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
     access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
     access(new URL("../public/devil-v1.png", import.meta.url)),
     access(new URL("../public/bell-v1.png", import.meta.url)),
-    access(new URL("../public/audio/mystery-dark.mp3", import.meta.url)),
+    access(new URL("../public/audio/unsolved-investigation-v1.ogg", import.meta.url)),
     access(new URL("../public/audio/apparitions-ball.mp3", import.meta.url)),
     access(new URL("../public/audio/i-swear-i-saw-it.ogg", import.meta.url)),
     access(new URL("../public/audio/the-journey-begins.ogg", import.meta.url)),

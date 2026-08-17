@@ -86,6 +86,7 @@ button:focus-visible {
 .stage-map .scene-image,
 .stage-beijing .scene-image,
 .stage-tienho .scene-image,
+.stage-wilderness .scene-image,
 .stage-mission .scene-image,
 .stage-letter .scene-image {
   filter: saturate(0.62) contrast(1.07) brightness(0.65);
@@ -289,6 +290,19 @@ button:focus-visible {
   margin-left: 0;
   padding-right: 2.5vw;
   padding-left: 6vw;
+}
+
+/* Padre Giulio and every mission object live in the right half of the new plate. */
+.stage-mission .scene-card {
+  width: min(760px, 43.5vw);
+}
+
+/* Keep room labels with their objects instead of letting them run into the prose column. */
+.stage-room .scene-hotspot span {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .is-transitioning .scene-card {
@@ -1029,6 +1043,43 @@ blockquote {
   background: rgba(184, 149, 82, 0.16);
   animation: handbell-ring 2s cubic-bezier(0.23, 0.72, 0.25, 1) both;
   transform-origin: 50% 8%;
+}
+
+.bell-cinematic {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  background: #000;
+}
+
+.bell-cinematic img {
+  display: block;
+  width: clamp(110px, 11vw, 180px);
+  max-width: none;
+  filter: saturate(0.92) contrast(1.08) drop-shadow(0 0 38px rgba(223, 180, 91, 0.28));
+  transform-origin: 50% 8%;
+  animation: bell-cinematic-grow 4.3s cubic-bezier(0.18, 0.66, 0.3, 1) both;
+}
+
+.bell-cinematic.is-black {
+  background: #000;
+}
+
+@keyframes bell-cinematic-grow {
+  0% { opacity: 0; transform: rotate(0deg) scale(0.5); }
+  7% { opacity: 1; transform: rotate(-13deg) scale(0.72); }
+  14% { transform: rotate(14deg) scale(0.96); }
+  22% { transform: rotate(-11deg) scale(1.28); }
+  31% { transform: rotate(10deg) scale(1.67); }
+  41% { transform: rotate(-7deg) scale(2.15); }
+  52% { transform: rotate(6deg) scale(2.75); }
+  64% { transform: rotate(-4deg) scale(3.5); }
+  76% { opacity: 1; transform: rotate(3deg) scale(4.45); }
+  88% { opacity: 0.9; transform: rotate(-1deg) scale(5.8); }
+  100% { opacity: 0; transform: rotate(0deg) scale(7.6); }
 }
 
 .is-ringing-bell .devil-dialogue-card,
@@ -1934,6 +1985,7 @@ blockquote {
 
   .scene-card,
   .scene-card-east,
+  .stage-mission .scene-card,
   .stage-luxury .scene-card,
   .stage-ghost .scene-card,
   .stage-return .scene-card,
@@ -2162,5 +2214,11 @@ blockquote {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+
+  .bell-cinematic img {
+    width: min(78vw, 900px);
+    opacity: 1;
+    transform: none;
   }
 }

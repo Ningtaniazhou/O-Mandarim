@@ -14,6 +14,7 @@ type Stage =
   | "map"
   | "beijing"
   | "tienho"
+  | "wilderness"
   | "mission"
   | "letter"
   | "return"
@@ -51,7 +52,8 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   map: { act: "第四章 · 远行", title: "向东方去", subtitle: "从里斯本到北京" },
   beijing: { act: "第五章 · 北京", title: "卡米洛夫的办法", subtitle: "赎罪的官僚程序" },
   tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
-  mission: { act: "第六章 · 远东", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
+  wilderness: { act: "第六章 · 远东", title: "荒野上的路", subtitle: "马匹消失之后" },
+  mission: { act: "第七章 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
   letter: { act: "第七章 · 远东", title: "地址不存在", subtitle: "消失的家族" },
   return: { act: "第七章 · 返航", title: "死者同行", subtitle: "从中国返回欧洲" },
   reckoning: { act: "第八章 · 里斯本", title: "洛雷托的一夜", subtitle: "无法平息的亡灵" },
@@ -61,7 +63,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
 };
 
 const musicCues = {
-  mystery: { src: "/audio/mystery-dark.mp3", volume: 0.48 },
+  mystery: { src: "/audio/unsolved-investigation-v1.ogg", volume: 0.74 },
   ballroom: { src: "/audio/apparitions-ball.mp3", volume: 0.2 },
   haunting: { src: "/audio/i-swear-i-saw-it.ogg", volume: 0.23 },
   journey: { src: "/audio/the-journey-begins.ogg", volume: 0.22 },
@@ -81,6 +83,7 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   map: musicCues.journey,
   beijing: musicCues.journey,
   tienho: musicCues.pursuit,
+  wilderness: musicCues.pursuit,
   mission: musicCues.contemplation,
   letter: musicCues.contemplation,
   return: musicCues.haunting,
@@ -97,11 +100,11 @@ const refusalLines = [
 
 const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
   room: [
-    { id: "lamp", label: "绿色灯罩", x: 5, y: 48, translation: "绿色灯罩在蜡烛周围投下一片半明半暗。" },
-    { id: "folio", label: "旧书", x: 24, y: 65, translation: "古老庄严的字体、被虫蛀的黄纸、修道院式的厚重装帧，还有夹在那一页的绿色丝带——都令我着迷！" },
-    { id: "bell", label: "铃与法语词典", x: 42, y: 59, translation: "铃安安静静地放在我面前的一本法语词典上。" },
-    { id: "lottery", label: "彩票", x: 55, y: 71, translation: "我每晚向悲苦圣母祈求这一切，还购买彩票。" },
-    { id: "madonna", label: "圣母像", x: 65, y: 60, translation: "床头挂着一幅悲苦圣母石版画，那是母亲留下的。" },
+    { id: "lamp", label: "绿色灯罩", x: 7, y: 41, translation: "绿色灯罩在蜡烛周围投下一片半明半暗。" },
+    { id: "folio", label: "旧书", x: 21, y: 73, translation: "古老庄严的字体、被虫蛀的黄纸、修道院式的厚重装帧，还有夹在那一页的绿色丝带——都令我着迷！" },
+    { id: "bell", label: "铃与法语词典", x: 34, y: 53, translation: "铃安安静静地放在我面前的一本法语词典上。" },
+    { id: "lottery", label: "彩票", x: 43, y: 68, translation: "我每晚向悲苦圣母祈求这一切，还购买彩票。" },
+    { id: "madonna", label: "圣母像", x: 42, y: 45, translation: "床头挂着一幅悲苦圣母石版画，那是母亲留下的。" },
   ],
   luxury: [
     { id: "gold-bed", label: "金床", x: 63, y: 67, translation: "我的床以铺满錾花金片的床沿闻名欧洲，趣味夸张而野蛮。" },
@@ -123,11 +126,11 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
     { id: "pony", label: "马匹", x: 90, y: 53, translation: "我扑向那匹马，一把抓住它的鬃毛。" },
   ],
   mission: [
-    { id: "bandage", label: "绷带", x: 91, y: 82, translation: "两位遣使会神父正慢慢清洗我的耳朵。" },
-    { id: "well", label: "井与滑轮", x: 61, y: 48, translation: "井上的滑轮缓慢作响；晨祷的钟声响了起来。" },
-    { id: "breviary", label: "《日课经》", x: 72, y: 72, translation: "我把一卷英格兰银行钞票放在他的《日课经》上，那书正翻到《贫穷福音》的一页。" },
-    { id: "letter", label: "卡米洛夫的信", x: 68, y: 84, translation: "关于狄鑫福的遗孀和家人，事情弄错了。" },
-    { id: "found-child", label: "拾得儿", x: 91, y: 58, translation: "他发现她赤裸着被遗弃在路旁，眼看就要死去。" },
+    { id: "bandage", label: "绷带", x: 46, y: 64, translation: "两位遣使会神父正慢慢清洗我的耳朵。" },
+    { id: "well", label: "井与滑轮", x: 66, y: 49, translation: "井上的滑轮缓慢作响；晨祷的钟声响了起来。" },
+    { id: "breviary", label: "《日课经》", x: 60, y: 82, translation: "我把一卷英格兰银行钞票放在他的《日课经》上，那书正翻到《贫穷福音》的一页。" },
+    { id: "letter", label: "卡米洛夫的信", x: 72, y: 82, translation: "关于狄鑫福的遗孀和家人，事情弄错了。" },
+    { id: "found-child", label: "神父捡到的弃婴", x: 91, y: 82, translation: "洛里奥神父在路旁发现这个赤裸、濒死的孩子，立刻为她施洗，并抱回修道院喂养。" },
   ],
   renounce: [
     { id: "window", label: "雨中的窗口", x: 86, y: 27, translation: "里斯本仍在窗外；我却再也回不到从前那种安静的贫穷。" },
@@ -194,7 +197,7 @@ function useSound() {
     }
   };
 
-  const fade = (incoming: HTMLAudioElement, outgoing: HTMLAudioElement | null, target: number, duration = 1200) => {
+  const fade = (incoming: HTMLAudioElement, outgoing: HTMLAudioElement | null, target: number, duration = 900) => {
     cancelFade();
     const started = performance.now();
     const outgoingStart = outgoing?.volume ?? 0;
@@ -269,18 +272,18 @@ function useSound() {
     const wet = ctx.createGain();
     const convolver = ctx.createConvolver();
     dry.gain.value = 0.74;
-    wet.gain.setValueAtTime(0.58, ctx.currentTime);
-    wet.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.98);
+    wet.gain.setValueAtTime(0.64, ctx.currentTime);
+    wet.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 4.15);
     dry.connect(master.current);
     convolver.connect(wet);
     wet.connect(master.current);
 
-    const impulseLength = Math.floor(ctx.sampleRate * 2);
+    const impulseLength = Math.floor(ctx.sampleRate * 4.2);
     const impulse = ctx.createBuffer(2, impulseLength, ctx.sampleRate);
     for (let channel = 0; channel < impulse.numberOfChannels; channel += 1) {
       const data = impulse.getChannelData(channel);
       for (let i = 0; i < impulseLength; i += 1) {
-        const decay = Math.pow(1 - i / impulseLength, 2.7);
+        const decay = Math.pow(1 - i / impulseLength, 2.2);
         data[i] = (Math.random() * 2 - 1) * decay * 0.48;
       }
     }
@@ -302,12 +305,12 @@ function useSound() {
       oscillator.detune.setValueAtTime(index % 2 === 0 ? -3 : 4, ctx.currentTime);
       gain.gain.setValueAtTime(0.0001, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + 0.008 + index * 0.002);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.78);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 3.55);
       oscillator.connect(gain);
       gain.connect(dry);
       gain.connect(convolver);
       oscillator.start();
-      oscillator.stop(ctx.currentTime + 1.9);
+      oscillator.stop(ctx.currentTime + 3.7);
     });
 
     const strikeLength = Math.floor(ctx.sampleRate * 0.055);
@@ -348,7 +351,7 @@ function useSound() {
     const active = audioPlayers[activePlayer.current];
     if (next && active.src) {
       active.volume = 0;
-      void active.play().then(() => fade(active, null, currentVolume.current, 650)).catch(() => undefined);
+      void active.play().then(() => fade(active, null, currentVolume.current, 240)).catch(() => undefined);
     } else if (!next) {
       cancelFade();
       audioPlayers.forEach((player) => {
@@ -431,7 +434,7 @@ export default function Home() {
   const [roomFinds, setRoomFinds] = useState<string[]>([]);
   const [refusals, setRefusals] = useState(0);
   const [bellRung, setBellRung] = useState(false);
-  const [ringing, setRinging] = useState(false);
+  const [bellSequence, setBellSequence] = useState<"" | "ringing" | "black">("");
   const [inheritanceOpened, setInheritanceOpened] = useState(false);
   const [chosenLuxuries, setChosenLuxuries] = useState<string[]>([]);
   const [avoidance, setAvoidance] = useState("");
@@ -450,23 +453,25 @@ export default function Home() {
   const [ghostRevealed, setGhostRevealed] = useState(false);
   const [stageHistory, setStageHistory] = useState<Stage[]>([]);
   const sound = useSound();
+  const ringing = bellSequence === "ringing";
 
   const info = stageInfo[stage];
-  const isEast = ["map", "beijing", "tienho", "mission", "letter"].includes(stage);
+  const isEast = ["map", "beijing", "tienho", "wilderness", "mission", "letter"].includes(stage);
   const backgrounds: Record<Stage, string> = {
     intro: "/intro-cover-v1.png",
-    room: "/lisbon-room-v2.png",
-    book: "/lisbon-room-v2.png",
-    bell: "/lisbon-room-v2.png",
-    refusalEnding: "/lisbon-room-v2.png",
+    room: "/lisbon-room-v3.png",
+    book: "/lisbon-room-v3.png",
+    bell: "/lisbon-room-v3.png",
+    refusalEnding: "/lisbon-room-v3.png",
     inheritance: "/inheritance-messenger-v1.png",
     luxury: "/palace-ghost.png",
     ghost: "/palace-ghost.png",
     map: "/east-journey.png",
     beijing: "/pequim-embassy-v2.png",
     tienho: "/tienho-inn-v3.png",
-    mission: "/mission-cloister-v3.png",
-    letter: "/mission-cloister-v3.png",
+    wilderness: "/wilderness-v1.png",
+    mission: "/mission-cloister-v4.png",
+    letter: "/mission-cloister-v4.png",
     return: "/east-journey.png",
     reckoning: "/palace-ghost.png",
     renounce: "/renounce-room-v1.png",
@@ -477,6 +482,7 @@ export default function Home() {
   const ghostIntensity = stage === "inheritance" && inheritanceOpened ? 1 : stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce", "humiliation", "prison"].includes(stage) ? 3 : 0;
   const currentHotspots = sceneHotspots[stage] ?? [];
   const currentVisited = visualFinds[stage] ?? [];
+  const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
 
   const go = (next: Stage) => {
     setTransitioning(true);
@@ -508,7 +514,7 @@ export default function Home() {
     setRoomFinds([]);
     setRefusals(0);
     setBellRung(false);
-    setRinging(false);
+    setBellSequence("");
     setInheritanceOpened(false);
     setChosenLuxuries([]);
     setAvoidance("");
@@ -529,7 +535,7 @@ export default function Home() {
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "room", "book", "bell", "inheritance", "luxury", "ghost", "map", "beijing", "tienho", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison"];
+    const order: Stage[] = ["intro", "room", "book", "bell", "inheritance", "luxury", "ghost", "map", "beijing", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -544,9 +550,12 @@ export default function Home() {
   const inspectHotspot = (item: HotspotItem) => {
     const existing = visualFinds[stage] ?? [];
     if (!existing.includes(item.id)) {
-      setVisualFinds({ ...visualFinds, [stage]: [...existing, item.id] });
-      if (stage === "room") setRoomFinds([...roomFinds, item.id]);
-      if (stage === "luxury") setChosenLuxuries([...chosenLuxuries, item.id]);
+      setVisualFinds((finds) => {
+        const stageFinds = finds[stage] ?? [];
+        return stageFinds.includes(item.id) ? finds : { ...finds, [stage]: [...stageFinds, item.id] };
+      });
+      if (stage === "room") setRoomFinds((finds) => finds.includes(item.id) ? finds : [...finds, item.id]);
+      if (stage === "luxury") setChosenLuxuries((finds) => finds.includes(item.id) ? finds : [...finds, item.id]);
     }
     setSelectedHotspot(item);
     sound.tone(246.94 + existing.length * 18, 0.55, 0.12, 0, "triangle");
@@ -563,24 +572,44 @@ export default function Home() {
   };
 
   const ringBell = () => {
-    if (ringing || bellRung) return;
+    if (bellSequence || bellRung) return;
     setBellRung(true);
-    setRinging(true);
+    setBellSequence("ringing");
     sound.handbell();
     window.setTimeout(() => {
-      setRinging(false);
+      setBellSequence("black");
+    }, 4300);
+    window.setTimeout(() => {
+      setBellSequence("");
       go("inheritance");
-    }, 2000);
+    }, 5300);
   };
 
-  const chooseAttack = (choice: string) => {
+  const chooseAvoidance = (choice: string) => {
+    setAvoidance((current) => current || choice);
+  };
+
+  const chooseCamilloff = (choice: string) => {
+    setCamilloff((current) => current || choice);
+  };
+
+  const chooseAttack = () => {
     if (attackChoice) return;
-    setAttackChoice(choice);
+    setAttackChoice("escape");
     setShake(true);
-    setCollapsePhase("falling");
     sound.thud();
     window.setTimeout(() => setShake(false), 620);
+  };
+
+  const collapseInWilderness = () => {
+    if (collapseSeen || collapsePhase) return;
+    setCollapsePhase("falling");
+    sound.thud();
     window.setTimeout(() => setCollapsePhase("dark"), 2020);
+  };
+
+  const chooseLetterDecision = (choice: "search" | "return") => {
+    setLetterDecision((current) => current || choice);
   };
 
   const wakeAtMission = () => {
@@ -646,9 +675,9 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            {roomFinds.length >= 3 && (
+            {hasInspectedAll ? (
               <button className="primary-action" onClick={() => go("book")}>仔细翻阅旧书 <span>→</span></button>
-            )}
+            ) : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
           </div>
         )}
 
@@ -753,9 +782,9 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            {currentVisited.length >= 3 && (
+            {hasInspectedAll ? (
               <button className="primary-action" onClick={() => { sound.tone(110, 2.4, 0.08); go("ghost"); }}>我无法忽视…… <span>→</span></button>
-            )}
+            ) : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
           </div>
         )}
 
@@ -775,9 +804,9 @@ export default function Home() {
               <>
                 <BilingualQuote compact pt="Tinha eliminado a criatura, de longe, com uma campainha... eu assassinara um velho!" zh="我从远方摇响一柄摇铃除掉了这个人……我杀死了一个老人！" />
                 <div className="choice-stack horizontal">
-                  <button className="choice-button" onClick={() => setAvoidance("pleasure")}><span>加倍享乐</span><small>让音乐盖过铃声</small></button>
-                  <button className="choice-button" onClick={() => setAvoidance("church")}><span>求助教会</span><small>为死者购买弥撒</small></button>
-                  <button className="choice-button" onClick={() => setAvoidance("charity")}><span>慷慨捐赠</span><small>把利息叫作慈善</small></button>
+                  <button className="choice-button" onClick={() => chooseAvoidance("pleasure")}><span>加倍享乐</span><small>让音乐盖过铃声</small></button>
+                  <button className="choice-button" onClick={() => chooseAvoidance("church")}><span>求助教会</span><small>为死者购买弥撒</small></button>
+                  <button className="choice-button" onClick={() => chooseAvoidance("charity")}><span>慷慨捐赠</span><small>把利息叫作慈善</small></button>
                 </div>
               </>
             )}
@@ -791,7 +820,7 @@ export default function Home() {
             <div className="route" role="img" aria-label={`航线进度：${routes[routeIndex][0]}`}>
               <div className="route-line"><span style={{ width: `${(routeIndex / (routes.length - 1)) * 100}%` }} /></div>
               {routes.map((stop, index) => (
-                <button key={stop[0]} className={`route-stop ${index <= routeIndex ? "is-reached" : ""} ${index === routeIndex ? "is-current" : ""}`} style={{ left: `${(index / (routes.length - 1)) * 100}%` }} onClick={() => index <= routeIndex && setRouteIndex(index)} aria-label={stop[0]}>
+                <button key={stop[0]} className={`route-stop ${index <= routeIndex ? "is-reached" : ""} ${index === routeIndex ? "is-current" : ""}`} style={{ left: `${(index / (routes.length - 1)) * 100}%` }} disabled aria-label={stop[0]}>
                   <i /><span>{stop[0]}</span>
                 </button>
               ))}
@@ -817,13 +846,13 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            {currentVisited.length < 3 ? (
-              <p className="discovery-count">已查看 {currentVisited.length} / 3</p>
+            {!hasInspectedAll ? (
+              <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>
             ) : !camilloff ? (
               <div className="choice-stack">
-                <button className="choice-button" onClick={() => setCamilloff("treasury")}><span>把一半巨款交给国库</span><small>也许狄鑫福会因此平静</small></button>
-                <button className="choice-button" onClick={() => setCamilloff("rice")}><span>私人向饥民分发大米</span><small>以慈善绕开国家</small></button>
-                <button className="choice-button" onClick={() => setCamilloff("family")}><span>寻找狄鑫福的家族</span><small>把巨款直接还给后代</small></button>
+                <button className="choice-button" onClick={() => chooseCamilloff("treasury")}><span>把一半巨款交给国库</span><small>也许狄鑫福会因此平静</small></button>
+                <button className="choice-button" onClick={() => chooseCamilloff("rice")}><span>私人向饥民分发大米</span><small>以慈善绕开国家</small></button>
+                <button className="choice-button" onClick={() => chooseCamilloff("family")}><span>寻找狄鑫福的家族</span><small>把巨款直接还给后代</small></button>
               </div>
             ) : (
               <div className="dialogue-result">
@@ -848,23 +877,33 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            {currentVisited.length < 3 ? (
-              <p className="discovery-count">已查看 {currentVisited.length} / 3</p>
+            {!hasInspectedAll ? (
+              <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>
             ) : !attackChoice ? (
-              <>
-                <div className="choice-stack horizontal">
-                  <button className="choice-button dangerous" onClick={() => chooseAttack("coins")}><span>把银币撒向人群</span><small>用财富开路</small></button>
-                  <button className="choice-button" onClick={() => chooseAttack("bag")}><span>死守钱袋</span><small>保住补偿的资本</small></button>
-                  <button className="choice-button" onClick={() => chooseAttack("guide")}><span>跟紧萨托</span><small>相信唯一的向导</small></button>
-                </div>
-              </>
+              <button className="primary-action" onClick={chooseAttack}>把钱币撒向人群 <span>→</span></button>
             ) : (
               <div className="consequence">
-                <p>{attackChoice === "coins" ? "萨托把铜钱像种子一样撒下；人群短暂满足，随后又齐声索要‘更多’。" : attackChoice === "bag" ? "我试图守住用于补偿的钱，却让自己和钱同时成为更清楚的目标。" : "我紧跟唯一的向导，但骚乱迅速吞没了队伍。"}</p>
+                <p>萨托把成串的铜钱一把把撒下；人群短暂满足，随后又齐声索要“更多”。钱袋很快见底，行李车和木箱也被冲破，全部财物在乱刀与无数双手之间散尽。</p>
                 <BilingualQuote compact pt="A turba rugia, insaciada... Não tenho mais, criatura! O resto está em Pequim!" zh="人群仍不满足，咆哮起来……我没有了，朋友！其余的都在北京！" />
-                <p>我没能冲出重围。刚抓住马鬃，一块砖头便击中后脑；天地翻转，我倒在荒野里。</p>
-                {collapseSeen && <button className="primary-action" onClick={() => go("mission")}>返回修道院的清晨 <span>→</span></button>}
+                <p>人群闯进客栈搜寻更大的财宝。我拆开后院竹栅，扑向拴在横梁上的马，死死抓住鬃毛；箭与砖块从身旁飞过，我沿黑暗的街巷冲向城墙的缺口。</p>
+                <button className="primary-action" onClick={() => go("wilderness")}>策马冲出天河村 <span>→</span></button>
               </div>
+            )}
+          </div>
+        )}
+
+        {stage === "wilderness" && (
+          <div className="scene-body wilderness-scene">
+            <BilingualQuote pt="De repente o pónei, eu, rolámos com um baque surdo. Era uma lagoa... vi o pónei, correndo, muito longe, como uma sombra, com os estribos ao vento..." zh="突然，我和马匹砰然滚倒——那是一片水塘……等我重新站稳，只见马匹已经跑得很远，像一道黑影，空马镫在风中甩动……" />
+            <p>我浑身湿透，耳边的血一路滴到肩上。马匹消失以后，只剩我独自穿过泥地与荆棘；寒气把衣服冻结在皮肤上，黑暗里仿佛有野兽的眼睛闪动。</p>
+            <BilingualQuote compact pt="Então comecei a caminhar por aquela solidão, enterrando-me nas terras lodosas, cortando através do mato espinhoso." zh="于是，我开始穿过那片荒凉之地，陷进泥泞的土地，劈开带刺的灌木前行。" />
+            {collapseSeen ? (
+              <div className="consequence locked-choice">
+                <p>我已经倒在废弃棺木旁的荒野里；两位前往天河村的遣使会神父把我抬回了修道院。</p>
+                <button className="primary-action" onClick={() => go("mission")}>回到修道院的清晨 <span>→</span></button>
+              </div>
+            ) : (
+              <button className="primary-action" onClick={collapseInWilderness}>支撑着继续走 <span>→</span></button>
             )}
           </div>
         )}
@@ -872,7 +911,8 @@ export default function Home() {
         {stage === "mission" && (
           <div className="scene-body">
             <BilingualQuote pt="um sino tocava a matinas... rolaram-me das pálpebras duas lágrimas mudas." zh="晨祷的钟声响了起来……两滴无声的泪从我的眼睑滚落。" />
-            <p>我裹着绷带躺在陌生的修道院里。井上的滑轮、晨祷的钟声、《日课经》、来信与路边获救的孩子，一件件提醒我：金钱并不是唯一能够挽回的东西。</p>
+            <p>两位遣使会神父清晨在路上发现了昏迷的我，把我用担架抬回修道院。朱利奥神父身穿紫袍，留着长辫和庄严的胡须，手中缓缓摇着一柄巨大的折扇；在回廊里，他看上去几乎像一位沉思经书的老满大人。</p>
+            <BilingualQuote compact pt="O superior lazarista era o excelente padre Giulio... com a sua túnica roxa, o rabicho longo, a barba venerável, agitando devagar um enorme leque..." zh="遣使会的院长是善良的朱利奥神父……他穿着紫袍，留着长辫和庄严的胡须，缓缓摇动一柄巨大的折扇……" />
             <div className="hotspot-index">
               {(sceneHotspots.mission ?? []).map((item) => (
                 <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -880,10 +920,10 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            {currentVisited.length >= 3 ? (
+            {hasInspectedAll ? (
               <button className="primary-action" onClick={() => go("letter")}>拆开卡米洛夫的附言 <span>→</span></button>
             ) : (
-              <p className="discovery-count">已查看 {currentVisited.length} / 3</p>
+              <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>
             )}
           </div>
         )}
@@ -893,10 +933,10 @@ export default function Home() {
             <div className="letter-sheet">
               <span>附言 · 卡米洛夫将军</span>
               <p><span lang="pt">“Enquanto à viúva e família de Ti Chin-Fu, houve um engano...”</span><span>“关于狄鑫福的遗孀和家人，事情弄错了……”</span></p>
-              <button className={letterClues.includes("cantao") ? "is-read" : ""} onClick={() => !letterClues.includes("cantao") && setLetterClues([...letterClues, "cantao"])}>
+              <button className={letterClues.includes("cantao") ? "is-read" : ""} onClick={() => setLetterClues((clues) => clues.includes("cantao") ? clues : [...clues, "cantao"])}>
                 <b>广东</b><em><span lang="pt">“É no Sul da China, na província de Cantão.”</span><span>“他们住在中国南方的广东省。”</span></em>
               </button>
-              <button className={letterClues.includes("kaoli") ? "is-read" : ""} onClick={() => !letterClues.includes("kaoli") && setLetterClues([...letterClues, "kaoli"])}>
+              <button className={letterClues.includes("kaoli") ? "is-read" : ""} onClick={() => setLetterClues((clues) => clues.includes("kaoli") ? clues : [...clues, "kaoli"])}>
                 <b>高丽</b><em><span lang="pt">“Mas também há uma família Ti Chin-Fu para além da Grande Muralha...”</span><span>“但长城之外也有一个狄鑫福家族……”</span></em>
               </button>
             </div>
@@ -906,20 +946,23 @@ export default function Home() {
               <>
                 <p>同一封信里竟出现两个狄鑫福家族、两个死去的家长、两处贫困。我要把财富还给谁？那个原本确切的名字，在眼前重新变得无法辨认。</p>
                 <div className="choice-stack horizontal">
-                  <button className="choice-button" onClick={() => setLetterDecision("search")}><span>再寻找一次</span><small>去广东，或去高丽</small></button>
-                  <button className="choice-button dangerous" onClick={() => { setLetterDecision("return"); go("return"); }}><span>返回欧洲</span><small>我已经尽力了</small></button>
+                  <button className="choice-button" onClick={() => chooseLetterDecision("search")}><span>再寻找一次</span><small>去广东，或去高丽</small></button>
+                  <button className="choice-button dangerous" onClick={() => chooseLetterDecision("return")}><span>返回欧洲</span><small>我已经尽力了</small></button>
                 </div>
               </>
             ) : (
               <div className="consequence">
+                <BilingualQuote compact pt="Além disso, Ti Chin-Fu e o seu papagaio continuavam invisíveis... e já o aplacamento do remorso visível diminuíra em mim singularmente o desejo da expiação..." zh="此外，狄鑫福和他的纸鸢始终没有再出现……随着那可见的悔恨平息，我赎罪的愿望也显著减弱了……" />
+                <p>自从踏入中国，我一次也没有再看见狄鑫福的尸身。我把这段沉默解释成死者已经看见我的奔波，也已经平息了怨怼。</p>
                 {letterDecision === "search" ? (
                   <>
                     <BilingualQuote compact pt="Ir de novo bater as estradas da China? Jamais!" zh="还要重新踏遍中国的道路？绝不！" />
                     <p>广东、高丽、又一次漫长旅途与袭击的阴影在我眼前交替出现。我把两条路线默念了一遍，却再也无法让受伤的身体迈向其中任何一条；最终，我把信折起，决定返回欧洲。</p>
                   </>
                 ) : (
-                  <p>我没有再去追逐信上互相冲突的地址。受伤的身体、天河村的砖石和那两个同名家族在眼前纠缠；我把卡米洛夫的附言折起，维持着“已经尽力”的说法，决定返回欧洲。</p>
+                  <p>我没有再去追逐信上互相冲突的地址。受伤的身体、天河村的砖石和那两个同名家族在眼前纠缠；回廊却寂静无声，我终于说服自己：已经做过合理、慷慨而合乎逻辑的事。</p>
                 )}
+                <BilingualQuote compact pt="Bem, Ti Chin-Fu está contente." zh="好吧，狄鑫福已经满意了。" />
                 <button className="primary-action" onClick={() => go("return")}>返回欧洲 <span>→</span></button>
               </div>
             )}
@@ -933,17 +976,17 @@ export default function Home() {
             <div className="return-stamps" aria-label="返航地点">
               {["新加坡", "锡兰", "苏伊士", "马耳他", "直布罗陀", "里斯本"].map((place, index) => (
                 <button key={place} className={returnStops.includes(place) ? "is-read" : ""} style={{ animationDelay: `${index * 0.16}s` }} onClick={() => {
-                  if (!returnStops.includes(place)) setReturnStops([...returnStops, place]);
+                  setReturnStops((stops) => stops.includes(place) ? stops : [...stops, place]);
                   sound.tone(110 + index * 14, 0.7, 0.11, 0, "triangle");
                 }}>{returnStops.includes(place) ? "狄鑫福 · " : ""}{place}</button>
               ))}
             </div>
-            {returnStops.length >= 5 ? (
+            {returnStops.length >= 6 ? (
               <>
                 <BilingualQuote compact pt="Quando desembarquei em Lisboa... a sua figura bojuda enchia todo o arco da Rua Augusta." zh="当我在里斯本下船时……他肥胖的身影塞满了奥古斯塔街的整座拱门。" />
                 <button className="primary-action" onClick={() => go("reckoning")}>回到洛雷托 <span>→</span></button>
               </>
-            ) : <p className="discovery-count">已经过 {returnStops.length} / 5</p>}
+            ) : <p className="discovery-count">已经过 {returnStops.length} / 6</p>}
           </div>
         )}
 
@@ -971,7 +1014,7 @@ export default function Home() {
               ))}
             </div>
             <div className="ledger-animation" aria-hidden="true"><span>洛雷托宫殿</span><i>— 十万六千孔托</i><b>{currentVisited.length >= 3 ? "仍属于我" : "零？"}</b></div>
-            {currentVisited.length >= 2 ? <button className="primary-action" onClick={() => go("humiliation")}>回到办公桌 <span>→</span></button> : <p className="discovery-count">已查看 {currentVisited.length} / 2</p>}
+            {hasInspectedAll ? <button className="primary-action" onClick={() => go("humiliation")}>回到办公桌 <span>→</span></button> : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
           </div>
         )}
 
@@ -986,13 +1029,13 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            {currentVisited.length >= 2 ? (
+            {hasInspectedAll ? (
               <div className="consequence">
                 <BilingualQuote compact pt="Então, indignado, um dia subitamente reentrei com estrondo no meu palacete e no meu luxo." zh="终于有一天，我愤怒地轰然闯回自己的宫殿和奢华生活。" />
                 <p>我试着继续忍受，可银行里的财富仍在等我，狄鑫福也没有离开。旧同事、报纸和街上的石块把我逼到尽头；我终于转身，重新走向洛雷托。</p>
                 <button className="primary-action" onClick={() => go("prison")}>推开洛雷托宫殿的大门 <span>→</span></button>
               </div>
-            ) : <p className="discovery-count">已查看 {currentVisited.length} / 2</p>}
+            ) : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
           </div>
         )}
 
@@ -1009,7 +1052,7 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            {currentVisited.length >= 3 ? (
+            {hasInspectedAll ? (
               <div className="final-testament">
                 <BilingualQuote pt="Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!" zh="把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！" className="ending-quote" />
                 <BilingualQuote compact pt="Não pode ser, meu prezado senhor, não pode ser..." zh="不行，我尊贵的先生，不行……" className="devil-final" />
@@ -1017,10 +1060,21 @@ export default function Home() {
                 <p className="translation">狄鑫福横陈在镜中的宴席之间。我的财富仍在，生命却渐渐耗尽；留在纸上的，只剩这句迟来的告诫。</p>
                 <button className="primary-action" onClick={reset}>从未响起的铃开始</button>
               </div>
-            ) : <p className="discovery-count">已查看 {currentVisited.length} / 3</p>}
+            ) : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
           </div>
         )}
       </section>
+
+      {bellSequence && (
+        <div className={`bell-cinematic is-${bellSequence}`} aria-hidden="true">
+          {ringing && (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/bell-v1.png" alt="" />
+            </>
+          )}
+        </div>
+      )}
 
       {ghostIntensity > 0 && (
         <TiChinFu
@@ -1060,7 +1114,7 @@ export default function Home() {
             <p className="credits">文字与交互设计：本研究原型<br />插画与角色设定：人工智能辅助生成并完成透明背景处理</p>
             <div className="music-credits">
               <span>分幕配乐</span>
-              <a href="https://pixabay.com/music/ambient-mystery-dark-375266/" target="_blank" rel="noreferrer">《Mystery Dark》· leberch · Pixabay Content License</a>
+              <a href="https://opengameart.org/content/unsolved-investigation" target="_blank" rel="noreferrer">《Unsolved Investigation》· isaiah658 · CC0</a>
               <a href="https://opengameart.org/content/apparitions-ball" target="_blank" rel="noreferrer">《Apparitions Ball》· Bobjt · CC0</a>
               <a href="https://opengameart.org/content/i-swear-i-saw-it-background-track" target="_blank" rel="noreferrer">《I Swear I Saw It》· yd · CC0</a>
               <a href="https://opengameart.org/content/the-journey-begins" target="_blank" rel="noreferrer">《The Journey Begins》· Igor Gundarev · CC0</a>
