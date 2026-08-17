@@ -941,6 +941,31 @@ blockquote {
   font-style: italic;
 }
 
+.messenger-dialogue {
+  margin: 16px 0 5px;
+  padding: 14px 16px;
+  border: 1px solid rgba(220, 205, 171, 0.22);
+  border-left: 2px solid var(--gold);
+  background: rgba(5, 11, 11, 0.66);
+}
+
+.messenger-dialogue > span {
+  color: var(--gold);
+  font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.18em;
+}
+
+.messenger-dialogue .source-inline {
+  margin: 10px 0;
+}
+
+.messenger-dialogue > p {
+  margin: 0;
+  color: rgba(236, 227, 205, 0.78);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
 .dialogue-continue {
   display: inline-flex;
   margin-top: 15px;
@@ -990,6 +1015,50 @@ blockquote {
 .bell-object:hover {
   background: rgba(184, 149, 82, 0.12);
   transform: rotate(2deg) translateY(-2px);
+}
+
+.bell-object:disabled,
+.choice-button:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.bell-object.is-ringing {
+  z-index: 32;
+  border-color: rgba(241, 208, 141, 0.92);
+  background: rgba(184, 149, 82, 0.16);
+  animation: handbell-ring 2s cubic-bezier(0.23, 0.72, 0.25, 1) both;
+  transform-origin: 50% 8%;
+}
+
+.is-ringing-bell .devil-dialogue-card,
+.is-ringing-bell .bell-choice .choice-stack,
+.is-ringing-bell .devil-figure {
+  animation: bell-scene-fade 2s ease forwards;
+  pointer-events: none;
+}
+
+.is-ringing-bell .topbar {
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+@keyframes handbell-ring {
+  0% { opacity: 1; transform: rotate(0deg) scale(1); }
+  9% { transform: rotate(-14deg) scale(1.04); }
+  18% { transform: rotate(15deg) scale(1.09); }
+  28% { transform: rotate(-12deg) scale(1.14); }
+  39% { transform: rotate(11deg) scale(1.2); }
+  51% { transform: rotate(-8deg) scale(1.27); }
+  63% { transform: rotate(7deg) scale(1.34); }
+  75% { opacity: 1; transform: rotate(-4deg) scale(1.42); }
+  88% { opacity: 0.72; transform: rotate(2deg) scale(1.51); }
+  100% { opacity: 0; transform: rotate(0deg) scale(1.62); }
+}
+
+@keyframes bell-scene-fade {
+  0%, 64% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(8px); }
 }
 
 .bell-object span {
@@ -1758,6 +1827,81 @@ blockquote {
   48% { transform: translate(-4px, -2px); }
   64% { transform: translate(3px, 3px); }
   80% { transform: translate(-2px, 1px); }
+}
+
+.faint-overlay {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.falling-horizon {
+  position: absolute;
+  inset: -16%;
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 0 18%, rgba(0, 0, 0, 0.4) 47%, #000 78%),
+    linear-gradient(176deg, transparent 0 48%, rgba(0, 0, 0, 0.68) 49% 100%);
+}
+
+.faint-overlay.is-falling .falling-horizon {
+  animation: faint-fall 2.05s cubic-bezier(0.35, 0.02, 0.72, 0.24) both;
+}
+
+.faint-overlay.is-dark {
+  background: #000;
+}
+
+.faint-overlay.is-dark .falling-horizon,
+.faint-overlay.is-waking .falling-horizon {
+  display: none;
+}
+
+.faint-overlay.is-waking {
+  background: #000;
+  animation: waking-fade 0.46s ease both;
+}
+
+.wake-button {
+  position: relative;
+  z-index: 1;
+  min-width: 210px;
+  padding: 18px 30px;
+  border: 1px solid rgba(220, 192, 126, 0.72);
+  background: rgba(10, 10, 8, 0.74);
+  box-shadow: 0 0 42px rgba(184, 149, 82, 0.12);
+  color: #f0e3c8;
+  cursor: pointer;
+  font-size: 18px;
+  letter-spacing: 0.2em;
+  animation: wake-emerge 1.15s ease both, action-breathe 3.2s 1.15s ease-in-out infinite;
+}
+
+.wake-button:hover {
+  background: #c8a45d;
+  color: #0b0c0a;
+}
+
+@keyframes faint-fall {
+  0% { opacity: 0; transform: rotate(0deg) scale(1); filter: blur(0); }
+  18% { opacity: 0.38; transform: rotate(-1.5deg) scale(1.03); }
+  48% { opacity: 0.78; transform: rotate(4deg) scale(1.1); filter: blur(2px); }
+  74% { opacity: 0.96; transform: rotate(-7deg) scale(1.24); filter: blur(7px); }
+  100% { opacity: 1; transform: rotate(-12deg) scale(1.46); filter: blur(13px); }
+}
+
+@keyframes wake-emerge {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes waking-fade {
+  0%, 58% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @media (max-width: 980px) {

@@ -39,7 +39,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /听见桌子另一侧的声音/);
   assert.match(page, /搬入洛雷托豪宅/);
   assert.match(page, /我无法忽视……/);
-  assert.match(page, /if \(stage === "ghost"\) setAvoidance\(""\)/);
+  assert.doesNotMatch(page, /if \(stage === "ghost"\) setAvoidance\(""\)/);
   assert.match(page, /音乐、酒宴和彻夜狂欢只能暂时淹没罪疚/);
   assert.match(page, /用成把的金币匆忙办妥准备/);
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
@@ -54,10 +54,17 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /bell-v1\.png/);
   assert.match(page, /返回上一页/);
   assert.match(page, /物件摘录/);
-  assert.match(page, /翻开书页/);
+  assert.match(page, /进入故事世界/);
+  assert.match(page, /返回故事世界/);
+  assert.match(page, /一柄摇铃/);
   assert.match(page, /这是什么？/);
   assert.match(page, /还是不看见为好/);
   assert.match(page, /stageMusic/);
+  assert.match(page, /handbell/);
+  assert.match(page, /bellRung/);
+  assert.match(page, /letterDecision/);
+  assert.match(page, /collapsePhase/);
+  assert.match(page, /西尔维斯特/);
   assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿|看向镜子里的第四个人|小说直到上海才重新标出地点|哥萨克与译员萨托|原作让“后代”|选择“再寻找一次”并没有制造|特奥多罗只在脑中排演|原作没有给特奥多罗|原作提供的稳定出口|终局并不是“享受或悔恨”的二选一|告诫因此也沾染了自我开脱/);
 
   await Promise.all([
@@ -65,8 +72,12 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/palace-ghost.png", import.meta.url)),
     access(new URL("../public/east-journey.png", import.meta.url)),
     access(new URL("../public/pequim-embassy-v2.png", import.meta.url)),
-    access(new URL("../public/tienho-inn-v2.png", import.meta.url)),
-    access(new URL("../public/mission-cloister-v2.png", import.meta.url)),
+    access(new URL("../public/intro-cover-v1.png", import.meta.url)),
+    access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
+    access(new URL("../public/tienho-inn-v3.png", import.meta.url)),
+    access(new URL("../public/mission-cloister-v3.png", import.meta.url)),
+    access(new URL("../public/renounce-room-v1.png", import.meta.url)),
+    access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
     access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
     access(new URL("../public/devil-v1.png", import.meta.url)),
     access(new URL("../public/bell-v1.png", import.meta.url)),
