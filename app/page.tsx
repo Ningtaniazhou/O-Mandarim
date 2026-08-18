@@ -77,7 +77,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   humiliation: { act: "第八章 · 里斯本", title: "贫穷的代价", subtitle: "社会的惩罚" },
   prison: { act: "第八章 · 里斯本", title: "里斯本俯首", subtitle: "回到洛雷托之后" },
   devilReturn: { act: "第八章 · 夜路", title: "荒街上的黑衣人", subtitle: "魔鬼再度出现" },
-  devilDialogue: { act: "第八章 · 夜路", title: "不能", subtitle: "无法撤销的交易" },
+  devilDialogue: { act: "第八章 · 夜路", title: "无法撤销的交易", subtitle: "" },
   supplication: { act: "第八章 · 夜路", title: "空无一人", subtitle: "乞求之后" },
   testament: { act: "正篇结局", title: "留给世人的话", subtitle: "遗嘱与告诫" },
 };
@@ -473,6 +473,9 @@ export default function Home() {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotItem | null>(null);
   const [ghostRevealed, setGhostRevealed] = useState(false);
   const [ghostChoiceSeen, setGhostChoiceSeen] = useState(false);
+  const [testamentOpen, setTestamentOpen] = useState(false);
+  const [finalBookPhase, setFinalBookPhase] = useState<0 | 1 | 2>(0);
+  const [finalArtifactsSeen, setFinalArtifactsSeen] = useState<string[]>([]);
   const [stageHistory, setStageHistory] = useState<Stage[]>([]);
   const sound = useSound();
   const ringing = bellSequence === "ringing";
@@ -490,7 +493,7 @@ export default function Home() {
     ghost: "/palace-ghost.png",
     map: "/east-journey.png",
     beijing: "/pequim-arrival-v1.png",
-    repose: "/pequim-arrival-v1.png",
+    repose: "/pequim-litter-interior-v1.png",
     tienho: "/tienho-inn-v3.png",
     wilderness: "/wilderness-v1.png",
     mission: "/mission-cloister-v5.png",
@@ -503,16 +506,17 @@ export default function Home() {
     devilReturn: "/devil-street-v1.png",
     devilDialogue: "/devil-street-v1.png",
     supplication: "/devil-vanished-v1.png",
-    testament: "/testament-ending-v1.png",
+    testament: "/testament-study-v2.png",
   };
-  const beijingTourBackgrounds: Record<BeijingDestination, string> = {
-    "": "/pequim-arrival-v1.png",
+  const beijingStreetBackgrounds: Record<Exclude<BeijingDestination, "">, string> = {
     tartar: "/pequim-tartar-city-v1.png",
     chinese: "/pequim-chinese-quarter-v1.png",
     camilloff: "/pequim-repose-v1.png",
   };
-  const background = stage === "repose" ? beijingTourBackgrounds[beijingDestination] : backgrounds[stage];
-  const ghostIntensity = stage === "inheritance" && inheritanceOpened ? 1 : stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce", "humiliation"].includes(stage) ? 3 : 0;
+  const background = stage === "repose" && beijingDestination && beijingDismounted
+    ? beijingStreetBackgrounds[beijingDestination]
+    : backgrounds[stage];
+  const ghostIntensity = stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce", "humiliation"].includes(stage) ? 3 : 0;
   const currentHotspots = sceneHotspots[stage] ?? [];
   const currentVisited = visualFinds[stage] ?? [];
   const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
@@ -547,6 +551,11 @@ export default function Home() {
       setCollapsePhase("");
     }
     if (next === "letter") setLetterDecision("");
+    if (next === "testament") {
+      setTestamentOpen(false);
+      setFinalBookPhase(0);
+      setFinalArtifactsSeen([]);
+    }
   };
 
   const go = (next: Stage) => {
@@ -606,6 +615,9 @@ export default function Home() {
     setSelectedHotspot(null);
     setGhostRevealed(false);
     setGhostChoiceSeen(false);
+    setTestamentOpen(false);
+    setFinalBookPhase(0);
+    setFinalArtifactsSeen([]);
     setStageHistory([]);
   };
 
@@ -734,6 +746,27 @@ export default function Home() {
     }
     go("supplication");
   };
+
+  const openFinalTestament = () => {
+    setFinalBookPhase(0);
+    setTestamentOpen(true);
+    setFinalArtifactsSeen((seen) => seen.includes("testament") ? seen : [...seen, "testament"]);
+    sound.tone(164.81, 0.85, 0.06, 0, "triangle");
+  };
+
+  const openFinalBook = () => {
+    setTestamentOpen(false);
+    setFinalBookPhase(1);
+    sound.tone(196, 0.75, 0.055, 0, "triangle");
+  };
+
+  const turnFinalBookCover = () => {
+    setFinalBookPhase(2);
+    setFinalArtifactsSeen((seen) => seen.includes("book") ? seen : [...seen, "book"]);
+    sound.tone(246.94, 0.9, 0.06, 0, "triangle");
+  };
+
+  const finalArtifactsRead = finalArtifactsSeen.includes("testament") && finalArtifactsSeen.includes("book");
 
   return (
     <main className={`game-shell stage-${stage} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${transitioning ? "is-transitioning" : ""} ${shake ? "is-shaking" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
@@ -867,7 +900,7 @@ export default function Home() {
                   <p>他矮小而肥胖，白色络腮胡擦着黑色呢外套的翻领，金丝眼镜在圆脸上微微发颤；双手捧着一只鼓胀的信封，黑蜡封印沉沉压在纸上。</p>
                 </div>
                 <div className="sealed-letter">
-                  <button onClick={() => { setInheritanceOpened(true); setGhostRevealed(true); sound.tone(329.63, 0.9, 0.08); }}>
+                  <button onClick={() => { setInheritanceOpened(true); sound.tone(329.63, 0.9, 0.08); }}>
                     <span className="wax-seal">S</span>
                     <strong>黑蜡封缄的信</strong>
                     <small>拆开</small>
@@ -1118,7 +1151,7 @@ export default function Home() {
               ))}
             </div>
             {hasInspectedAll ? (
-              <button className="primary-action" onClick={() => go("letter")}>拆开卡米洛夫的附言 <span>→</span></button>
+              <button className="primary-action" onClick={() => go("letter")}>拆开卡米洛夫的信 <span>→</span></button>
             ) : (
               <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>
             )}
@@ -1141,7 +1174,7 @@ export default function Home() {
               <p className="discovery-count">已展开 {letterClues.length} / 2</p>
             ) : !letterDecision ? (
               <>
-                <p>同一封信里竟出现两个狄鑫福家族、两个死去的家长、两处贫困。我要把财富还给谁？那个原本确切的名字，在眼前重新变得无法辨认。</p>
+                <p>这封信里居然涉及两个死去的狄鑫福，两个在贫困中挣扎的家庭。我要把财富还给谁？那个原本确切的名字，在眼前重新变得无法辨认。</p>
                 <div className="choice-stack horizontal">
                   <button className="choice-button" onClick={() => chooseLetterDecision("search")}><span>再寻找一次</span><small>去广东，或去高丽</small></button>
                   <button className="choice-button dangerous" onClick={() => chooseLetterDecision("return")}><span>返回欧洲</span><small>我已经尽力了</small></button>
@@ -1282,19 +1315,68 @@ export default function Home() {
             />
             <p>我跪在湿冷的石路上，伸出的双手抓不住任何衣角。魔鬼消失了；他的回答却留了下来。</p>
             <BilingualQuote compact pt="Nunca mais encontrei este indivíduo." zh="我再也没有遇见过这个人。" />
-            <button className="primary-action" onClick={() => go("testament")}>回到洛雷托写下遗嘱 <span>→</span></button>
+            <button className="primary-action" onClick={() => go("testament")}>回到洛雷托 <span>→</span></button>
           </div>
         )}
 
         {stage === "testament" && (
-          <div className="scene-body ending-body testament-body">
-            <div className="ending-mark">II</div>
-            <p className="ending-label">正篇结局 · 遗嘱</p>
-            <BilingualQuote pt="Sinto-me morrer. Tenho o meu testamento feito. Nele lego os meus milhões ao Demónio; pertencem-lhe; ele que os reclame e que os reparta..." zh="我感到自己就要死了。我已经写好遗嘱，把千万财富留给魔鬼；它们本就属于他——让他来认领，再由他分配吧……" />
-            <p>我绝望地坐在洛雷托豪宅里，把自己的经历写成一本书。遗嘱放在桌上；财富仍在烛光下闪耀，我能留给世人的却只剩一句话：</p>
-            <BilingualQuote pt="Só sabe bem o pão que dia a dia ganham as nossas mãos: nunca mates o Mandarim!" zh="只有双手每日挣来的面包才真正甘美：永远不要杀死满大人！" className="last-words" />
-            <button className="primary-action" onClick={reset}>返回故事世界的起点</button>
-          </div>
+          <>
+            <div className="scene-body testament-body">
+              <p className="ending-label">正篇结局</p>
+              <p>我回到洛雷托豪宅，痛苦地坐在办公桌前。魔鬼不肯撤销交易，狄鑫福的尸影也没有离去；财富仍在身边，我却再也无法把它当作幸福。</p>
+              <p>桌上放着一份已经写好的遗嘱，以及一本记录这一切的书。</p>
+              <div className="final-artifact-progress" aria-live="polite">
+                <span className={finalArtifactsSeen.includes("testament") ? "is-read" : ""}>遗嘱</span>
+                <span className={finalArtifactsSeen.includes("book") ? "is-read" : ""}>《满大人》</span>
+              </div>
+              {finalArtifactsRead && <button className="primary-action" onClick={reset}>返回故事世界的起点 <span>→</span></button>}
+            </div>
+
+            <div className="ending-object-hotspots" aria-label="桌上的物件">
+              <button className={finalArtifactsSeen.includes("testament") ? "is-read testament-hotspot" : "testament-hotspot"} onClick={openFinalTestament} aria-label="展开遗嘱">
+                <i>01</i><span>遗嘱</span>
+              </button>
+              <button className={finalArtifactsSeen.includes("book") ? "is-read final-book-hotspot" : "final-book-hotspot"} onClick={openFinalBook} aria-label="查看《满大人》">
+                <i>02</i><span>《满大人》</span>
+              </button>
+            </div>
+
+            {testamentOpen && (
+              <div className="artifact-overlay" role="dialog" aria-modal="true" aria-label="特奥多罗的遗嘱">
+                <article className="will-sheet">
+                  <button className="artifact-close" onClick={() => setTestamentOpen(false)}>收起</button>
+                  <p className="will-kicker">遗嘱</p>
+                  <h2>特奥多罗最后的意愿</h2>
+                  <p><strong>立遗嘱人：</strong>特奥多罗</p>
+                  <ol>
+                    <li>鉴于本人自知将死，现将名下由狄鑫福之死而来的全部财产、现金、宅邸及其收益，悉数遗赠予魔鬼。</li>
+                    <li>这些财富本就属于他；由他亲自认领，并依其意志处置与分配。</li>
+                  </ol>
+                  <p>本遗嘱为本人最后且不可撤回的意愿。</p>
+                  <p className="will-signature">Teodoro</p>
+                </article>
+              </div>
+            )}
+
+            {finalBookPhase > 0 && (
+              <div className="artifact-overlay final-book-overlay" role="dialog" aria-modal="true" aria-label="《满大人》">
+                <button className="artifact-close artifact-close-dark" onClick={() => setFinalBookPhase(0)}>收起</button>
+                {finalBookPhase === 1 ? (
+                  <button className="final-book-cover" onClick={turnFinalBookCover} aria-label="翻开《满大人》的封面">
+                    <small>特奥多罗著</small>
+                    <span>《满大人》</span>
+                    <em>翻开封面</em>
+                  </button>
+                ) : (
+                  <article className="final-book-page">
+                    <p>《满大人》· 扉页</p>
+                    <blockquote lang="pt">Só sabe bem o pão que dia a dia ganham as nossas mãos: nunca mates o Mandarim!</blockquote>
+                    <blockquote>只有双手每日挣来的面包才真正甘美：千万别杀害满大人！</blockquote>
+                  </article>
+                )}
+              </div>
+            )}
+          </>
         )}
       </section>
 

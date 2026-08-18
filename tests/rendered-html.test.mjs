@@ -52,6 +52,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /generalaTopics/);
   assert.match(page, /掀开轿帘，下轿/);
   assert.match(page, /回到轿中/);
+  assert.match(page, /pequim-litter-interior-v1\.png/);
   assert.doesNotMatch(page, /beijingDrift|reposeInterrupted|文人服饰|隐逸之亭/);
   assert.match(page, /Tien-Hó/);
   assert.match(page, /荒野上的路/);
@@ -93,6 +94,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /Eu atirei-me aos seus pés numa suplicação abjecta/);
   assert.match(page, /又是他！阴魂不散！/);
   assert.match(page, /乞求/);
+  assert.match(page, /title: "无法撤销的交易", subtitle: ""/);
+  assert.doesNotMatch(page, /title: "不能"/);
   assert.match(page, /supplicated/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
   assert.match(page, /devil-v1\.png/);
@@ -130,7 +133,21 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /unsolved-investigation-v1\.ogg/);
   assert.match(page, /volume: 0\.74/);
   assert.match(page, /西尔维斯特/);
-  assert.match(page, /setInheritanceOpened\(true\); setGhostRevealed\(true\)/);
+  assert.doesNotMatch(page, /setInheritanceOpened\(true\); setGhostRevealed\(true\)/);
+  assert.doesNotMatch(page, /stage === "inheritance" && inheritanceOpened/);
+  assert.match(page, /拆开卡米洛夫的信/);
+  assert.doesNotMatch(page, /拆开卡米洛夫的附言/);
+  assert.match(page, /这封信里居然涉及两个死去的狄鑫福，两个在贫困中挣扎的家庭/);
+  assert.match(page, /回到洛雷托 <span>→<\/span>/);
+  assert.doesNotMatch(page, /回到洛雷托写下遗嘱/);
+  assert.match(page, /testament-study-v2\.png/);
+  assert.match(page, /特奥多罗最后的意愿/);
+  assert.match(page, /悉数遗赠予魔鬼/);
+  assert.match(page, /《满大人》· 扉页/);
+  assert.match(page, /只有双手每日挣来的面包才真正甘美：千万别杀害满大人/);
+  assert.match(styles, /will-unfold/);
+  assert.match(styles, /book-rise/);
+  assert.match(styles, /page-open/);
   assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿|看向镜子里的第四个人|小说直到上海才重新标出地点|哥萨克与译员萨托|原作让“后代”|选择“再寻找一次”并没有制造|特奥多罗只在脑中排演|原作没有给特奥多罗|原作提供的稳定出口|终局并不是“享受或悔恨”的二选一|告诫因此也沾染了自我开脱/);
 
   await Promise.all([
@@ -142,6 +159,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/pequim-arrival-v1.png", import.meta.url)),
     access(new URL("../public/pequim-tartar-city-v1.png", import.meta.url)),
     access(new URL("../public/pequim-chinese-quarter-v1.png", import.meta.url)),
+    access(new URL("../public/pequim-litter-interior-v1.png", import.meta.url)),
     access(new URL("../public/intro-cover-v1.png", import.meta.url)),
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
     access(new URL("../public/tienho-inn-v3.png", import.meta.url)),
@@ -154,6 +172,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/devil-street-v1.png", import.meta.url)),
     access(new URL("../public/devil-vanished-v1.png", import.meta.url)),
     access(new URL("../public/testament-ending-v1.png", import.meta.url)),
+    access(new URL("../public/testament-study-v2.png", import.meta.url)),
     access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
     access(new URL("../public/devil-v1.png", import.meta.url)),
     access(new URL("../public/bell-v1.png", import.meta.url)),
