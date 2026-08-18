@@ -1223,6 +1223,7 @@ blockquote {
 }
 
 .death-character-stage {
+  --ti-body-length: min(67vh, 720px);
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -1240,37 +1241,39 @@ blockquote {
 .ti-alive-cutout {
   z-index: 4;
   bottom: 18.5%;
-  left: 54%;
-  height: min(67vh, 720px);
+  left: 84%;
+  height: var(--ti-body-length);
   filter: saturate(0.92) contrast(1.03) drop-shadow(18px 25px 18px rgba(0, 0, 0, 0.68));
   transform: translateX(-50%);
   transform-origin: 50% 96%;
-  animation: ti-alive-fall 5.65s cubic-bezier(0.21, 0.6, 0.3, 1) both;
+  will-change: opacity, transform;
+  animation: ti-alive-fall 8.8s linear both;
 }
 
 .ti-corpse-cutout {
   z-index: 5;
-  right: 4.5%;
+  right: 16%;
   bottom: 18.5%;
-  width: min(63vw, 1080px);
+  width: var(--ti-body-length);
   opacity: 0;
   filter: saturate(0.84) contrast(1.04) drop-shadow(0 28px 18px rgba(0, 0, 0, 0.62));
-  animation: ti-corpse-arrive 5.65s cubic-bezier(0.22, 0.66, 0.3, 1) both;
+  will-change: opacity;
+  animation: ti-corpse-arrive 8.8s linear both;
 }
 
 .death-ground-shadow {
   position: absolute;
   z-index: 3;
-  right: 8%;
+  right: 16%;
   bottom: 18%;
-  width: min(56vw, 950px);
+  width: var(--ti-body-length);
   height: 13vh;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.64);
   filter: blur(20px);
   opacity: 0;
   transform: scaleX(0.68);
-  animation: ti-death-shadow 5.65s ease both;
+  animation: ti-death-shadow 8.8s linear both;
 }
 
 .distant-bell-mark {
@@ -1283,7 +1286,7 @@ blockquote {
   letter-spacing: 0.18em;
   text-shadow: 0 0 22px rgba(226, 183, 92, 0.8);
   transform: translate(-20px, 6px) scale(0.84);
-  animation: distant-bell-mark 5.65s ease both;
+  animation: distant-bell-mark 8.8s ease both;
 }
 
 .death-mist {
@@ -1381,32 +1384,31 @@ blockquote {
 }
 
 @keyframes ti-alive-fall {
-  0%, 23% { opacity: 1; transform: translateX(-50%) rotate(0deg); }
-  31% { transform: translateX(-50%) rotate(-1.5deg) translateY(-4px); }
-  40% { transform: translateX(-50%) rotate(5deg) translateY(3px); }
-  50% { transform: translateX(-50%) rotate(15deg) translate(12px, 10px); }
-  61% { transform: translateX(-50%) rotate(37deg) translate(36px, 17px); }
-  72% { opacity: 1; transform: translateX(-50%) rotate(76deg) translate(88px, 23px); }
-  78%, 100% { opacity: 0; transform: translateX(-50%) rotate(84deg) translate(112px, 30px); }
+  0%, 12% { opacity: 1; transform: translateX(-50%) rotate(0deg); }
+  18% { opacity: 1; transform: translateX(-50%) rotate(-3deg); }
+  24% { opacity: 1; transform: translateX(-50%) rotate(3.5deg); }
+  30% { opacity: 1; transform: translateX(-50%) rotate(-4.5deg); }
+  36% { opacity: 1; transform: translateX(-50%) rotate(2deg); }
+  42% { opacity: 1; transform: translateX(-50%) rotate(-17deg); animation-timing-function: cubic-bezier(0.3, 0, 0.72, 0.26); }
+  50% { opacity: 1; transform: translateX(-50%) rotate(-88deg); }
+  72.7%, 100% { opacity: 0; transform: translateX(-50%) rotate(-88deg); }
 }
 
 @keyframes ti-corpse-arrive {
-  0%, 66% { opacity: 0; transform: translate3d(18px, -14px, 0) scale(0.94) rotate(-1deg); }
-  77% { opacity: 1; transform: translate3d(0, 3px, 0) scale(1.015) rotate(0deg); }
-  88%, 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  0%, 72.7% { opacity: 0; }
+  95.5%, 100% { opacity: 1; }
 }
 
 @keyframes ti-death-shadow {
-  0%, 60% { opacity: 0; transform: scaleX(0.68); }
-  78% { opacity: 0.82; transform: scaleX(1.03); }
-  100% { opacity: 0.64; transform: scaleX(1); }
+  0%, 72.7% { opacity: 0; transform: scaleX(0.88); }
+  95.5%, 100% { opacity: 0.64; transform: scaleX(1); }
 }
 
 @keyframes distant-bell-mark {
-  0%, 20% { color: rgba(226, 183, 92, 0); transform: translate(-20px, 6px) scale(0.84); }
-  29% { color: rgba(226, 183, 92, 0.92); transform: translate(0, 0) scale(1); }
-  42% { color: rgba(226, 183, 92, 0.5); transform: translate(16px, -5px) scale(1.1); }
-  55%, 100% { color: rgba(226, 183, 92, 0); transform: translate(34px, -10px) scale(1.18); }
+  0%, 9% { color: rgba(226, 183, 92, 0); transform: translate(-20px, 6px) scale(0.84); }
+  16% { color: rgba(226, 183, 92, 0.92); transform: translate(0, 0) scale(1); }
+  27% { color: rgba(226, 183, 92, 0.5); transform: translate(16px, -5px) scale(1.1); }
+  38%, 100% { color: rgba(226, 183, 92, 0); transform: translate(34px, -10px) scale(1.18); }
 }
 
 @keyframes death-mist-drift {
@@ -2875,22 +2877,24 @@ blockquote {
     font-size: clamp(34px, 7vw, 58px);
   }
 
+  .death-character-stage {
+    --ti-body-length: min(58vh, 60vw, 620px);
+  }
+
   .ti-alive-cutout {
-    left: 64%;
-    bottom: 26%;
-    height: min(58vh, 620px);
+    left: 80%;
+    bottom: 25.5%;
   }
 
   .ti-corpse-cutout {
-    right: -5%;
-    bottom: 25%;
-    width: min(86vw, 900px);
+    right: 20%;
+    bottom: 25.5%;
   }
 
   .death-ground-shadow {
-    right: -2%;
-    bottom: 24%;
-    width: 78vw;
+    right: 20%;
+    bottom: 25%;
+    width: var(--ti-body-length);
   }
 
   .death-caption {
@@ -2959,22 +2963,24 @@ blockquote {
     left: 20px;
   }
 
+  .death-character-stage {
+    --ti-body-length: min(48vh, 72vw, 470px);
+  }
+
   .ti-alive-cutout {
-    left: 70%;
-    bottom: 33%;
-    height: min(48vh, 470px);
+    left: 78%;
+    bottom: 31.5%;
   }
 
   .ti-corpse-cutout {
-    right: -16%;
-    bottom: 31%;
-    width: 106vw;
+    right: 22%;
+    bottom: 31.5%;
   }
 
   .death-ground-shadow {
-    right: -16%;
-    bottom: 30%;
-    width: 96vw;
+    right: 22%;
+    bottom: 31%;
+    width: var(--ti-body-length);
   }
 
   .death-caption {

@@ -640,9 +640,13 @@ export default function Home() {
   useEffect(() => {
     if (stage !== "tiDeath") return;
     setDeathAnimationDone(false);
-    const startled = window.setTimeout(() => sound.tone(92.5, 1.35, 0.1, 0, "sine"), 1550);
-    const impact = window.setTimeout(() => sound.tone(55, 1.8, 0.12, 0, "triangle"), 3550);
-    const finished = window.setTimeout(() => setDeathAnimationDone(true), 5900);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDeathAnimationDone(true);
+      return;
+    }
+    const startled = window.setTimeout(() => sound.tone(92.5, 1.35, 0.1, 0, "sine"), 1350);
+    const impact = window.setTimeout(() => sound.tone(55, 1.8, 0.12, 0, "triangle"), 4350);
+    const finished = window.setTimeout(() => setDeathAnimationDone(true), 9000);
     return () => {
       window.clearTimeout(startled);
       window.clearTimeout(impact);
@@ -919,7 +923,7 @@ export default function Home() {
             <div className="death-character-stage" aria-label="狄鑫福在花园溪边听见铃声后倒地身亡的剪纸动画">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="ti-alive-cutout" src="/ti-chin-fu-v2.png" alt="狄鑫福身穿黄绸，怀抱纸鸢，站在溪边" />
-              <span className="distant-bell-mark" aria-hidden="true">ti-li-tim</span>
+              <span className="distant-bell-mark" aria-hidden="true">叮铃</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="ti-corpse-cutout" src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福仰面倒在溪边草地上，冰冷的双臂仍抱着纸鸢" />
               <div className="death-ground-shadow" aria-hidden="true" />
