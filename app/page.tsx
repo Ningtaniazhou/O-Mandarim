@@ -7,6 +7,7 @@ type Stage =
   | "room"
   | "book"
   | "bell"
+  | "tiDeath"
   | "refusalEnding"
   | "inheritance"
   | "luxury"
@@ -60,6 +61,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   room: { act: "第一章 · 里斯本", title: "特奥多罗的房间", subtitle: "一个贫穷的小职员" },
   book: { act: "第一章 · 旧书", title: "发亮的字句", subtitle: "" },
   bell: { act: "第一章 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
+  tiDeath: { act: "第一章 · 远方", title: "狄鑫福之死", subtitle: "铃声抵达中国" },
   refusalEnding: { act: "特别结局", title: "合上的书页", subtitle: "拒绝诱惑" },
   inheritance: { act: "第二章 · 财富", title: "陌生人的遗产", subtitle: "" },
   luxury: { act: "第三章 · 黄金", title: "洛雷托的盛宴", subtitle: "百万富翁" },
@@ -96,6 +98,7 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   room: musicCues.mystery,
   book: musicCues.mystery,
   bell: musicCues.mystery,
+  tiDeath: musicCues.haunting,
   refusalEnding: musicCues.mystery,
   inheritance: musicCues.ballroom,
   luxury: musicCues.ballroom,
@@ -449,6 +452,8 @@ export default function Home() {
   const [refusals, setRefusals] = useState(0);
   const [bellRung, setBellRung] = useState(false);
   const [bellSequence, setBellSequence] = useState<"" | "ringing" | "black">("");
+  const [deathAnimationDone, setDeathAnimationDone] = useState(false);
+  const [deathAnimationRun, setDeathAnimationRun] = useState(0);
   const [inheritanceOpened, setInheritanceOpened] = useState(false);
   const [chosenLuxuries, setChosenLuxuries] = useState<string[]>([]);
   const [avoidance, setAvoidance] = useState("");
@@ -487,6 +492,7 @@ export default function Home() {
     room: "/lisbon-room-v3.png",
     book: "/lisbon-room-v3.png",
     bell: "/lisbon-room-v3.png",
+    tiDeath: "/ti-chin-fu-death-garden-v1.png",
     refusalEnding: "/lisbon-room-v3.png",
     inheritance: "/inheritance-messenger-v1.png",
     luxury: "/palace-ghost.png",
@@ -591,6 +597,8 @@ export default function Home() {
     setRefusals(0);
     setBellRung(false);
     setBellSequence("");
+    setDeathAnimationDone(false);
+    setDeathAnimationRun(0);
     setInheritanceOpened(false);
     setChosenLuxuries([]);
     setAvoidance("");
@@ -622,7 +630,7 @@ export default function Home() {
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "room", "book", "bell", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
+    const order: Stage[] = ["intro", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -633,6 +641,21 @@ export default function Home() {
     // Track transitions follow narrative stages; the sound controller persists between renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage]);
+
+  useEffect(() => {
+    if (stage !== "tiDeath") return;
+    setDeathAnimationDone(false);
+    const startled = window.setTimeout(() => sound.tone(92.5, 1.35, 0.1, 0, "sine"), 1550);
+    const impact = window.setTimeout(() => sound.tone(55, 1.8, 0.12, 0, "triangle"), 3550);
+    const finished = window.setTimeout(() => setDeathAnimationDone(true), 5900);
+    return () => {
+      window.clearTimeout(startled);
+      window.clearTimeout(impact);
+      window.clearTimeout(finished);
+    };
+    // The sound controller intentionally persists between narrative stages.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage, deathAnimationRun]);
 
   const inspectHotspot = (item: HotspotItem) => {
     const existing = visualFinds[stage] ?? [];
@@ -668,8 +691,13 @@ export default function Home() {
     }, 4300);
     window.setTimeout(() => {
       setBellSequence("");
-      go("inheritance");
+      go("tiDeath");
     }, 5300);
+  };
+
+  const replayTiDeath = () => {
+    setDeathAnimationDone(false);
+    setDeathAnimationRun((run) => run + 1);
   };
 
   const chooseAvoidance = (choice: string) => {
@@ -861,7 +889,7 @@ export default function Home() {
             {bellRung && !ringing ? (
               <div className="consequence locked-choice">
                 <p>摇铃的动作已经完成。金属余音散入房间，远方那一声叹息也无法撤回。</p>
-                <button className="primary-action" onClick={() => go("inheritance")}>回到遗产的消息 <span>→</span></button>
+                <button className="primary-action" onClick={() => go("tiDeath")}>看见铃声抵达远方 <span>→</span></button>
               </div>
             ) : refusals >= 3 ? (
               <div className="consequence locked-choice">
@@ -880,6 +908,29 @@ export default function Home() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {stage === "tiDeath" && (
+          <div className="ti-death-scene" key={deathAnimationRun}>
+            <div className="death-mist death-mist-back" aria-hidden="true" />
+            <div className="death-character-stage" aria-label="狄鑫福在花园溪边听见铃声后倒地身亡的剪纸动画">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="ti-alive-cutout" src="/ti-chin-fu-v2.png" alt="狄鑫福身穿黄绸，怀抱纸鸢，站在溪边" />
+              <span className="distant-bell-mark" aria-hidden="true">ti-li-tim</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="ti-corpse-cutout" src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福仰面倒在溪边草地上，冰冷的双臂仍抱着纸鸢" />
+              <div className="death-ground-shadow" aria-hidden="true" />
+            </div>
+            <div className="death-mist death-mist-front" aria-hidden="true" />
+            <aside className={`death-caption ${deathAnimationDone ? "is-visible" : ""}`}>
+              <blockquote lang="pt">“Agora jaz à beira de um arroio cantante, todo vestido de seda amarela, morto, de pança ao ar, sobre a relva verde; e nos braços frios tem o seu papagaio de papel, que parece tão morto como ele.”</blockquote>
+              <p>“如今他躺在潺潺溪水旁，身穿黄绸，仰面死在绿草上；冰冷的双臂仍抱着纸鸢，那纸鸢看起来也和他一样死寂。”</p>
+              <div className="death-actions">
+                <button onClick={replayTiDeath}>再看一次</button>
+                <button className="primary-action" onClick={() => go("inheritance")}>一个月以后 <span>→</span></button>
+              </div>
+            </aside>
           </div>
         )}
 

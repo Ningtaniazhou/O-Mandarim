@@ -68,6 +68,7 @@ button:focus-visible {
 .stage-room .scene-image,
 .stage-book .scene-image,
 .stage-bell .scene-image,
+.stage-tiDeath .scene-image,
 .stage-refusalEnding .scene-image,
 .stage-inheritance .scene-image {
   background-position: center left;
@@ -120,6 +121,7 @@ button:focus-visible {
 .stage-room .scene-vignette,
 .stage-book .scene-vignette,
 .stage-bell .scene-vignette,
+.stage-tiDeath .scene-vignette,
 .stage-refusalEnding .scene-vignette,
 .stage-inheritance .scene-vignette {
   background:
@@ -1159,6 +1161,257 @@ blockquote {
 @keyframes bell-scene-fade {
   0%, 64% { opacity: 1; }
   100% { opacity: 0; transform: translateY(8px); }
+}
+
+/* Ti Chin-Fu's death is staged as a layered paper-theatre interlude. */
+.stage-tiDeath {
+  overflow: hidden;
+}
+
+.stage-tiDeath .scene-image {
+  background-position: center;
+  filter: saturate(0.78) contrast(1.08) brightness(0.72);
+  animation: ti-death-camera 6.2s cubic-bezier(0.2, 0.65, 0.24, 1) both;
+}
+
+.stage-tiDeath .scene-vignette {
+  z-index: -2;
+  background:
+    radial-gradient(circle at 54% 49%, transparent 18%, rgba(3, 8, 9, 0.2) 57%, rgba(2, 5, 6, 0.78) 100%),
+    linear-gradient(0deg, rgba(2, 6, 7, 0.75) 0%, transparent 31%, rgba(2, 6, 7, 0.38) 100%);
+}
+
+.stage-tiDeath .scene-card {
+  z-index: 7;
+  width: 100%;
+  min-height: 100svh;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.stage-tiDeath .scene-card > .scene-kicker,
+.stage-tiDeath .scene-card > h1,
+.stage-tiDeath .scene-card > .scene-pt {
+  position: fixed;
+  z-index: 11;
+  left: 4vw;
+  margin: 0;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.82);
+}
+
+.stage-tiDeath .scene-card > .scene-kicker {
+  top: 112px;
+}
+
+.stage-tiDeath .scene-card > h1 {
+  top: 137px;
+  font-size: clamp(34px, 4.7vw, 70px);
+}
+
+.stage-tiDeath .scene-card > .scene-pt {
+  top: clamp(190px, 15vw, 223px);
+  color: rgba(225, 206, 166, 0.72);
+}
+
+.ti-death-scene {
+  position: fixed;
+  z-index: 8;
+  inset: 75px 0 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.death-character-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.ti-alive-cutout,
+.ti-corpse-cutout {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ti-alive-cutout {
+  z-index: 4;
+  bottom: 18.5%;
+  left: 54%;
+  height: min(67vh, 720px);
+  filter: saturate(0.92) contrast(1.03) drop-shadow(18px 25px 18px rgba(0, 0, 0, 0.68));
+  transform: translateX(-50%);
+  transform-origin: 50% 96%;
+  animation: ti-alive-fall 5.65s cubic-bezier(0.21, 0.6, 0.3, 1) both;
+}
+
+.ti-corpse-cutout {
+  z-index: 5;
+  right: 4.5%;
+  bottom: 18.5%;
+  width: min(63vw, 1080px);
+  opacity: 0;
+  filter: saturate(0.84) contrast(1.04) drop-shadow(0 28px 18px rgba(0, 0, 0, 0.62));
+  animation: ti-corpse-arrive 5.65s cubic-bezier(0.22, 0.66, 0.3, 1) both;
+}
+
+.death-ground-shadow {
+  position: absolute;
+  z-index: 3;
+  right: 8%;
+  bottom: 18%;
+  width: min(56vw, 950px);
+  height: 13vh;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.64);
+  filter: blur(20px);
+  opacity: 0;
+  transform: scaleX(0.68);
+  animation: ti-death-shadow 5.65s ease both;
+}
+
+.distant-bell-mark {
+  position: absolute;
+  z-index: 7;
+  top: 24%;
+  left: 67%;
+  color: rgba(226, 183, 92, 0);
+  font: italic 600 clamp(14px, 1.5vw, 23px) Georgia, serif;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 22px rgba(226, 183, 92, 0.8);
+  transform: translate(-20px, 6px) scale(0.84);
+  animation: distant-bell-mark 5.65s ease both;
+}
+
+.death-mist {
+  position: absolute;
+  right: -14vw;
+  left: -14vw;
+  border-radius: 50%;
+  background: linear-gradient(90deg, transparent, rgba(204, 215, 206, 0.08), transparent);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.death-mist-back {
+  z-index: 1;
+  top: 39%;
+  height: 18%;
+  animation: death-mist-drift 9s ease-in-out infinite alternate;
+}
+
+.death-mist-front {
+  z-index: 9;
+  bottom: 8%;
+  height: 13%;
+  opacity: 0.65;
+  animation: death-mist-drift 7s ease-in-out infinite alternate-reverse;
+}
+
+.death-caption {
+  position: absolute;
+  z-index: 12;
+  bottom: 4.5vh;
+  left: 4vw;
+  width: min(610px, 42vw);
+  padding: 20px 22px;
+  border-left: 2px solid rgba(184, 149, 82, 0.72);
+  background: linear-gradient(90deg, rgba(4, 10, 10, 0.93), rgba(4, 10, 10, 0.68));
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.26);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.death-caption.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.death-caption blockquote,
+.death-caption p {
+  margin: 0;
+}
+
+.death-caption blockquote {
+  color: #f0dfbd;
+  font-size: clamp(14px, 1.22vw, 18px);
+  font-style: italic;
+  line-height: 1.65;
+}
+
+.death-caption p {
+  margin-top: 10px;
+  color: rgba(236, 227, 205, 0.78);
+  font-size: clamp(13px, 1.05vw, 16px);
+  line-height: 1.8;
+}
+
+.death-actions {
+  display: flex;
+  margin-top: 16px;
+  align-items: stretch;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.death-actions > button {
+  min-width: 128px;
+  padding: 12px 16px;
+  border: 1px solid rgba(184, 149, 82, 0.45);
+  background: rgba(4, 10, 10, 0.72);
+  color: #ead9b7;
+  cursor: pointer;
+  font: 700 12px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.death-actions > .primary-action {
+  min-width: 210px;
+  margin: 0;
+}
+
+@keyframes ti-death-camera {
+  0% { transform: scale(1.02); }
+  38% { transform: scale(1.045) translate3d(-0.4%, -0.3%, 0); }
+  100% { transform: scale(1.075) translate3d(-0.8%, -0.5%, 0); }
+}
+
+@keyframes ti-alive-fall {
+  0%, 23% { opacity: 1; transform: translateX(-50%) rotate(0deg); }
+  31% { transform: translateX(-50%) rotate(-1.5deg) translateY(-4px); }
+  40% { transform: translateX(-50%) rotate(5deg) translateY(3px); }
+  50% { transform: translateX(-50%) rotate(15deg) translate(12px, 10px); }
+  61% { transform: translateX(-50%) rotate(37deg) translate(36px, 17px); }
+  72% { opacity: 1; transform: translateX(-50%) rotate(76deg) translate(88px, 23px); }
+  78%, 100% { opacity: 0; transform: translateX(-50%) rotate(84deg) translate(112px, 30px); }
+}
+
+@keyframes ti-corpse-arrive {
+  0%, 66% { opacity: 0; transform: translate3d(18px, -14px, 0) scale(0.94) rotate(-1deg); }
+  77% { opacity: 1; transform: translate3d(0, 3px, 0) scale(1.015) rotate(0deg); }
+  88%, 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes ti-death-shadow {
+  0%, 60% { opacity: 0; transform: scaleX(0.68); }
+  78% { opacity: 0.82; transform: scaleX(1.03); }
+  100% { opacity: 0.64; transform: scaleX(1); }
+}
+
+@keyframes distant-bell-mark {
+  0%, 20% { color: rgba(226, 183, 92, 0); transform: translate(-20px, 6px) scale(0.84); }
+  29% { color: rgba(226, 183, 92, 0.92); transform: translate(0, 0) scale(1); }
+  42% { color: rgba(226, 183, 92, 0.5); transform: translate(16px, -5px) scale(1.1); }
+  55%, 100% { color: rgba(226, 183, 92, 0); transform: translate(34px, -10px) scale(1.18); }
+}
+
+@keyframes death-mist-drift {
+  from { transform: translateX(-3vw) scaleX(0.94); }
+  to { transform: translateX(4vw) scaleX(1.04); }
 }
 
 .bell-object span {
@@ -2613,6 +2866,40 @@ blockquote {
     top: 82%;
     left: 84%;
   }
+
+  .stage-tiDeath .scene-card {
+    padding: 0;
+  }
+
+  .stage-tiDeath .scene-card > h1 {
+    font-size: clamp(34px, 7vw, 58px);
+  }
+
+  .ti-alive-cutout {
+    left: 64%;
+    bottom: 26%;
+    height: min(58vh, 620px);
+  }
+
+  .ti-corpse-cutout {
+    right: -5%;
+    bottom: 25%;
+    width: min(86vw, 900px);
+  }
+
+  .death-ground-shadow {
+    right: -2%;
+    bottom: 24%;
+    width: 78vw;
+  }
+
+  .death-caption {
+    right: 4vw;
+    bottom: 3vh;
+    left: 4vw;
+    width: auto;
+    padding: 16px 18px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -2650,6 +2937,70 @@ blockquote {
 
   .progress-track {
     top: 61px;
+  }
+
+  .ti-death-scene {
+    inset: 63px 0 0;
+  }
+
+  .stage-tiDeath .scene-card > .scene-kicker {
+    top: 82px;
+    left: 20px;
+  }
+
+  .stage-tiDeath .scene-card > h1 {
+    top: 106px;
+    left: 20px;
+    font-size: clamp(31px, 10vw, 48px);
+  }
+
+  .stage-tiDeath .scene-card > .scene-pt {
+    top: 156px;
+    left: 20px;
+  }
+
+  .ti-alive-cutout {
+    left: 70%;
+    bottom: 33%;
+    height: min(48vh, 470px);
+  }
+
+  .ti-corpse-cutout {
+    right: -16%;
+    bottom: 31%;
+    width: 106vw;
+  }
+
+  .death-ground-shadow {
+    right: -16%;
+    bottom: 30%;
+    width: 96vw;
+  }
+
+  .death-caption {
+    bottom: 2vh;
+    padding: 13px 14px;
+  }
+
+  .death-caption blockquote {
+    display: none;
+  }
+
+  .death-caption p {
+    margin-top: 0;
+    font-size: 13px;
+    line-height: 1.62;
+  }
+
+  .death-actions {
+    gap: 7px;
+  }
+
+  .death-actions > button,
+  .death-actions > .primary-action {
+    min-width: 0;
+    padding: 10px 12px;
+    flex: 1;
   }
 
   .scene-card,
