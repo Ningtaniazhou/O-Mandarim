@@ -415,6 +415,15 @@ function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; 
   );
 }
 
+function LateCorpsePresence() {
+  return (
+    <figure className="late-ti-corpse" aria-label="狄鑫福的尸体仍横陈在特奥多罗眼前">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福身穿黄绸横卧而死，怀中仍抱着纸鸢" />
+    </figure>
+  );
+}
+
 function DevilFigure() {
   return (
     <figure className="devil-figure" aria-label="魔鬼：黑衣、高礼帽、黑手套，双手按在雨伞柄上">
@@ -541,6 +550,7 @@ export default function Home() {
   };
   const background = backgrounds[stage];
   const ghostIntensity = stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce", "humiliation"].includes(stage) ? 3 : 0;
+  const showLateCorpse = ["devilReturn", "devilDialogue", "testament"].includes(stage);
   const currentHotspots = sceneHotspots[stage] ?? [];
   const currentVisited = visualFinds[stage] ?? [];
   const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
@@ -1561,6 +1571,8 @@ export default function Home() {
           }}
         />
       )}
+
+      {showLateCorpse && <LateCorpsePresence />}
 
       {stage === "bell" && <DevilFigure />}
 
