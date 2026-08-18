@@ -36,12 +36,22 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /留给世人的话/);
   assert.match(page, /狄鑫福/);
   assert.match(page, /卡米洛夫/);
-  assert.match(page, /隐逸之亭/);
-  assert.match(page, /弗拉基米拉/);
-  assert.match(page, /我已经很久没有看见狄鑫福的尸影/);
-  assert.match(page, /听见军刀落在沙发上/);
-  assert.match(page, /beijingDrift/);
-  assert.match(page, /reposeInterrupted/);
+  assert.match(page, /轿中北京/);
+  assert.match(page, /城门之前/);
+  assert.match(page, /红绸轿子/);
+  assert.match(page, /鞑靼城/);
+  assert.match(page, /cidade tártara/);
+  assert.match(page, /华人街区/);
+  assert.match(page, /bairros chineses/);
+  assert.match(page, /卡米洛夫夫人/);
+  assert.match(page, /自从来到北京，我再没有看见狄鑫福与纸鸢/);
+  assert.match(page, /beijingDestination/);
+  assert.match(page, /beijingDismounted/);
+  assert.match(page, /beijingVisited/);
+  assert.match(page, /generalaTopics/);
+  assert.match(page, /掀开轿帘，下轿/);
+  assert.match(page, /回到轿中/);
+  assert.doesNotMatch(page, /beijingDrift|reposeInterrupted|文人服饰|隐逸之亭/);
   assert.match(page, /Tien-Hó/);
   assert.match(page, /荒野上的路/);
   assert.match(page, /马匹已经跑得很远/);
@@ -68,7 +78,10 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /用成把的金币匆忙办妥准备/);
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
   assert.match(page, /线索指向北京以北、越过长城后的天河村/);
-  assert.match(page, /告别弗拉基米拉，前往天河村/);
+  assert.match(page, /告别卡米洛夫夫人，前往天河村/);
+  assert.match(page, /外国魔鬼/);
+  assert.match(page, /从官府到乞丐/);
+  assert.match(page, /地方官也在暗中主持这场抢掠/);
   assert.match(page, /洛雷托的一夜/);
   assert.match(page, /像罪恶的饰物一样从身上甩掉/);
   assert.match(page, /抛下这笔财产/);
@@ -106,7 +119,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /chooseLetterDecision/);
   assert.match(page, /resetRevisitableStage/);
   assert.match(page, /if \(next === "ghost"\) setAvoidance\(""\)/);
-  assert.match(page, /if \(next === "beijing"\) setCamilloff\(""\)/);
+  assert.match(page, /if \(next === "beijing"\) \{/);
+  assert.match(page, /setBeijingVisited\(\[\]\)/);
   assert.match(page, /if \(next === "tienho"\) setAttackChoice\(""\)/);
   assert.match(page, /if \(next === "letter"\) setLetterDecision\(""\)/);
   assert.match(page, /setAvoidance\(choice\)/);
@@ -115,6 +129,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /unsolved-investigation-v1\.ogg/);
   assert.match(page, /volume: 0\.74/);
   assert.match(page, /西尔维斯特/);
+  assert.match(page, /setInheritanceOpened\(true\); setGhostRevealed\(true\)/);
   assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿|看向镜子里的第四个人|小说直到上海才重新标出地点|哥萨克与译员萨托|原作让“后代”|选择“再寻找一次”并没有制造|特奥多罗只在脑中排演|原作没有给特奥多罗|原作提供的稳定出口|终局并不是“享受或悔恨”的二选一|告诫因此也沾染了自我开脱/);
 
   await Promise.all([
@@ -123,6 +138,9 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/east-journey.png", import.meta.url)),
     access(new URL("../public/pequim-embassy-v2.png", import.meta.url)),
     access(new URL("../public/pequim-repose-v1.png", import.meta.url)),
+    access(new URL("../public/pequim-arrival-v1.png", import.meta.url)),
+    access(new URL("../public/pequim-tartar-city-v1.png", import.meta.url)),
+    access(new URL("../public/pequim-chinese-quarter-v1.png", import.meta.url)),
     access(new URL("../public/intro-cover-v1.png", import.meta.url)),
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
     access(new URL("../public/tienho-inn-v3.png", import.meta.url)),

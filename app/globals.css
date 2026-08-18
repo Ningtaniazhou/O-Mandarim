@@ -322,6 +322,12 @@ button:focus-visible {
   width: min(760px, 43.5vw);
 }
 
+/* The new Beijing plates reserve their left half for prose and keep all scenic focal points on the right. */
+.stage-beijing .scene-card,
+.stage-repose .scene-card {
+  width: min(760px, 48vw);
+}
+
 /* Keep room labels with their objects instead of letting them run into the prose column. */
 .stage-room .scene-hotspot span {
   position: absolute;
@@ -1461,42 +1467,125 @@ blockquote {
   background: rgba(6, 13, 13, 0.58);
 }
 
-.repose-scene > p {
-  max-width: 68ch;
+.beijing-arrival-scene,
+.beijing-tour-scene {
+  max-width: 680px;
 }
 
-.repose-drift {
-  margin-top: 24px;
-  padding: 22px;
-  border: 1px solid rgba(184, 149, 82, 0.34);
-  background: rgba(5, 12, 12, 0.72);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
-}
-
-.repose-axis {
+.beijing-destination-grid {
   display: grid;
-  grid-template-columns: auto minmax(160px, 1fr) auto;
-  align-items: center;
-  color: rgba(229, 213, 180, 0.62);
+  margin: 24px 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.beijing-destination-grid button,
+.generala-topics button {
+  min-height: 148px;
+  padding: 17px;
+  border: 1px solid rgba(184, 149, 82, 0.32);
+  background: rgba(5, 12, 12, 0.78);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.beijing-destination-grid button:hover,
+.beijing-destination-grid button.is-visited,
+.generala-topics button:hover,
+.generala-topics button.is-read {
+  border-color: var(--gold);
+  background: rgba(184, 149, 82, 0.14);
+  transform: translateY(-2px);
+}
+
+.beijing-destination-grid span,
+.beijing-destination-grid strong,
+.beijing-destination-grid em,
+.beijing-destination-grid small,
+.generala-topics span,
+.generala-topics small {
+  display: block;
+}
+
+.beijing-destination-grid span {
+  margin-bottom: 13px;
+  color: var(--red-light);
+  font: 700 9px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.16em;
+}
+
+.beijing-destination-grid strong {
+  color: #efe2c8;
+  font-size: 16px;
+}
+
+.beijing-destination-grid em {
+  margin-top: 3px;
+  color: var(--gold);
+  font-size: 10px;
+}
+
+.beijing-destination-grid small,
+.generala-topics small {
+  margin-top: 12px;
+  color: rgba(229, 213, 180, 0.58);
+  font: 10px/1.55 Arial, "Noto Sans CJK SC", sans-serif;
+}
+
+.litter-arrival {
+  margin-top: 22px;
+  padding: 25px;
+  border: 1px solid rgba(184, 149, 82, 0.38);
+  background: rgba(5, 12, 12, 0.8);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.34);
+  animation: slip-in 0.42s ease both;
+}
+
+.litter-arrival > span,
+.litter-arrival > em {
+  color: var(--red-light);
   font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
-  gap: 14px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.15em;
 }
 
-.repose-axis input {
-  width: 100%;
-  height: 26px;
-  accent-color: var(--red-light);
-  cursor: ew-resize;
+.litter-arrival h2 {
+  margin: 10px 0 1px;
+  color: #f0e5ce;
+  font-size: clamp(30px, 3vw, 48px);
+  font-weight: 500;
 }
 
-.repose-thought {
-  min-height: 3.4em;
-  margin: 18px 0 10px;
-  color: #eadcc0;
-  font-size: 0.98em;
+.litter-arrival > em {
+  display: block;
+  color: var(--gold);
   font-style: italic;
-  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.litter-arrival p {
+  margin: 18px 0 0;
+  color: rgba(236, 225, 201, 0.78);
+}
+
+.beijing-place-view,
+.camilloff-meeting {
+  animation: slip-in 0.46s ease both;
+}
+
+.generala-topics {
+  display: grid;
+  margin: 22px 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.generala-topics button {
+  min-height: 104px;
+}
+
+.generala-topics span {
+  color: #efe2c8;
+  font-size: 15px;
 }
 
 .repose-news {
@@ -1645,6 +1734,7 @@ blockquote {
 }
 
 .stage-inheritance .ti-figure {
+  z-index: 7;
   right: auto;
   bottom: 7vh;
   left: -3vw;
@@ -2153,13 +2243,9 @@ blockquote {
     grid-template-columns: 1fr;
   }
 
-  .repose-axis {
+  .beijing-destination-grid,
+  .generala-topics {
     grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .repose-axis span:last-child {
-    text-align: right;
   }
 }
 
