@@ -58,7 +58,7 @@ const routes = [
 ];
 
 const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }> = {
-  intro: { act: "序章", title: "未响的铃", subtitle: "一声轻响" },
+  intro: { act: "", title: "未响的铃", subtitle: "一声轻响" },
   room: { act: "第一章 · 里斯本", title: "特奥多罗的房间", subtitle: "一个贫穷的小职员" },
   book: { act: "第一章 · 旧书", title: "发亮的字句", subtitle: "" },
   bell: { act: "第一章 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
@@ -92,6 +92,7 @@ const musicCues = {
   journey: { src: "/audio/the-journey-begins.ogg", volume: 0.22 },
   pursuit: { src: "/audio/pursuit.mp3", volume: 0.2 },
   contemplation: { src: "/audio/contemplation.mp3", volume: 0.25 },
+  oriental: { src: "/audio/asianoriental1.ogg", volume: 0.3 },
 } as const;
 
 const stageMusic: Record<Stage, { src: string; volume: number }> = {
@@ -106,7 +107,7 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   ghost: musicCues.haunting,
   map: musicCues.journey,
   beijing: musicCues.journey,
-  repose: musicCues.ballroom,
+  repose: musicCues.oriental,
   tienho: musicCues.pursuit,
   wilderness: musicCues.pursuit,
   mission: musicCues.contemplation,
@@ -873,7 +874,7 @@ export default function Home() {
       )}
 
       <section className={`scene-card ${isEast ? "scene-card-east" : ""}`} aria-live="polite" aria-hidden={showBeijingCurtain || undefined}>
-        <div className="scene-kicker">{info.act}</div>
+        {info.act && <div className="scene-kicker">{info.act}</div>}
         <h1>{stage === "intro" ? "《满大人》" : info.title}</h1>
         {info.subtitle && <div className="scene-pt">{info.subtitle}</div>}
         {selectedHotspot && <SourceSlip item={selectedHotspot} />}
@@ -884,7 +885,7 @@ export default function Home() {
             <button className="primary-action bell-action" onClick={() => { sound.enable(); go("room"); }}>
               <span>进入故事世界</span>
             </button>
-            <p className="edition-note">根据埃萨·德·凯罗斯的小说改编 · 中文交互版</p>
+            <p className="edition-note">根据埃萨·德·凯罗斯的小说改编</p>
           </div>
         )}
 
@@ -1519,11 +1520,8 @@ export default function Home() {
             <button className="modal-close" onClick={() => setInfoOpen(false)} aria-label="关闭">×</button>
             <div className="scene-kicker">版本说明</div>
             <h2 id="about-title">关于这个校订版</h2>
-            <p>这是一个可完整通关的浏览器交互叙事，根据埃萨·德·凯罗斯一八八〇年的小说《满大人》改编。它保留“摇铃—暴富—亡者—远东之旅—返欧—奢华牢笼”的主线，并加入“三次拒绝”的特别结局。</p>
-            <p>小说引文采用葡萄牙语与中文对照，不再显示书中位置；物件展开后只呈现与之有关的中文译文。</p>
-            <p>狄鑫福以横卧尸身反复进入画面；魔鬼则依照原作成为一个黑衣、高礼帽、戴黑手套并把双手按在雨伞柄上的中产人物。两者都以透明背景角色素材融入场景。</p>
-            <p>拒绝结局中的新增文字均明确标为本项目原创；视觉中的中国是对特奥多罗及十九世纪欧洲“东方想象”的批判性呈现，不作为历史中国的写实复原。</p>
-            <p className="credits">文字与交互设计：本研究原型<br />插画与角色设定：人工智能辅助生成并完成透明背景处理</p>
+            <p>本交互叙事游戏根据埃萨·德·凯罗斯一八八〇年的小说《满大人》改编。它保留埃萨原作的故事主线，在此基础上，如果三次拒绝魔鬼的摇铃提议则触发特别结局，特别结局为原创内容，与原作无关。本作中涉及的中国是特奥多罗及十九世纪欧洲对于东方的想象，并非历史中国的现实复原。</p>
+            <p className="credits">制作者：周宁　　使用模型：chatgpt sol 5.6</p>
             <div className="music-credits">
               <span>分幕配乐</span>
               <a href="https://opengameart.org/content/unsolved-investigation" target="_blank" rel="noreferrer">《Unsolved Investigation》· isaiah658 · CC0</a>
@@ -1532,6 +1530,7 @@ export default function Home() {
               <a href="https://opengameart.org/content/the-journey-begins" target="_blank" rel="noreferrer">《The Journey Begins》· Igor Gundarev · CC0</a>
               <a href="https://opengameart.org/content/pursuit" target="_blank" rel="noreferrer">《Pursuit》· Sudocolon · CC0</a>
               <a href="https://opengameart.org/content/contemplation-0" target="_blank" rel="noreferrer">《Contemplation》· Joth · CC0</a>
+              <a href="https://opengameart.org/content/asianoriental1" target="_blank" rel="noreferrer">《Asianoriental1》· Tozan · CC0</a>
             </div>
           </section>
         </div>
