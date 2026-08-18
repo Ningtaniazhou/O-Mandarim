@@ -5,6 +5,8 @@ import BeijingCurtainScene from "./beijing-curtain-scene";
 
 type Stage =
   | "intro"
+  | "office"
+  | "market"
   | "room"
   | "book"
   | "bell"
@@ -16,6 +18,8 @@ type Stage =
   | "map"
   | "beijing"
   | "repose"
+  | "camilloffSalon"
+  | "camilloffMeeting"
   | "tienho"
   | "wilderness"
   | "mission"
@@ -38,15 +42,14 @@ type HotspotItem = {
   translation: string;
 };
 
-type BeijingDestination = "" | "tartar" | "chinese" | "camilloff";
+type BeijingDestination = "" | "tartar" | "chinese";
 
 const beijingDestinations: Record<Exclude<BeijingDestination, "">, { title: string; original: string; summary: string }> = {
-  tartar: { title: "紫禁城", original: "cidade tártara", summary: "宫墙、权贵与金色屋顶" },
-  chinese: { title: "老百姓的街巷", original: "bairros chineses", summary: "泥泞、尘土与拥挤的人群" },
-  camilloff: { title: "卡米洛夫府邸", original: "residência de Camilloff", summary: "月色花园与将军夫人的琴声" },
+  tartar: { title: "紫禁城", original: "", summary: "宫墙、权贵与金色屋顶" },
+  chinese: { title: "老百姓的街巷", original: "", summary: "泥泞、尘土与拥挤的人群" },
 };
 
-const beijingDestinationKeys = ["tartar", "chinese", "camilloff"] as const;
+const beijingDestinationKeys = ["tartar", "chinese"] as const;
 
 const routes = [
   ["里斯本", "我离开洛雷托豪宅，决意亲赴北京寻找狄鑫福的家族。"],
@@ -59,6 +62,8 @@ const routes = [
 
 const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }> = {
   intro: { act: "", title: "未响的铃", subtitle: "一声轻响" },
+  office: { act: "第一章 · 里斯本", title: "王国内政部", subtitle: "抄写员的白昼" },
+  market: { act: "第一章 · 里斯本", title: "圣克拉拉旧货市场", subtitle: "Feira da Ladra" },
   room: { act: "第一章 · 里斯本", title: "特奥多罗的房间", subtitle: "一个贫穷的小职员" },
   book: { act: "第一章 · 旧书", title: "发亮的字句", subtitle: "" },
   bell: { act: "第一章 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
@@ -69,7 +74,9 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   ghost: { act: "第三章 · 亡者", title: "宴席上的客人", subtitle: "狄鑫福" },
   map: { act: "第四章 · 远行", title: "向东方去", subtitle: "从里斯本到北京" },
   beijing: { act: "第五章 · 北京", title: "城门之前", subtitle: "东直门外的轿子" },
-  repose: { act: "第五章 · 北京", title: "轿中北京", subtitle: "宫墙、街巷与月色花园" },
+  repose: { act: "第五章 · 北京", title: "轿中北京", subtitle: "宫墙与老百姓的街巷" },
+  camilloffSalon: { act: "第五章 · 北京", title: "将军夫人的客厅", subtitle: "月色花园与钢琴" },
+  camilloffMeeting: { act: "第五章 · 北京", title: "卡米洛夫的建议", subtitle: "赎罪的三种办法" },
   tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
   wilderness: { act: "第六章 · 远东", title: "荒野上的路", subtitle: "马匹消失之后" },
   mission: { act: "第七章 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
@@ -97,6 +104,8 @@ const musicCues = {
 
 const stageMusic: Record<Stage, { src: string; volume: number }> = {
   intro: musicCues.mystery,
+  office: musicCues.mystery,
+  market: musicCues.mystery,
   room: musicCues.mystery,
   book: musicCues.mystery,
   bell: musicCues.mystery,
@@ -108,6 +117,8 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   map: musicCues.journey,
   beijing: musicCues.journey,
   repose: musicCues.oriental,
+  camilloffSalon: musicCues.oriental,
+  camilloffMeeting: musicCues.oriental,
   tienho: musicCues.pursuit,
   wilderness: musicCues.pursuit,
   mission: musicCues.contemplation,
@@ -129,6 +140,13 @@ const refusalLines = [
 ];
 
 const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
+  market: [
+    { id: "telescope", label: "旧望远镜", x: 13, y: 64, translation: "黄铜镜筒上积着海盐般的白斑；摊主说，它曾看见远洋船只驶入特茹河。" },
+    { id: "porcelain", label: "瓷制圣母像", x: 21, y: 70, translation: "一尊指尖大小的瓷制圣母像，蓝釉已经从衣褶上剥落。" },
+    { id: "reliquary", label: "鎏金圣物匣", x: 54, y: 64, translation: "鎏金匣门只剩一扇，里面没有圣骨，只有潮湿天鹅绒留下的暗印。" },
+    { id: "watch", label: "停摆的怀表", x: 49, y: 82, translation: "怀表的指针停在四点十七分；谁也说不清那一刻曾经发生过什么。" },
+    { id: "old-volume", label: "虫蛀的旧书", x: 35, y: 78, translation: "古老庄严的字体、虫蛀的黄纸、修道院式的厚重装帧，还有夹在书中的绿色丝带——都令我着迷。" },
+  ],
   room: [
     { id: "lamp", label: "绿色灯罩", x: 7, y: 41, translation: "绿色灯罩在蜡烛周围投下一片半明半暗。" },
     { id: "folio", label: "旧书", x: 21, y: 73, translation: "古老庄严的字体、被虫蛀的黄纸、修道院式的厚重装帧，还有夹在那一页的绿色丝带——都令我着迷！" },
@@ -446,6 +464,10 @@ export default function Home() {
   const [stage, setStage] = useState<Stage>("intro");
   const [transitioning, setTransitioning] = useState(false);
   const [roomFinds, setRoomFinds] = useState<string[]>([]);
+  const [officeDocumentOpen, setOfficeDocumentOpen] = useState(false);
+  const [officeDocumentSeen, setOfficeDocumentSeen] = useState(false);
+  const [officeDozing, setOfficeDozing] = useState(false);
+  const [officeDozed, setOfficeDozed] = useState(false);
   const [refusals, setRefusals] = useState(0);
   const [bellRung, setBellRung] = useState(false);
   const [bellSequence, setBellSequence] = useState<"" | "ringing" | "black">("");
@@ -457,10 +479,8 @@ export default function Home() {
   const [routeIndex, setRouteIndex] = useState(0);
   const [camilloff, setCamilloff] = useState("");
   const [beijingDestination, setBeijingDestination] = useState<BeijingDestination>("");
-  const [beijingDismounted, setBeijingDismounted] = useState(false);
   const [beijingVisited, setBeijingVisited] = useState<Exclude<BeijingDestination, "">[]>([]);
   const [generalaTopics, setGeneralaTopics] = useState<string[]>([]);
-  const [camilloffMeeting, setCamilloffMeeting] = useState(false);
   const [camilloffNews, setCamilloffNews] = useState(false);
   const [attackChoice, setAttackChoice] = useState("");
   const [collapsePhase, setCollapsePhase] = useState<"" | "falling" | "dark" | "waking">("");
@@ -483,9 +503,11 @@ export default function Home() {
   const ringing = bellSequence === "ringing";
 
   const info = stageInfo[stage];
-  const isEast = ["map", "beijing", "repose", "tienho", "wilderness", "mission", "letter"].includes(stage);
+  const isEast = ["map", "beijing", "repose", "camilloffSalon", "camilloffMeeting", "tienho", "wilderness", "mission", "letter"].includes(stage);
   const backgrounds: Record<Stage, string> = {
     intro: "/intro-cover-v1.png",
+    office: "/ministry-office-awake-v1.png",
+    market: "/feira-da-ladra-v1.png",
     room: "/lisbon-room-v3.png",
     book: "/lisbon-room-v3.png",
     bell: "/lisbon-room-v3.png",
@@ -497,6 +519,8 @@ export default function Home() {
     map: "/east-journey.png",
     beijing: "/pequim-arrival-v1.png",
     repose: "/pequim-litter-interior-v1.png",
+    camilloffSalon: "/pequim-repose-v1.png",
+    camilloffMeeting: "/camilloff-meeting-v1.png",
     tienho: "/tienho-inn-v3.png",
     wilderness: "/wilderness-v1.png",
     mission: "/mission-cloister-v5.png",
@@ -514,39 +538,45 @@ export default function Home() {
   const beijingStreetBackgrounds: Record<Exclude<BeijingDestination, "">, string> = {
     tartar: "/pequim-tartar-city-v1.png",
     chinese: "/pequim-chinese-quarter-v1.png",
-    camilloff: "/pequim-repose-v1.png",
   };
-  const background = stage === "repose" && beijingDestination && beijingDismounted
-    ? beijingStreetBackgrounds[beijingDestination]
-    : backgrounds[stage];
+  const background = backgrounds[stage];
   const ghostIntensity = stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce", "humiliation"].includes(stage) ? 3 : 0;
   const currentHotspots = sceneHotspots[stage] ?? [];
   const currentVisited = visualFinds[stage] ?? [];
   const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
-  const activeBeijingDestination = beijingDestination ? beijingDestinations[beijingDestination] : null;
   const allBeijingStopsVisited = beijingDestinationKeys.every((place) => beijingVisited.includes(place));
-  const showBeijingCurtain = stage === "repose" && Boolean(beijingDestination) && !camilloffMeeting && !camilloffNews;
+  const showBeijingCurtain = stage === "repose" && Boolean(beijingDestination);
 
   const resetRevisitableStage = (next: Stage) => {
+    if (next === "office") {
+      setOfficeDocumentOpen(false);
+      setOfficeDocumentSeen(false);
+      setOfficeDozing(false);
+      setOfficeDozed(false);
+    }
+    if (next === "market") {
+      setVisualFinds((finds) => ({ ...finds, market: [] }));
+    }
     if (next === "bell" && !bellRung) setRefusals(0);
     if (next === "ghost") setAvoidance("");
     if (next === "beijing") {
       setCamilloff("");
       setBeijingDestination("");
-      setBeijingDismounted(false);
       setBeijingVisited([]);
       setGeneralaTopics([]);
-      setCamilloffMeeting(false);
       setCamilloffNews(false);
       setVisualFinds((finds) => ({ ...finds, beijing: [] }));
     }
     if (next === "repose") {
       setCamilloff("");
       setBeijingDestination("");
-      setBeijingDismounted(false);
       setBeijingVisited([]);
       setGeneralaTopics([]);
-      setCamilloffMeeting(false);
+      setCamilloffNews(false);
+    }
+    if (next === "camilloffSalon") setGeneralaTopics([]);
+    if (next === "camilloffMeeting") {
+      setCamilloff("");
       setCamilloffNews(false);
     }
     if (next === "tienho") setAttackChoice("");
@@ -592,6 +622,10 @@ export default function Home() {
     setStage("intro");
     setTransitioning(false);
     setRoomFinds([]);
+    setOfficeDocumentOpen(false);
+    setOfficeDocumentSeen(false);
+    setOfficeDozing(false);
+    setOfficeDozed(false);
     setRefusals(0);
     setBellRung(false);
     setBellSequence("");
@@ -603,10 +637,8 @@ export default function Home() {
     setRouteIndex(0);
     setCamilloff("");
     setBeijingDestination("");
-    setBeijingDismounted(false);
     setBeijingVisited([]);
     setGeneralaTopics([]);
-    setCamilloffMeeting(false);
     setCamilloffNews(false);
     setAttackChoice("");
     setCollapsePhase("");
@@ -628,7 +660,7 @@ export default function Home() {
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
+    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffSalon", "camilloffMeeting", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -642,6 +674,8 @@ export default function Home() {
 
   useEffect(() => {
     if (stage !== "tiDeath") return;
+    // Reset the one-shot animation whenever this scene is entered or replayed.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDeathAnimationDone(false);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDeathAnimationDone(true);
@@ -713,20 +747,13 @@ export default function Home() {
 
   const chooseBeijingDestination = (destination: Exclude<BeijingDestination, "">) => {
     setBeijingDestination(destination);
-    setBeijingDismounted(false);
     setBeijingVisited((visited) => visited.includes(destination) ? visited : [...visited, destination]);
     setSelectedHotspot(null);
     sound.tone(174.61, 0.75, 0.06, 0, "triangle");
   };
 
-  const dismountInBeijing = () => {
-    if (!beijingDestination) return;
-    setBeijingDismounted(true);
-  };
-
   const returnToLitter = () => {
     setBeijingDestination("");
-    setBeijingDismounted(false);
     setSelectedHotspot(null);
   };
 
@@ -736,10 +763,19 @@ export default function Home() {
   };
 
   const beginCamilloffMeeting = () => {
-    setBeijingDestination("camilloff");
-    setBeijingDismounted(true);
-    setCamilloffMeeting(true);
-    setCamilloff("");
+    go("camilloffSalon");
+  };
+
+  const toggleOfficeDocument = () => {
+    setOfficeDocumentSeen(true);
+    setOfficeDocumentOpen((open) => !open);
+    sound.tone(220, 0.55, 0.05, 0, "triangle");
+  };
+
+  const toggleOfficeDoze = () => {
+    setOfficeDozed(true);
+    setOfficeDozing((dozing) => !dozing);
+    sound.tone(123.47, 0.9, 0.045, 0, "sine");
   };
 
   const chooseAttack = () => {
@@ -804,6 +840,8 @@ export default function Home() {
 
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("preview") === "ti-death") {
+      // The preview route intentionally selects its isolated demonstration scene on mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStage("tiDeath");
       setStageHistory([]);
     }
@@ -812,6 +850,7 @@ export default function Home() {
   return (
     <main className={`game-shell stage-${stage} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${shake ? "is-shaking" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
       <div className="scene-image" style={{ backgroundImage: `url(${background})` }} aria-hidden="true" />
+      {stage === "office" && <div className={`office-doze-image ${officeDozing ? "is-visible" : ""}`} aria-hidden="true" />}
       <div className="scene-vignette" aria-hidden="true" />
       <div className="paper-grain" aria-hidden="true" />
 
@@ -858,18 +897,7 @@ export default function Home() {
               <p>世代污物压成的泥泞覆盖路面，只剩几块粉红色明代石板。饥饿的狗在空地哀叫，黑色污水散发刺鼻气味；尘土把人群罩成昏黄一片，骆驼商队缓慢挤过穷铺、棚屋、苦役和成群乞丐。越靠近天坛，贫困越像一堵没有尽头的墙。</p>
               <BilingualQuote compact pt="Uma multidão rumorosa e espessa... a poeira envolve tudo de uma névoa amarelada; um fedor acre exala-se dos enxurros negros." zh="喧闹而稠密的人群川流不息……尘土给一切罩上黄雾，黑色污水沟散出刺鼻恶臭。" />
             </>
-          ) : (
-            <>
-              <BilingualQuote pt="Era alta e loira; tinha os olhos verdes das sereias de Homero... e nos dedos, que lhe beijei, errava um aroma fino de sândalo e de chá." zh="她身材高挑，一头金发，绿色眼睛像荷马笔下的海妖……我吻过的手指间，浮动着檀香与茶的细微香气。" />
-              <p>月光洒满花园，流水在黑暗中低语。卡米洛夫夫人穿白色丝裙，胸前别着一朵猩红玫瑰；在她身边，欧洲的谈话与钢琴声几乎把我从赎罪之旅里带走。</p>
-              <div className="generala-topics">
-                <button className={generalaTopics.includes("europe") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("europe")}><span>谈起欧洲</span><small>虚无主义、左拉与里奥十三世</small></button>
-                <button className={generalaTopics.includes("piano") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("piano")}><span>请她坐到钢琴前</span><small>女低音划破紫禁城的寂静</small></button>
-              </div>
-              {generalaTopics.includes("europe") && <BilingualQuote compact pt="Conversámos muito da Europa, do niilismo, de Zola, de Leão XIII, e da magreza de Sarah Bernhardt..." zh="我们谈了许多欧洲的事：虚无主义、左拉、里奥十三世，还有莎拉·伯恩哈特的消瘦……" />}
-              {generalaTopics.includes("piano") && <BilingualQuote compact pt="Depois ela sentou-se ao piano — e a sua voz de contralto quebrou até tarde os silêncios melancólicos da Cidade Tártara..." zh="后来她坐到钢琴前——她的女低音一直到深夜还在划破紫禁城忧郁的寂静……" />}
-            </>
-          )}
+          ) : null}
         </BeijingCurtainScene>
       )}
 
@@ -882,10 +910,58 @@ export default function Home() {
         {stage === "intro" && (
           <div className="intro-content">
             <p className="lede">一柄摇铃，一条从里斯本通往北京的航线，<br />以及一笔永远无法还清的债。</p>
-            <button className="primary-action bell-action" onClick={() => { sound.enable(); go("room"); }}>
+            <button className="primary-action bell-action" onClick={() => { sound.enable(); go("office"); }}>
               <span>进入故事世界</span>
             </button>
             <p className="edition-note">根据埃萨·德·凯罗斯的小说改编</p>
+          </div>
+        )}
+
+        {stage === "office" && (
+          <div className="scene-body office-scene">
+            <BilingualQuote pt="A minha existência era bem equilibrada e suave. Toda a semana, de mangas de lustrina à carteira da minha repartição, ia lançando, numa formosa letra cursiva, sobre o papel ‘Tojal’ do Estado, estas frases fáceis..." zh="我的生活平稳而安宁。每周，我戴着黑亮的护袖，伏在部门的书桌前，以优美的草体誊写国家公文。" />
+            <p>墨水、火漆与称谓把一周分成整齐的格子。我只须让每一道笔画保持恭敬，便可以安稳地领到每月二万雷斯。</p>
+            <div className="office-actions">
+              <button className={`object-action ${officeDocumentSeen ? "is-read" : ""}`} onClick={toggleOfficeDocument}><span>{officeDocumentOpen ? "收起桌上的公文" : "展开桌上的公文"}</span><small>国家“托雅尔”公文纸</small></button>
+              <button className={`object-action ${officeDozed ? "is-read" : ""}`} onClick={toggleOfficeDoze}><span>{officeDozing ? "从梦里醒来" : "打瞌睡"}</span><small>让笔尖暂时停下</small></button>
+            </div>
+            {officeDocumentOpen && (
+              <article className="official-paper">
+                <span>王国内政部 · 往来公文</span>
+                <p lang="pt">Exmo. Sr. — Tenho a honra de comunicar a V. Exa... Tenho a honra de passar às mãos de V. Exa., Ilmo. e Exmo. Sr...</p>
+                <p>尊敬的阁下：本人谨荣幸地向阁下禀告……本人谨荣幸地将此件呈交尊贵而卓越的阁下钧鉴……</p>
+              </article>
+            )}
+            {officeDozing && (
+              <div className="dream-bubbles" aria-label="特奥多罗的白日梦">
+                <p>“在中央饭店开一瓶香槟，让侍者记住我的名字……”</p>
+                <p>“让一双温柔的手向我伸来，在维纳斯清凉的怀中忘掉这张书桌……”</p>
+              </div>
+            )}
+            {officeDocumentSeen && officeDozed ? (
+              <button className="primary-action" onClick={() => go("market")}>下班 <span>→</span></button>
+            ) : <p className="discovery-count">桌上的公文与短暂的白日梦，都在等待我。</p>}
+          </div>
+        )}
+
+        {stage === "market" && (
+          <div className="scene-body market-scene">
+            <BilingualQuote pt="Tinha tomado o hábito discreto de comprar na Feira da Ladra antigos volumes desirmanados, e à noite, no meu quarto, repastava-me dessas leituras curiosas." zh="我养成了一个不动声色的习惯：到旧货市场买些零散残旧的古书，晚上带回房间，在这些古怪的读物里消磨时间。" />
+            <p>圣克拉拉的摊位沿着斜坡铺开。旧望远镜、失去圣骨的匣子、剥釉的圣像与停摆的怀表挤在一起；书摊上那些庄严而荒诞的题名，总比一顿晚餐更容易落入我的预算。</p>
+            <div className="hotspot-index">
+              {(sceneHotspots.market ?? []).map((item) => (
+                <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
+                  <span>{currentVisited.includes(item.id) ? "✓" : "+"}</span>{item.label}
+                </button>
+              ))}
+            </div>
+            {hasInspectedAll ? (
+              <>
+                <BilingualQuote compact pt="O tipo venerando, o papel amarelado com picadas de traça, a grave encadernação freirática, a fitinha verde marcando a página — encantavam-me!" zh="古老庄严的字体、虫蛀的黄纸、修道院式的厚重装帧，还有夹在书中的绿色丝带——都令我着迷！" />
+                <p>我把那本旧书夹在腋下，数出几个铜币。它将和我一起回到孔塞桑巷一百零六号。</p>
+                <button className="primary-action" onClick={() => go("room")}>回家 <span>→</span></button>
+              </>
+            ) : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
           </div>
         )}
 
@@ -1106,18 +1182,57 @@ export default function Home() {
 
         {stage === "repose" && (
           <div className="scene-body beijing-tour-scene">
+            {!beijingDestination && (
+              <>
+                <BilingualQuote pt="Senti-me triste; subi à liteira, cerrei as cortinas de seda escarlate todas bordadas a ouro; e cercado dos cossacos, eis-me entrando a velha Pequim..." zh="我感到一阵悲凉；坐进轿子，合上绣满金线的猩红丝帘，在哥萨克骑兵护送下进入古老的北京……" />
+                <p>车轮、轿杠、马蹄和骆驼的步伐从帘外交错而过。每到一处，我都可以命轿夫停下，掀开帘子，看看这座城把奢华与苦难安置在多么接近的地方。</p>
+                <div className="beijing-destination-grid">
+                  {beijingDestinationKeys.map((key) => {
+                    const destination = beijingDestinations[key];
+                    return (
+                    <button key={key} className={beijingVisited.includes(key) ? "is-visited" : ""} onClick={() => chooseBeijingDestination(key)}>
+                      <span>{beijingVisited.includes(key) ? "再去" : "前往"}</span>
+                      <strong>{destination.title}</strong>
+                      {destination.original && <em>{destination.original}</em>}
+                      <small>{destination.summary}</small>
+                    </button>
+                    );
+                  })}
+                </div>
+                {allBeijingStopsVisited && <button className="primary-action" onClick={beginCamilloffMeeting}>前往卡米洛夫府邸 <span>→</span></button>}
+              </>
+            )}
+          </div>
+        )}
+
+        {stage === "camilloffSalon" && (
+          <div className="scene-body generala-visit">
+            <BilingualQuote pt="Era alta e loira; tinha os olhos verdes das sereias de Homero... e nos dedos, que lhe beijei, errava um aroma fino de sândalo e de chá." zh="她身材高挑，一头金发，绿色眼睛像荷马笔下的海妖……我吻过的手指间，浮动着檀香与茶的细微香气。" />
+            <p>轿子停在卡米洛夫府邸。月光洒满花园，流水在黑暗中低语；将军夫人穿白色丝裙，胸前别着一朵猩红玫瑰。在她身边，欧洲的谈话与钢琴声几乎把我从赎罪之旅里带走。</p>
+            <div className="generala-topics">
+              <button className={generalaTopics.includes("europe") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("europe")}><span>和她聊天</span><small>虚无主义、左拉与里奥十三世</small></button>
+              <button className={generalaTopics.includes("piano") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("piano")}><span>请她弹琴</span><small>女低音划破紫禁城的寂静</small></button>
+            </div>
+            {generalaTopics.includes("europe") && <BilingualQuote compact pt="Conversámos muito da Europa, do niilismo, de Zola, de Leão XIII, e da magreza de Sarah Bernhardt..." zh="我们谈了许多欧洲的事：虚无主义、左拉、里奥十三世，还有莎拉·伯恩哈特的消瘦……" />}
+            {generalaTopics.includes("piano") && <BilingualQuote compact pt="Depois ela sentou-se ao piano — e a sua voz de contralto quebrou até tarde os silêncios melancólicos da Cidade Tártara..." zh="后来她坐到钢琴前——她的女低音一直到深夜还在划破紫禁城忧郁的寂静……" />}
+            {generalaTopics.length >= 2 ? <button className="primary-action" onClick={() => go("camilloffMeeting")}>第二天去见卡米洛夫将军 <span>→</span></button> : <p className="discovery-count">与她交谈，再听一段琴声。</p>}
+          </div>
+        )}
+
+        {stage === "camilloffMeeting" && (
+          <div className="scene-body camilloff-meeting">
             {camilloffNews ? (
               <div className="dialogue-result repose-news">
                 <div className="speaker">卡米洛夫</div>
                 <BilingualQuote compact pt="Descobrira-se enfim que um opulento mandarim, de nome Ti Chin-Fu, vivera outrora nos confins da Mongólia, na vila de Tien-Hó! Tinha morrido subitamente: e a sua larga descendência residia lá, em miséria, num casebre vil..." zh="终于查明，一位名叫狄鑫福的富有满大人曾住在蒙古边境的天河村。他猝然去世；众多后代仍住在那里，穷困地挤在一间破屋里……" />
                 <BilingualQuote compact pt="Depois desde que chegara a Pequim, eu não tornara a avistar a forma odiosa de Ti Chin-Fu e do seu papagaio. A Consciência era dentro em mim como uma pomba adormecida." zh="自从来到北京，我再没有看见狄鑫福与纸鸢那可憎的形影。良心在我心里，仿佛一只睡着的鸽子。" />
                 <p>我几乎想把这份寂静误认作宽恕。卡米洛夫却已经用铅笔标出路线：线索指向北京以北、越过长城后的天河村；先沿白河北上，再换船、骑马穿过长城，最后还要步行两天。</p>
-                <button className="primary-action" onClick={() => go("tienho")}>告别卡米洛夫夫人，前往天河村 <span>→</span></button>
+                <button className="primary-action" onClick={() => go("tienho")}>告别卡米洛夫，前往天河村 <span>→</span></button>
               </div>
-            ) : camilloffMeeting ? (
-              <div className="camilloff-meeting">
+            ) : (
+              <>
                 <BilingualQuote pt="Sei duas palavras importantes, general: ‘mandarim’ e ‘chá’." zh="将军，我会两个重要的词：‘满大人’和‘茶’。" />
-                <p>第二天一早，我把那柄摇铃、狄鑫福的死与此行的目的全都告诉卡米洛夫。老将军捋着浓密的白胡子，逐一驳回我那些过于简单的补偿办法。</p>
+                <p>第二天一早，我把那柄摇铃、狄鑫福的死与此行的目的全都告诉卡米洛夫。我们隔桌而坐；老将军捋着浓密的白胡子，逐一驳回我那些过于简单的补偿办法。</p>
                 {!camilloff ? (
                   <div className="choice-stack">
                     <button className="choice-button" onClick={() => chooseCamilloff("treasury")}><span>把一半巨款交给国库</span><small>也许狄鑫福会因此平静</small></button>
@@ -1132,60 +1247,7 @@ export default function Home() {
                     <button className="primary-action" onClick={() => setCamilloffNews(true)}>等待佟亲王的回信 <span>→</span></button>
                   </div>
                 )}
-              </div>
-            ) : !beijingDestination ? (
-              <>
-                <BilingualQuote pt="Senti-me triste; subi à liteira, cerrei as cortinas de seda escarlate todas bordadas a ouro; e cercado dos cossacos, eis-me entrando a velha Pequim..." zh="我感到一阵悲凉；坐进轿子，合上绣满金线的猩红丝帘，在哥萨克骑兵护送下进入古老的北京……" />
-                <p>车轮、轿杠、马蹄和骆驼的步伐从帘外交错而过。每到一处，我都可以命轿夫停下，掀开帘子，看看这座城把奢华与苦难安置在多么接近的地方。</p>
-                <div className="beijing-destination-grid">
-                  {beijingDestinationKeys.map((key) => {
-                    const destination = beijingDestinations[key];
-                    return (
-                    <button key={key} className={beijingVisited.includes(key) ? "is-visited" : ""} onClick={() => chooseBeijingDestination(key)}>
-                      <span>{beijingVisited.includes(key) ? "再去" : "前往"}</span>
-                      <strong>{destination.title}</strong>
-                      <em>{destination.original}</em>
-                      <small>{destination.summary}</small>
-                    </button>
-                    );
-                  })}
-                </div>
-                {allBeijingStopsVisited && <button className="primary-action" onClick={beginCamilloffMeeting}>回卡米洛夫府商议赎罪 <span>→</span></button>}
               </>
-            ) : !beijingDismounted ? (
-              <div className="litter-arrival">
-                <span>轿帘之外</span>
-                <h2>{activeBeijingDestination?.title}</h2>
-                <em>{activeBeijingDestination?.original}</em>
-                <p>{activeBeijingDestination?.summary}</p>
-                <button className="primary-action" onClick={dismountInBeijing}>掀开轿帘，下轿 <span>→</span></button>
-              </div>
-            ) : beijingDestination === "tartar" ? (
-              <div className="beijing-place-view">
-                <BilingualQuote pt="A habitação de Camilloff ficava na Cidade Tártara, nos bairros militares e nobres. Há aqui uma tranquilidade austera." zh="卡米洛夫的住所位于紫禁城的军人和贵族街区。这里笼罩着一种严肃的宁静。" />
-                <p>金钉高轮马车和官轿从宽阔街道上掠过；富丽店铺陈列明代瓷器、青铜、珐琅、象牙、丝绸与镶嵌武器。禁城高墙后，帝宫明黄屋顶在树海间发亮；贵族弓手、孔雀翎官员和飘在高空的巨大纸鸢共同维护着一个不可接近的世界。</p>
-                <BilingualQuote compact pt="Aqui está o vasto palácio imperial, entre arvoredos misteriosos, com os seus telhados de um amarelo de oiro vivo!" zh="那就是辽阔的帝宫，藏在神秘的树木之间，屋顶闪着鲜明的金黄色！" />
-                <button className="primary-action" onClick={returnToLitter}>回到轿中 <span>→</span></button>
-              </div>
-            ) : beijingDestination === "chinese" ? (
-              <div className="beijing-place-view">
-                <BilingualQuote pt="E lá fomos penetrando na Cidade Chinesa, pela porta monstruosa de Tchin-Men. Aqui habita a burguesia, o mercador, a populaça." zh="我们从巨大的前门进入华人城。商人、市民和普通百姓都住在这里。" />
-                <p>世代污物压成的泥泞覆盖路面，只剩几块粉红色明代石板。饥饿的狗在空地哀叫，黑色污水散发刺鼻气味；尘土把人群罩成昏黄一片，骆驼商队缓慢挤过穷铺、棚屋、苦役和成群乞丐。越靠近天坛，贫困越像一堵没有尽头的墙。</p>
-                <BilingualQuote compact pt="Uma multidão rumorosa e espessa... a poeira envolve tudo de uma névoa amarelada; um fedor acre exala-se dos enxurros negros." zh="喧闹而稠密的人群川流不息……尘土给一切罩上黄雾，黑色污水沟散出刺鼻恶臭。" />
-                <button className="primary-action" onClick={returnToLitter}>回到轿中 <span>→</span></button>
-              </div>
-            ) : (
-              <div className="beijing-place-view generala-visit">
-                <BilingualQuote pt="Era alta e loira; tinha os olhos verdes das sereias de Homero... e nos dedos, que lhe beijei, errava um aroma fino de sândalo e de chá." zh="她身材高挑，一头金发，绿色眼睛像荷马笔下的海妖……我吻过的手指间，浮动着檀香与茶的细微香气。" />
-                <p>月光洒满花园，流水在黑暗中低语。卡米洛夫夫人穿白色丝裙，胸前别着一朵猩红玫瑰；在她身边，欧洲的谈话与钢琴声几乎把我从赎罪之旅里带走。</p>
-                <div className="generala-topics">
-                  <button className={generalaTopics.includes("europe") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("europe")}><span>谈起欧洲</span><small>虚无主义、左拉与里奥十三世</small></button>
-                  <button className={generalaTopics.includes("piano") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("piano")}><span>请她坐到钢琴前</span><small>女低音划破紫禁城的寂静</small></button>
-                </div>
-                {generalaTopics.includes("europe") && <BilingualQuote compact pt="Conversámos muito da Europa, do niilismo, de Zola, de Leão XIII, e da magreza de Sarah Bernhardt..." zh="我们谈了许多欧洲的事：虚无主义、左拉、里奥十三世，还有莎拉·伯恩哈特的消瘦……" />}
-                {generalaTopics.includes("piano") && <BilingualQuote compact pt="Depois ela sentou-se ao piano — e a sua voz de contralto quebrou até tarde os silêncios melancólicos da Cidade Tártara..." zh="后来她坐到钢琴前——她的女低音一直到深夜还在划破紫禁城忧郁的寂静……" />}
-                {generalaTopics.length >= 2 ? <button className="primary-action" onClick={returnToLitter}>离开琴声，回到轿中 <span>→</span></button> : <p className="discovery-count">与她交谈，再听一段琴声。</p>}
-              </div>
             )}
           </div>
         )}
@@ -1521,7 +1583,7 @@ export default function Home() {
             <div className="scene-kicker">版本说明</div>
             <h2 id="about-title">关于这个校订版</h2>
             <p>本交互叙事游戏根据埃萨·德·凯罗斯一八八〇年的小说《满大人》改编。它保留埃萨原作的故事主线，在此基础上，如果三次拒绝魔鬼的摇铃提议则触发特别结局，特别结局为原创内容，与原作无关。本作中涉及的中国是特奥多罗及十九世纪欧洲对于东方的想象，并非历史中国的现实复原。</p>
-            <p className="credits">制作者：周宁　　使用模型：chatgpt sol 5.6</p>
+            <p className="credits">制作者：周宁&emsp;&emsp;使用模型：chatgpt sol 5.6</p>
             <div className="music-credits">
               <span>分幕配乐</span>
               <a href="https://opengameart.org/content/unsolved-investigation" target="_blank" rel="noreferrer">《Unsolved Investigation》· isaiah658 · CC0</a>

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 "use client";
 
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";

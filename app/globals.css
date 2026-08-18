@@ -65,6 +65,8 @@ button:focus-visible {
 }
 
 .stage-intro .scene-image,
+.stage-office .scene-image,
+.stage-market .scene-image,
 .stage-room .scene-image,
 .stage-book .scene-image,
 .stage-bell .scene-image,
@@ -81,6 +83,8 @@ button:focus-visible {
 .stage-renounce .scene-image,
 .stage-humiliation .scene-image,
 .stage-prison .scene-image,
+.stage-camilloffSalon .scene-image,
+.stage-camilloffMeeting .scene-image,
 .stage-devilReturn .scene-image,
 .stage-devilDialogue .scene-image,
 .stage-supplication .scene-image,
@@ -99,6 +103,8 @@ button:focus-visible {
 .stage-map .scene-image,
 .stage-beijing .scene-image,
 .stage-repose .scene-image,
+.stage-camilloffSalon .scene-image,
+.stage-camilloffMeeting .scene-image,
 .stage-tienho .scene-image,
 .stage-wilderness .scene-image,
 .stage-mission .scene-image,
@@ -118,6 +124,8 @@ button:focus-visible {
 }
 
 .stage-intro .scene-vignette,
+.stage-office .scene-vignette,
+.stage-market .scene-vignette,
 .stage-room .scene-vignette,
 .stage-book .scene-vignette,
 .stage-bell .scene-vignette,
@@ -331,8 +339,29 @@ button:focus-visible {
 
 /* The new Beijing plates reserve their left half for prose and keep all scenic focal points on the right. */
 .stage-beijing .scene-card,
-.stage-repose .scene-card {
+.stage-repose .scene-card,
+.stage-camilloffSalon .scene-card,
+.stage-camilloffMeeting .scene-card {
   width: min(760px, 48vw);
+}
+
+.office-doze-image {
+  position: fixed;
+  z-index: -4;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("/ministry-office-dozing-v1.png");
+  background-position: center left;
+  background-size: cover;
+  filter: saturate(0.76) contrast(1.08) brightness(0.66);
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 0.85s ease, transform 3.5s ease;
+}
+
+.office-doze-image.is-visible {
+  opacity: 1;
+  transform: scale(1.025);
 }
 
 /* Keep room labels with their objects instead of letting them run into the prose column. */
@@ -1727,6 +1756,130 @@ blockquote {
   background: rgba(6, 13, 13, 0.58);
 }
 
+.office-scene,
+.market-scene {
+  max-width: 690px;
+}
+
+.office-actions {
+  display: grid;
+  margin: 22px 0 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.object-action {
+  min-height: 96px;
+  padding: 17px 19px;
+  border: 1px solid rgba(184, 149, 82, 0.34);
+  background: rgba(5, 12, 12, 0.78);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.object-action:hover,
+.object-action.is-read {
+  border-color: var(--gold);
+  background: rgba(184, 149, 82, 0.14);
+  transform: translateY(-2px);
+}
+
+.object-action span,
+.object-action small {
+  display: block;
+}
+
+.object-action span {
+  color: #efe2c8;
+  font-size: 15px;
+}
+
+.object-action small {
+  margin-top: 9px;
+  color: rgba(229, 213, 180, 0.56);
+  font: 10px/1.5 Arial, "Noto Sans CJK SC", sans-serif;
+}
+
+.official-paper {
+  position: relative;
+  overflow: hidden;
+  margin-top: 14px;
+  padding: 22px 25px;
+  border: 1px solid rgba(118, 84, 44, 0.72);
+  background: #d8c7a3;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.34);
+  color: #251d13;
+  animation: slip-in 0.42s ease both;
+}
+
+.official-paper::after {
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  width: 38px;
+  height: 38px;
+  border: 2px solid rgba(129, 39, 30, 0.48);
+  border-radius: 50%;
+  content: "M";
+  color: rgba(129, 39, 30, 0.55);
+  font: 700 16px/34px Georgia, serif;
+  text-align: center;
+  transform: rotate(-9deg);
+}
+
+.official-paper > span {
+  color: #8e3028;
+  font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.15em;
+}
+
+.official-paper p {
+  margin: 12px 0 0;
+  color: #2b2116;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.official-paper p[lang="pt"] {
+  font-style: italic;
+}
+
+.dream-bubbles {
+  display: grid;
+  margin-top: 14px;
+  gap: 9px;
+  animation: dream-rise 0.8s ease both;
+}
+
+.dream-bubbles p {
+  position: relative;
+  margin: 0;
+  padding: 13px 17px;
+  border: 1px solid rgba(205, 173, 108, 0.42);
+  border-radius: 26px 26px 26px 6px;
+  background: rgba(16, 12, 17, 0.82);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.28);
+  color: #ead9b7;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.dream-bubbles p:nth-child(2) {
+  margin-left: 9%;
+  animation: dream-pulse 3.6s 0.35s ease-in-out infinite;
+}
+
+@keyframes dream-rise {
+  from { opacity: 0; transform: translateY(12px); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes dream-pulse {
+  0%, 100% { opacity: 0.74; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
+
 .beijing-arrival-scene,
 .beijing-tour-scene {
   max-width: 680px;
@@ -1735,7 +1888,7 @@ blockquote {
 .beijing-destination-grid {
   display: grid;
   margin: 24px 0;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -2740,6 +2893,8 @@ blockquote {
 @media (max-width: 980px) {
   .scene-vignette,
   .stage-intro .scene-vignette,
+  .stage-office .scene-vignette,
+  .stage-market .scene-vignette,
   .stage-room .scene-vignette,
   .stage-book .scene-vignette,
   .stage-bell .scene-vignette,
@@ -2750,6 +2905,8 @@ blockquote {
 
   .scene-image,
   .stage-intro .scene-image,
+  .stage-office .scene-image,
+  .stage-market .scene-image,
   .stage-room .scene-image,
   .stage-book .scene-image,
   .stage-bell .scene-image,
@@ -2766,6 +2923,10 @@ blockquote {
   .stage-devilDialogue .scene-image,
   .stage-supplication .scene-image,
   .stage-testament .scene-image {
+    background-position: 47% center;
+  }
+
+  .office-doze-image {
     background-position: 47% center;
   }
 
@@ -2852,7 +3013,8 @@ blockquote {
   }
 
   .beijing-destination-grid,
-  .generala-topics {
+  .generala-topics,
+  .office-actions {
     grid-template-columns: 1fr;
   }
 

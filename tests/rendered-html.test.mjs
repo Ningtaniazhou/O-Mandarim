@@ -22,12 +22,13 @@ test("server-renders the Chinese O Mandarim experience", async () => {
   const html = await response.text();
   assert.match(html, /<title>《满大人》· 交互叙事<\/title>/i);
   assert.match(html, /《满大人》/);
-  assert.match(html, /序章/);
+  assert.doesNotMatch(html, /序章/);
   assert.doesNotMatch(html, /Your site is taking shape|react-loading-skeleton/);
 });
 
 test("ships the complete narrative and its visual assets", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  const curtain = await readFile(new URL("../app/beijing-curtain-scene.tsx", import.meta.url), "utf8");
   const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(page, /合上的书页/);
   assert.match(page, /里斯本俯首/);
@@ -41,18 +42,21 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /红绸轿子/);
   assert.match(page, /紫禁城/);
   assert.doesNotMatch(page, /鞑靼城/);
-  assert.match(page, /cidade tártara/);
   assert.match(page, /老百姓的街巷/);
   assert.doesNotMatch(page, /华人街区/);
-  assert.match(page, /bairros chineses/);
-  assert.match(page, /卡米洛夫夫人/);
+  assert.match(page, /将军夫人的客厅/);
+  assert.match(page, /王国内政部/);
+  assert.match(page, /圣克拉拉旧货市场/);
+  assert.match(page, /将军夫人的客厅/);
+  assert.match(page, /卡米洛夫的建议/);
+  assert.match(page, /前往卡米洛夫府邸/);
+  assert.match(page, /第二天去见卡米洛夫将军/);
   assert.match(page, /自从来到北京，我再没有看见狄鑫福与纸鸢/);
   assert.match(page, /beijingDestination/);
-  assert.match(page, /beijingDismounted/);
   assert.match(page, /beijingVisited/);
   assert.match(page, /generalaTopics/);
-  assert.match(page, /掀开轿帘，下轿/);
-  assert.match(page, /回到轿中/);
+  assert.match(curtain, /起轿/);
+  assert.doesNotMatch(page, /beijingDismounted/);
   assert.match(page, /pequim-litter-interior-v1\.png/);
   assert.doesNotMatch(page, /beijingDrift|reposeInterrupted|文人服饰|隐逸之亭/);
   assert.match(page, /Tien-Hó/);
@@ -81,7 +85,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /用成把的金币匆忙办妥准备/);
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
   assert.match(page, /线索指向北京以北、越过长城后的天河村/);
-  assert.match(page, /告别卡米洛夫夫人，前往天河村/);
+  assert.match(page, /告别卡米洛夫，前往天河村/);
   assert.match(page, /外国魔鬼/);
   assert.match(page, /从官府到乞丐/);
   assert.match(page, /地方官也在暗中主持这场抢掠/);
@@ -164,6 +168,10 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/pequim-tartar-city-v1.png", import.meta.url)),
     access(new URL("../public/pequim-chinese-quarter-v1.png", import.meta.url)),
     access(new URL("../public/pequim-litter-interior-v1.png", import.meta.url)),
+    access(new URL("../public/ministry-office-awake-v1.png", import.meta.url)),
+    access(new URL("../public/ministry-office-dozing-v1.png", import.meta.url)),
+    access(new URL("../public/feira-da-ladra-v1.png", import.meta.url)),
+    access(new URL("../public/camilloff-meeting-v1.png", import.meta.url)),
     access(new URL("../public/intro-cover-v1.png", import.meta.url)),
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
     access(new URL("../public/tienho-inn-v3.png", import.meta.url)),
