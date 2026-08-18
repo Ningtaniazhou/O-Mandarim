@@ -39,7 +39,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /轿中北京/);
   assert.match(page, /城门之前/);
   assert.match(page, /红绸轿子/);
-  assert.match(page, /鞑靼城/);
+  assert.match(page, /紫禁城/);
+  assert.doesNotMatch(page, /鞑靼城/);
   assert.match(page, /cidade tártara/);
   assert.match(page, /华人街区/);
   assert.match(page, /bairros chineses/);

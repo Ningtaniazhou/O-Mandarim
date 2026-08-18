@@ -39,7 +39,7 @@ type HotspotItem = {
 type BeijingDestination = "" | "tartar" | "chinese" | "camilloff";
 
 const beijingDestinations: Record<Exclude<BeijingDestination, "">, { title: string; original: string; summary: string }> = {
-  tartar: { title: "鞑靼城", original: "cidade tártara", summary: "宫墙、权贵与金色屋顶" },
+  tartar: { title: "紫禁城", original: "cidade tártara", summary: "宫墙、权贵与金色屋顶" },
   chinese: { title: "华人街区", original: "bairros chineses", summary: "泥泞、尘土与拥挤的人群" },
   camilloff: { title: "卡米洛夫府邸", original: "residência de Camilloff", summary: "月色花园与将军夫人的琴声" },
 };
@@ -1031,7 +1031,7 @@ export default function Home() {
               </div>
             ) : beijingDestination === "tartar" ? (
               <div className="beijing-place-view">
-                <BilingualQuote pt="A habitação de Camilloff ficava na Cidade Tártara, nos bairros militares e nobres. Há aqui uma tranquilidade austera." zh="卡米洛夫的住所位于鞑靼城的军人和贵族街区。这里笼罩着一种严肃的宁静。" />
+                <BilingualQuote pt="A habitação de Camilloff ficava na Cidade Tártara, nos bairros militares e nobres. Há aqui uma tranquilidade austera." zh="卡米洛夫的住所位于紫禁城的军人和贵族街区。这里笼罩着一种严肃的宁静。" />
                 <p>金钉高轮马车和官轿从宽阔街道上掠过；富丽店铺陈列明代瓷器、青铜、珐琅、象牙、丝绸与镶嵌武器。禁城高墙后，帝宫明黄屋顶在树海间发亮；贵族弓手、孔雀翎官员和飘在高空的巨大纸鸢共同维护着一个不可接近的世界。</p>
                 <BilingualQuote compact pt="Aqui está o vasto palácio imperial, entre arvoredos misteriosos, com os seus telhados de um amarelo de oiro vivo!" zh="那就是辽阔的帝宫，藏在神秘的树木之间，屋顶闪着鲜明的金黄色！" />
                 <button className="primary-action" onClick={returnToLitter}>回到轿中 <span>→</span></button>
@@ -1049,10 +1049,10 @@ export default function Home() {
                 <p>月光洒满花园，流水在黑暗中低语。卡米洛夫夫人穿白色丝裙，胸前别着一朵猩红玫瑰；在她身边，欧洲的谈话与钢琴声几乎把我从赎罪之旅里带走。</p>
                 <div className="generala-topics">
                   <button className={generalaTopics.includes("europe") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("europe")}><span>谈起欧洲</span><small>虚无主义、左拉与里奥十三世</small></button>
-                  <button className={generalaTopics.includes("piano") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("piano")}><span>请她坐到钢琴前</span><small>女低音划破鞑靼城的寂静</small></button>
+                  <button className={generalaTopics.includes("piano") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("piano")}><span>请她坐到钢琴前</span><small>女低音划破紫禁城的寂静</small></button>
                 </div>
                 {generalaTopics.includes("europe") && <BilingualQuote compact pt="Conversámos muito da Europa, do niilismo, de Zola, de Leão XIII, e da magreza de Sarah Bernhardt..." zh="我们谈了许多欧洲的事：虚无主义、左拉、里奥十三世，还有莎拉·伯恩哈特的消瘦……" />}
-                {generalaTopics.includes("piano") && <BilingualQuote compact pt="Depois ela sentou-se ao piano — e a sua voz de contralto quebrou até tarde os silêncios melancólicos da Cidade Tártara..." zh="后来她坐到钢琴前——她的女低音一直到深夜还在划破鞑靼城忧郁的寂静……" />}
+                {generalaTopics.includes("piano") && <BilingualQuote compact pt="Depois ela sentou-se ao piano — e a sua voz de contralto quebrou até tarde os silêncios melancólicos da Cidade Tártara..." zh="后来她坐到钢琴前——她的女低音一直到深夜还在划破紫禁城忧郁的寂静……" />}
                 {generalaTopics.length >= 2 ? <button className="primary-action" onClick={returnToLitter}>离开琴声，回到轿中 <span>→</span></button> : <p className="discovery-count">与她交谈，再听一段琴声。</p>}
               </div>
             )}
