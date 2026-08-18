@@ -119,24 +119,24 @@
   background-size: 5px 5px, 7px 7px;
 }
 
-.arm {
+.dragHand {
   position: absolute;
   z-index: 7;
-  top: 23.8%;
-  left: 15.8%;
-  width: 55%;
+  top: 49.2%;
+  left: var(--handle-left);
+  width: clamp(86px, 9vw, 156px);
   height: auto;
   pointer-events: none;
-  transform: translateY(var(--arm-lift)) rotate(var(--arm-rotate)) scaleX(var(--arm-scale));
-  transform-origin: 94% 28%;
-  filter: brightness(0.82) drop-shadow(8px 12px 15px rgba(0, 0, 0, 0.7));
-  will-change: transform;
+  transform: translate(-25%, -50%) rotate(var(--hand-rotate)) scale(var(--hand-scale));
+  transform-origin: 28% 50%;
+  filter: brightness(0.79) saturate(0.86) drop-shadow(6px 9px 12px rgba(0, 0, 0, 0.72));
+  will-change: left, transform;
 }
 
 .handHandle {
   position: absolute;
   z-index: 12;
-  top: 49%;
+  top: 49.2%;
   left: var(--handle-left);
   width: clamp(54px, 6vw, 104px);
   aspect-ratio: 1;
@@ -356,7 +356,7 @@
 }
 
 .settling .curtain,
-.settling .arm,
+.settling .dragHand,
 .settling .handHandle,
 .settling .windowHush,
 .settling .exterior {
@@ -415,15 +415,13 @@
     height: 49%;
   }
 
-  .arm {
-    top: 31%;
-    left: 5%;
-    width: 82%;
-    transform-origin: 94% 28%;
+  .dragHand {
+    top: 33.5%;
+    width: clamp(76px, 18vw, 118px);
   }
 
   .handHandle {
-    top: 51%;
+    top: 33.5%;
   }
 
   .intro {
@@ -462,7 +460,7 @@
   }
 
   .settling .curtain,
-  .settling .arm,
+  .settling .dragHand,
   .settling .handHandle,
   .settling .windowHush,
   .settling .exterior {

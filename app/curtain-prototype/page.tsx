@@ -18,9 +18,8 @@ type SoundEngine = {
 
 type SceneStyle = CSSProperties & {
   "--curtain-width": string;
-  "--arm-scale": string;
-  "--arm-rotate": string;
-  "--arm-lift": string;
+  "--hand-scale": string;
+  "--hand-rotate": string;
   "--handle-left": string;
   "--outside-light": string;
   "--outside-scale": string;
@@ -314,10 +313,9 @@ export default function CurtainPrototypePage() {
 
   const sceneStyle: SceneStyle = {
     "--curtain-width": `${100 - progress * 84}%`,
-    "--arm-scale": `${0.52 + progress * 0.54}`,
-    "--arm-rotate": `${progress * -2.8}deg`,
-    "--arm-lift": `${progress * -0.5}%`,
-    "--handle-left": `${45 - progress * 27}%`,
+    "--hand-scale": `${1 - progress * 0.04}`,
+    "--hand-rotate": `${-2 - progress * 3}deg`,
+    "--handle-left": `${51.1 - progress * 39.4}%`,
     "--outside-light": `${0.42 + progress * 0.55}`,
     "--outside-scale": `${1.1 - progress * 0.06}`,
     "--hush": `${0.76 - progress * 0.66}`,
@@ -359,8 +357,8 @@ export default function CurtainPrototypePage() {
         </div>
 
         <img
-          className={styles.arm}
-          src="/curtain-prototype-arm-v2.png"
+          className={styles.dragHand}
+          src="/curtain-prototype-hand-v1.png"
           alt=""
           draggable={false}
           aria-hidden="true"
@@ -370,7 +368,7 @@ export default function CurtainPrototypePage() {
           className={styles.handHandle}
           role="slider"
           tabIndex={0}
-          aria-label="拖动特奥多罗的手拉开轿帘"
+          aria-label="拖动手拉开轿帘"
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={percent}
@@ -399,7 +397,7 @@ export default function CurtainPrototypePage() {
           <p className={styles.instruction}>
             {progress === 1
               ? "宫墙、车轮与人群的声浪涌入轿中。"
-              : "按住特奥多罗的手，向左拉开轿帘。"}
+              : "按住手，向左拖动轿帘。"}
           </p>
           <div className={styles.progressRail} aria-hidden="true">
             <span className={styles.progressFill} style={{ width: `${percent}%` }} />
