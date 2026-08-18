@@ -292,6 +292,11 @@ button:focus-visible {
   transition: opacity 0.28s ease, transform 0.28s ease;
 }
 
+.has-beijing-curtain .scene-card {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .scene-card-east,
 .stage-luxury .scene-card,
 .stage-ghost .scene-card,

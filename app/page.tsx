@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import BeijingCurtainScene from "./beijing-curtain-scene";
 
 type Stage =
   | "intro"
@@ -523,6 +524,7 @@ export default function Home() {
   const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
   const activeBeijingDestination = beijingDestination ? beijingDestinations[beijingDestination] : null;
   const allBeijingStopsVisited = beijingDestinationKeys.every((place) => beijingVisited.includes(place));
+  const showBeijingCurtain = stage === "repose" && Boolean(beijingDestination) && !camilloffMeeting && !camilloffNews;
 
   const resetRevisitableStage = (next: Stage) => {
     if (next === "bell" && !bellRung) setRefusals(0);
@@ -711,6 +713,7 @@ export default function Home() {
   const chooseBeijingDestination = (destination: Exclude<BeijingDestination, "">) => {
     setBeijingDestination(destination);
     setBeijingDismounted(false);
+    setBeijingVisited((visited) => visited.includes(destination) ? visited : [...visited, destination]);
     setSelectedHotspot(null);
     sound.tone(174.61, 0.75, 0.06, 0, "triangle");
   };
@@ -718,8 +721,6 @@ export default function Home() {
   const dismountInBeijing = () => {
     if (!beijingDestination) return;
     setBeijingDismounted(true);
-    setBeijingVisited((visited) => visited.includes(beijingDestination) ? visited : [...visited, beijingDestination]);
-    sound.tone(220, 0.65, 0.07, 0, "triangle");
   };
 
   const returnToLitter = () => {
@@ -808,7 +809,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={`game-shell stage-${stage} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${transitioning ? "is-transitioning" : ""} ${shake ? "is-shaking" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
+    <main className={`game-shell stage-${stage} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${shake ? "is-shaking" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
       <div className="scene-image" style={{ backgroundImage: `url(${background})` }} aria-hidden="true" />
       <div className="scene-vignette" aria-hidden="true" />
       <div className="paper-grain" aria-hidden="true" />
@@ -836,7 +837,42 @@ export default function Home() {
         <HotspotLayer items={currentHotspots} visited={currentVisited} active={selectedHotspot?.id} onSelect={inspectHotspot} />
       )}
 
-      <section className={`scene-card ${isEast ? "scene-card-east" : ""}`} aria-live="polite">
+      {showBeijingCurtain && beijingDestination && (
+        <BeijingCurtainScene
+          key={beijingDestination}
+          title={beijingDestinations[beijingDestination].title}
+          exterior={beijingStreetBackgrounds[beijingDestination]}
+          soundEnabled={sound.enabled}
+          onDepart={returnToLitter}
+        >
+          {beijingDestination === "tartar" ? (
+            <>
+              <BilingualQuote pt="A habitação de Camilloff ficava na Cidade Tártara, nos bairros militares e nobres. Há aqui uma tranquilidade austera." zh="卡米洛夫的住所位于紫禁城的军人和贵族街区。这里笼罩着一种严肃的宁静。" />
+              <p>金钉高轮马车和官轿从宽阔街道上掠过；富丽店铺陈列明代瓷器、青铜、珐琅、象牙、丝绸与镶嵌武器。禁城高墙后，帝宫明黄屋顶在树海间发亮；贵族弓手、孔雀翎官员和飘在高空的巨大纸鸢共同维护着一个不可接近的世界。</p>
+              <BilingualQuote compact pt="Aqui está o vasto palácio imperial, entre arvoredos misteriosos, com os seus telhados de um amarelo de oiro vivo!" zh="那就是辽阔的帝宫，藏在神秘的树木之间，屋顶闪着鲜明的金黄色！" />
+            </>
+          ) : beijingDestination === "chinese" ? (
+            <>
+              <BilingualQuote pt="E lá fomos penetrando na Cidade Chinesa, pela porta monstruosa de Tchin-Men. Aqui habita a burguesia, o mercador, a populaça." zh="我们从巨大的前门进入老百姓的街巷。商人、市民和普通百姓都住在这里。" />
+              <p>世代污物压成的泥泞覆盖路面，只剩几块粉红色明代石板。饥饿的狗在空地哀叫，黑色污水散发刺鼻气味；尘土把人群罩成昏黄一片，骆驼商队缓慢挤过穷铺、棚屋、苦役和成群乞丐。越靠近天坛，贫困越像一堵没有尽头的墙。</p>
+              <BilingualQuote compact pt="Uma multidão rumorosa e espessa... a poeira envolve tudo de uma névoa amarelada; um fedor acre exala-se dos enxurros negros." zh="喧闹而稠密的人群川流不息……尘土给一切罩上黄雾，黑色污水沟散出刺鼻恶臭。" />
+            </>
+          ) : (
+            <>
+              <BilingualQuote pt="Era alta e loira; tinha os olhos verdes das sereias de Homero... e nos dedos, que lhe beijei, errava um aroma fino de sândalo e de chá." zh="她身材高挑，一头金发，绿色眼睛像荷马笔下的海妖……我吻过的手指间，浮动着檀香与茶的细微香气。" />
+              <p>月光洒满花园，流水在黑暗中低语。卡米洛夫夫人穿白色丝裙，胸前别着一朵猩红玫瑰；在她身边，欧洲的谈话与钢琴声几乎把我从赎罪之旅里带走。</p>
+              <div className="generala-topics">
+                <button className={generalaTopics.includes("europe") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("europe")}><span>谈起欧洲</span><small>虚无主义、左拉与里奥十三世</small></button>
+                <button className={generalaTopics.includes("piano") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("piano")}><span>请她坐到钢琴前</span><small>女低音划破紫禁城的寂静</small></button>
+              </div>
+              {generalaTopics.includes("europe") && <BilingualQuote compact pt="Conversámos muito da Europa, do niilismo, de Zola, de Leão XIII, e da magreza de Sarah Bernhardt..." zh="我们谈了许多欧洲的事：虚无主义、左拉、里奥十三世，还有莎拉·伯恩哈特的消瘦……" />}
+              {generalaTopics.includes("piano") && <BilingualQuote compact pt="Depois ela sentou-se ao piano — e a sua voz de contralto quebrou até tarde os silêncios melancólicos da Cidade Tártara..." zh="后来她坐到钢琴前——她的女低音一直到深夜还在划破紫禁城忧郁的寂静……" />}
+            </>
+          )}
+        </BeijingCurtainScene>
+      )}
+
+      <section className={`scene-card ${isEast ? "scene-card-east" : ""}`} aria-live="polite" aria-hidden={showBeijingCurtain || undefined}>
         <div className="scene-kicker">{info.act}</div>
         <h1>{stage === "intro" ? "《满大人》" : info.title}</h1>
         {info.subtitle && <div className="scene-pt">{info.subtitle}</div>}
@@ -923,7 +959,6 @@ export default function Home() {
             <div className="death-character-stage" aria-label="狄鑫福在花园溪流旁的草岸上听见铃声后倒地身亡的剪纸动画">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="ti-alive-cutout" src="/ti-chin-fu-alive-v3.png" alt="肥胖、白胡子的狄鑫福身穿黄绸，怀抱纸鸢，站在溪流旁的草岸上" />
-              <span className="distant-bell-mark" aria-hidden="true">叮铃</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="ti-corpse-cutout" src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福仰面倒在溪边草地上，冰冷的双臂仍抱着纸鸢" />
               <div className="death-ground-shadow" aria-hidden="true" />
