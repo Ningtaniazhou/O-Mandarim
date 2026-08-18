@@ -1999,14 +1999,14 @@ blockquote {
 
 .ending-object-hotspots button {
   position: absolute;
-  display: flex;
-  padding: 8px;
-  align-items: center;
+  display: block;
+  width: 50px;
+  height: 50px;
+  padding: 0;
   border: 0;
   background: none;
   color: #f3e4c1;
   cursor: pointer;
-  gap: 8px;
   pointer-events: auto;
   transform: translate(-50%, -50%);
 }
@@ -2014,7 +2014,7 @@ blockquote {
 .ending-object-hotspots button::before {
   position: absolute;
   top: 50%;
-  left: 28px;
+  left: 50%;
   width: 130px;
   height: 130px;
   border-radius: 50%;
@@ -2028,9 +2028,8 @@ blockquote {
   position: relative;
   z-index: 1;
   display: grid;
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
+  width: 100%;
+  height: 100%;
   place-items: center;
   border: 2px solid rgba(243, 228, 193, 0.94);
   border-radius: 50%;
@@ -2041,8 +2040,10 @@ blockquote {
 }
 
 .ending-object-hotspots span {
-  position: relative;
+  position: absolute;
   z-index: 1;
+  top: 50%;
+  left: 62px;
   padding: 8px 10px;
   border: 1px solid rgba(211, 173, 91, 0.42);
   background: rgba(6, 13, 13, 0.92);
@@ -2050,6 +2051,7 @@ blockquote {
   font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.08em;
   white-space: nowrap;
+  transform: translateY(-50%);
 }
 
 .ending-object-hotspots button:hover i,
@@ -2072,13 +2074,17 @@ blockquote {
 }
 
 .testament-hotspot {
-  top: 71%;
-  left: 61%;
+  top: 75%;
+  left: 69.5%;
 }
 
 .final-book-hotspot {
-  top: 77%;
-  left: 76%;
+  top: 83%;
+  left: 82.5%;
+}
+
+.stage-testament:not(.is-transitioning) .scene-card {
+  transform: none;
 }
 
 .artifact-overlay {
@@ -2199,13 +2205,11 @@ blockquote {
     linear-gradient(135deg, #4c1114, #24080b 68%, #511216);
   box-shadow: 18px 22px 0 #120708, 0 38px 110px rgba(0, 0, 0, 0.72);
   color: #d8b967;
-  cursor: pointer;
   transform-origin: center bottom;
   animation: book-rise 0.58s cubic-bezier(0.2, 0.82, 0.18, 1) both;
 }
 
-.final-book-cover small,
-.final-book-cover em {
+.final-book-cover small {
   font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.2em;
 }
@@ -2216,43 +2220,67 @@ blockquote {
   writing-mode: vertical-rl;
 }
 
-.final-book-cover em {
-  color: rgba(225, 205, 155, 0.64);
-  font-style: normal;
+.final-book-dialog {
+  display: flex;
+  width: min(920px, 94vw);
+  align-items: center;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.final-book-action {
+  min-width: 180px;
+  padding: 15px 32px;
+  border: 1px solid rgba(211, 173, 91, 0.82);
+  background: rgba(7, 12, 12, 0.92);
+  color: #f1dfb8;
+  cursor: pointer;
+  font: 700 13px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.18em;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.final-book-action:hover {
+  background: #b89552;
+  color: #11110e;
+  transform: translateY(-2px);
 }
 
 .final-book-page {
   position: relative;
+  display: grid;
   width: min(820px, 92vw);
   min-height: min(570px, 76svh);
-  padding: clamp(42px, 7vw, 82px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: clamp(42px, 5vw, 68px);
+  align-items: stretch;
   border: 1px solid rgba(76, 54, 27, 0.48);
   background:
-    linear-gradient(90deg, transparent 49.5%, rgba(73, 49, 22, 0.2) 50%, transparent 50.5%),
+    linear-gradient(90deg, transparent 48.8%, rgba(73, 49, 22, 0.08) 49.5%, rgba(73, 49, 22, 0.28) 50%, rgba(255, 248, 225, 0.24) 50.6%, transparent 51.2%),
     linear-gradient(105deg, #dbc79f, #f0e2c5 48%, #d5bc8d);
   box-shadow: 0 36px 120px rgba(0, 0, 0, 0.76);
-  color: #2c2117;
+  color: #1e1710;
   transform-origin: left center;
   animation: page-open 0.72s cubic-bezier(0.2, 0.76, 0.2, 1) both;
 }
 
-.final-book-page > p {
-  margin: 0 0 clamp(42px, 7vw, 78px);
-  color: #842b25;
-  font: 700 11px Arial, "Noto Sans CJK SC", sans-serif;
-  letter-spacing: 0.2em;
+.final-book-leaf {
+  display: grid;
+  min-width: 0;
+  padding: clamp(12px, 2.5vw, 34px);
+  place-items: center;
+}
+
+.final-book-leaf p {
+  margin: 0;
+  color: #18120d;
+  font-family: Georgia, "Noto Serif CJK SC", "Songti SC", serif;
+  font-size: clamp(17px, 2vw, 27px);
+  line-height: 1.8;
   text-align: center;
 }
 
-.final-book-page blockquote {
-  max-width: 650px;
-  margin: 25px auto;
-  font-size: clamp(19px, 2.2vw, 31px);
-  line-height: 1.75;
-  text-align: center;
-}
-
-.final-book-page blockquote[lang="pt"] {
+.final-book-leaf p[lang="pt"] {
   font-style: italic;
 }
 
@@ -2577,13 +2605,13 @@ blockquote {
   }
 
   .testament-hotspot {
-    top: 35%;
-    left: 48%;
+    top: 75%;
+    left: 58%;
   }
 
   .final-book-hotspot {
-    top: 39%;
-    left: 76%;
+    top: 82%;
+    left: 84%;
   }
 }
 
@@ -2734,13 +2762,13 @@ blockquote {
   }
 
   .testament-hotspot {
-    top: 35%;
-    left: 38%;
+    top: 75%;
+    left: 50%;
   }
 
   .final-book-hotspot {
-    top: 39%;
-    left: 71%;
+    top: 82%;
+    left: 90%;
   }
 
   .ending-object-hotspots span {
@@ -2768,11 +2796,15 @@ blockquote {
 
   .final-book-page {
     min-height: 68svh;
-    padding: 45px 24px;
+    padding: 30px 16px;
   }
 
-  .final-book-page blockquote {
-    font-size: 18px;
+  .final-book-leaf {
+    padding: 12px;
+  }
+
+  .final-book-leaf p {
+    font-size: clamp(14px, 4.1vw, 18px);
   }
 
   .game-footer {

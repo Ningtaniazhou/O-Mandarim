@@ -40,7 +40,7 @@ type BeijingDestination = "" | "tartar" | "chinese" | "camilloff";
 
 const beijingDestinations: Record<Exclude<BeijingDestination, "">, { title: string; original: string; summary: string }> = {
   tartar: { title: "紫禁城", original: "cidade tártara", summary: "宫墙、权贵与金色屋顶" },
-  chinese: { title: "华人街区", original: "bairros chineses", summary: "泥泞、尘土与拥挤的人群" },
+  chinese: { title: "老百姓的街巷", original: "bairros chineses", summary: "泥泞、尘土与拥挤的人群" },
   camilloff: { title: "卡米洛夫府邸", original: "residência de Camilloff", summary: "月色花园与将军夫人的琴声" },
 };
 
@@ -766,6 +766,11 @@ export default function Home() {
     sound.tone(246.94, 0.9, 0.06, 0, "triangle");
   };
 
+  const closeFinalBook = () => {
+    setFinalBookPhase(0);
+    sound.tone(196, 0.65, 0.045, 0, "triangle");
+  };
+
   const finalArtifactsRead = finalArtifactsSeen.includes("testament") && finalArtifactsSeen.includes("book");
 
   return (
@@ -1360,20 +1365,29 @@ export default function Home() {
 
             {finalBookPhase > 0 && (
               <div className="artifact-overlay final-book-overlay" role="dialog" aria-modal="true" aria-label="《满大人》">
-                <button className="artifact-close artifact-close-dark" onClick={() => setFinalBookPhase(0)}>收起</button>
-                {finalBookPhase === 1 ? (
-                  <button className="final-book-cover" onClick={turnFinalBookCover} aria-label="翻开《满大人》的封面">
-                    <small>特奥多罗著</small>
-                    <span>《满大人》</span>
-                    <em>翻开封面</em>
-                  </button>
-                ) : (
-                  <article className="final-book-page">
-                    <p>《满大人》· 扉页</p>
-                    <blockquote lang="pt">Só sabe bem o pão que dia a dia ganham as nossas mãos: nunca mates o Mandarim!</blockquote>
-                    <blockquote>只有双手每日挣来的面包才真正甘美：千万别杀害满大人！</blockquote>
-                  </article>
-                )}
+                <div className="final-book-dialog">
+                  {finalBookPhase === 1 ? (
+                    <>
+                      <div className="final-book-cover" aria-label="《满大人》封面">
+                        <small>特奥多罗著</small>
+                        <span>《满大人》</span>
+                      </div>
+                      <button className="final-book-action" onClick={turnFinalBookCover}>翻开</button>
+                    </>
+                  ) : (
+                    <>
+                      <article className="final-book-page" aria-label="翻开的《满大人》">
+                        <section className="final-book-leaf">
+                          <p lang="pt"><em>Só sabe bem o pão que dia a dia ganham as nossas mãos: nunca mates o Mandarim!</em></p>
+                        </section>
+                        <section className="final-book-leaf">
+                          <p>只有双手每日挣来的面包才真正甘美：千万别杀害满大人！</p>
+                        </section>
+                      </article>
+                      <button className="final-book-action" onClick={closeFinalBook}>合上</button>
+                    </>
+                  )}
+                </div>
               </div>
             )}
           </>

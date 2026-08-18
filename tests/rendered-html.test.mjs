@@ -42,7 +42,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /紫禁城/);
   assert.doesNotMatch(page, /鞑靼城/);
   assert.match(page, /cidade tártara/);
-  assert.match(page, /华人街区/);
+  assert.match(page, /老百姓的街巷/);
+  assert.doesNotMatch(page, /华人街区/);
   assert.match(page, /bairros chineses/);
   assert.match(page, /卡米洛夫夫人/);
   assert.match(page, /自从来到北京，我再没有看见狄鑫福与纸鸢/);
@@ -88,6 +89,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /像罪恶的饰物一样从身上甩掉/);
   assert.match(page, /抛下这笔财产/);
   assert.match(page, /nunca mates o Mandarim/);
+  assert.match(page, /<button className="final-book-action" onClick=\{turnFinalBookCover\}>翻开<\/button>/);
+  assert.match(page, /<button className="final-book-action" onClick=\{closeFinalBook\}>合上<\/button>/);
+  assert.doesNotMatch(page, /翻开封面|《满大人》· 扉页/);
   assert.match(page, /Uma noite, recolhendo só por uma rua deserta/);
   assert.match(page, /Livra-me das minhas riquezas! Ressuscita o Mandarim!/);
   assert.match(page, /Não pode ser, meu prezado senhor, não pode ser/);
@@ -143,7 +147,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /testament-study-v2\.png/);
   assert.match(page, /特奥多罗最后的意愿/);
   assert.match(page, /悉数遗赠予魔鬼/);
-  assert.match(page, /《满大人》· 扉页/);
+  assert.doesNotMatch(page, /《满大人》· 扉页/);
   assert.match(page, /只有双手每日挣来的面包才真正甘美：千万别杀害满大人/);
   assert.match(styles, /will-unfold/);
   assert.match(styles, /book-rise/);
