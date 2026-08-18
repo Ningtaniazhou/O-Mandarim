@@ -1223,7 +1223,7 @@ blockquote {
 }
 
 .death-character-stage {
-  --ti-body-length: min(67vh, 720px);
+  --ti-body-length: min(55vh, 590px);
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -1240,7 +1240,7 @@ blockquote {
 
 .ti-alive-cutout {
   z-index: 4;
-  bottom: 18.5%;
+  bottom: 33%;
   left: 84%;
   height: var(--ti-body-length);
   filter: saturate(0.92) contrast(1.03) drop-shadow(18px 25px 18px rgba(0, 0, 0, 0.68));
@@ -1253,7 +1253,7 @@ blockquote {
 .ti-corpse-cutout {
   z-index: 5;
   right: 16%;
-  bottom: 18.5%;
+  bottom: 33%;
   width: var(--ti-body-length);
   opacity: 0;
   filter: saturate(0.84) contrast(1.04) drop-shadow(0 28px 18px rgba(0, 0, 0, 0.62));
@@ -1265,7 +1265,7 @@ blockquote {
   position: absolute;
   z-index: 3;
   right: 16%;
-  bottom: 18%;
+  bottom: 32.5%;
   width: var(--ti-body-length);
   height: 13vh;
   border-radius: 50%;
@@ -2878,22 +2878,22 @@ blockquote {
   }
 
   .death-character-stage {
-    --ti-body-length: min(58vh, 60vw, 620px);
+    --ti-body-length: min(50vh, 56vw, 540px);
   }
 
   .ti-alive-cutout {
     left: 80%;
-    bottom: 25.5%;
+    bottom: 33%;
   }
 
   .ti-corpse-cutout {
     right: 20%;
-    bottom: 25.5%;
+    bottom: 33%;
   }
 
   .death-ground-shadow {
     right: 20%;
-    bottom: 25%;
+    bottom: 32.5%;
     width: var(--ti-body-length);
   }
 
@@ -2969,17 +2969,17 @@ blockquote {
 
   .ti-alive-cutout {
     left: 78%;
-    bottom: 31.5%;
+    bottom: 34%;
   }
 
   .ti-corpse-cutout {
     right: 22%;
-    bottom: 31.5%;
+    bottom: 34%;
   }
 
   .death-ground-shadow {
     right: 22%;
-    bottom: 31%;
+    bottom: 33.5%;
     width: var(--ti-body-length);
   }
 

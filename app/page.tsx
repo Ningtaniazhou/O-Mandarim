@@ -920,9 +920,9 @@ export default function Home() {
         {stage === "tiDeath" && (
           <div className="ti-death-scene" key={deathAnimationRun}>
             <div className="death-mist death-mist-back" aria-hidden="true" />
-            <div className="death-character-stage" aria-label="狄鑫福在花园溪边听见铃声后倒地身亡的剪纸动画">
+            <div className="death-character-stage" aria-label="狄鑫福在花园溪流旁的草岸上听见铃声后倒地身亡的剪纸动画">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="ti-alive-cutout" src="/ti-chin-fu-v2.png" alt="狄鑫福身穿黄绸，怀抱纸鸢，站在溪边" />
+              <img className="ti-alive-cutout" src="/ti-chin-fu-alive-v3.png" alt="肥胖、白胡子的狄鑫福身穿黄绸，怀抱纸鸢，站在溪流旁的草岸上" />
               <span className="distant-bell-mark" aria-hidden="true">叮铃</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="ti-corpse-cutout" src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福仰面倒在溪边草地上，冰冷的双臂仍抱着纸鸢" />
