@@ -27,7 +27,6 @@ type Stage =
   | "return"
   | "reckoning"
   | "renounce"
-  | "humiliation"
   | "prison"
   | "devilReturn"
   | "devilDialogue"
@@ -84,7 +83,6 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   return: { act: "第七章 · 返航", title: "死者同行", subtitle: "从中国返回欧洲" },
   reckoning: { act: "第八章 · 里斯本", title: "洛雷托的一夜", subtitle: "无法平息的亡灵" },
   renounce: { act: "第八章 · 里斯本", title: "放弃一切", subtitle: "重返贫穷" },
-  humiliation: { act: "第八章 · 里斯本", title: "贫穷的代价", subtitle: "社会的惩罚" },
   prison: { act: "第八章 · 里斯本", title: "里斯本俯首", subtitle: "回到洛雷托之后" },
   devilReturn: { act: "第八章 · 夜路", title: "荒街上的黑衣人", subtitle: "魔鬼再度出现" },
   devilDialogue: { act: "第八章 · 夜路", title: "无法撤销的交易", subtitle: "" },
@@ -126,7 +124,6 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   return: musicCues.haunting,
   reckoning: musicCues.haunting,
   renounce: musicCues.haunting,
-  humiliation: musicCues.haunting,
   prison: musicCues.haunting,
   devilReturn: musicCues.haunting,
   devilDialogue: musicCues.haunting,
@@ -537,7 +534,6 @@ export default function Home() {
     return: "/east-journey.png",
     reckoning: "/palace-ghost.png",
     renounce: "/renounce-room-v1.png",
-    humiliation: "/teodoro-desk-v1.png",
     prison: "/loreto-restored-v1.png",
     devilReturn: "/devil-street-v1.png",
     devilDialogue: "/devil-street-v1.png",
@@ -549,7 +545,7 @@ export default function Home() {
     chinese: "/pequim-chinese-quarter-v1.png",
   };
   const background = backgrounds[stage];
-  const ghostIntensity = stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce", "humiliation"].includes(stage) ? 3 : 0;
+  const ghostIntensity = stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce"].includes(stage) ? 3 : 0;
   const showLateCorpse = ["devilReturn", "devilDialogue", "testament"].includes(stage);
   const currentHotspots = sceneHotspots[stage] ?? [];
   const currentVisited = visualFinds[stage] ?? [];
@@ -670,7 +666,7 @@ export default function Home() {
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffSalon", "camilloffMeeting", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "humiliation", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
+    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffSalon", "camilloffMeeting", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -1419,18 +1415,16 @@ export default function Home() {
               ))}
             </div>
             <div className="ledger-animation" aria-hidden="true"><span>洛雷托宫殿</span><i>— 十万六千孔托</i><b>{currentVisited.length >= 3 ? "仍属于我" : "零？"}</b></div>
-            {hasInspectedAll ? <button className="primary-action" onClick={() => go("humiliation")}>回到办公桌 <span>→</span></button> : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
-          </div>
-        )}
-
-        {stage === "humiliation" && (
-          <div className="scene-body">
-            <BilingualQuote pt="todos aqueles que a minha opulência humilhara cobriram-me de ofensas, como se alastra de lixo uma estátua derrubada de príncipe decaído." zh="所有曾受我财富羞辱的人都用侮辱覆盖我，如同人们把垃圾铺满一尊倒下的失势王子的雕像。" />
-            <p>旧同事、报纸、贵族、教会、街上的人群，甚至马克斯太太，都在惩罚我的贫穷。每一次羞辱，都把我重新推向那座豪宅。</p>
             <div className="consequence">
+              <BilingualQuote pt="todos aqueles que a minha opulência humilhara cobriram-me de ofensas, como se alastra de lixo uma estátua derrubada de príncipe decaído." zh="所有曾受我财富羞辱的人都用侮辱覆盖我，如同人们把垃圾铺满一尊倒下的失势王子的雕像。" />
+              <p>旧同事、报纸、贵族、教会、街上的人群，甚至马克斯太太，都在惩罚我的贫穷。每一次羞辱，都把我重新推向那座豪宅。</p>
               <BilingualQuote compact pt="Então, indignado, um dia subitamente reentrei com estrondo no meu palacete e no meu luxo." zh="终于有一天，我愤怒地轰然闯回自己的宫殿和奢华生活。" />
               <p>我试着继续忍受，可银行里的财富仍在等我，狄鑫福也没有离开。旧同事、报纸和街上的石块把我逼到尽头；我终于转身，重新走向洛雷托。</p>
-              <button className="primary-action" onClick={() => go("prison")}>推开洛雷托宫殿的大门 <span>→</span></button>
+              {hasInspectedAll ? (
+                <button className="primary-action" onClick={() => go("prison")}>推开洛雷托豪宅的大门 <span>→</span></button>
+              ) : (
+                <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>
+              )}
             </div>
           </div>
         )}
