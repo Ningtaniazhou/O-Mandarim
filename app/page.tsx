@@ -801,6 +801,13 @@ export default function Home() {
 
   const finalArtifactsRead = finalArtifactsSeen.includes("testament") && finalArtifactsSeen.includes("book");
 
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("preview") === "ti-death") {
+      setStage("tiDeath");
+      setStageHistory([]);
+    }
+  }, []);
+
   return (
     <main className={`game-shell stage-${stage} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${transitioning ? "is-transitioning" : ""} ${shake ? "is-shaking" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
       <div className="scene-image" style={{ backgroundImage: `url(${background})` }} aria-hidden="true" />
