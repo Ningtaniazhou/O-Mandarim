@@ -160,11 +160,6 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
     { id: "newspaper", label: "报纸", x: 82, y: 77, translation: "报纸把我的穷困当作一场应得的笑话。" },
     { id: "bell-remains", label: "仍在桌上的铃", x: 61, y: 68, translation: "这柄摇铃没有消失；它像一笔无法注销的旧账，仍留在桌上。" },
   ],
-  humiliation: [
-    { id: "newspaper", label: "报纸", x: 78, y: 76, translation: "报纸以胜利般的讥讽嘲弄我的穷困。" },
-    { id: "window", label: "里斯本的窗口", x: 84, y: 25, translation: "里斯本毫不迟疑地重新匍匐在我脚下。" },
-    { id: "bell-again", label: "仍在桌上的铃", x: 57, y: 59, translation: "把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！" },
-  ],
 };
 
 function useSound() {
@@ -1320,20 +1315,11 @@ export default function Home() {
           <div className="scene-body">
             <BilingualQuote pt="todos aqueles que a minha opulência humilhara cobriram-me de ofensas, como se alastra de lixo uma estátua derrubada de príncipe decaído." zh="所有曾受我财富羞辱的人都用侮辱覆盖我，如同人们把垃圾铺满一尊倒下的失势王子的雕像。" />
             <p>旧同事、报纸、贵族、教会、街上的人群，甚至马克斯太太，都在惩罚我的贫穷。每一次羞辱，都把我重新推向那座豪宅。</p>
-            <div className="hotspot-index">
-              {(sceneHotspots.humiliation ?? []).map((item) => (
-                <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
-                  <span>{currentVisited.includes(item.id) ? "✓" : "+"}</span>{item.label}
-                </button>
-              ))}
+            <div className="consequence">
+              <BilingualQuote compact pt="Então, indignado, um dia subitamente reentrei com estrondo no meu palacete e no meu luxo." zh="终于有一天，我愤怒地轰然闯回自己的宫殿和奢华生活。" />
+              <p>我试着继续忍受，可银行里的财富仍在等我，狄鑫福也没有离开。旧同事、报纸和街上的石块把我逼到尽头；我终于转身，重新走向洛雷托。</p>
+              <button className="primary-action" onClick={() => go("prison")}>推开洛雷托宫殿的大门 <span>→</span></button>
             </div>
-            {hasInspectedAll ? (
-              <div className="consequence">
-                <BilingualQuote compact pt="Então, indignado, um dia subitamente reentrei com estrondo no meu palacete e no meu luxo." zh="终于有一天，我愤怒地轰然闯回自己的宫殿和奢华生活。" />
-                <p>我试着继续忍受，可银行里的财富仍在等我，狄鑫福也没有离开。旧同事、报纸和街上的石块把我逼到尽头；我终于转身，重新走向洛雷托。</p>
-                <button className="primary-action" onClick={() => go("prison")}>推开洛雷托宫殿的大门 <span>→</span></button>
-              </div>
-            ) : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
           </div>
         )}
 
