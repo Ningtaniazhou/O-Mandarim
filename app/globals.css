@@ -116,6 +116,12 @@ button:focus-visible {
   filter: saturate(0.82) contrast(1.04) brightness(0.77);
 }
 
+.stage-supplication .scene-card,
+.stage-supplication .game-footer,
+.stage-supplication .progress-track {
+  display: none;
+}
+
 .scene-vignette {
   z-index: -3;
   background:

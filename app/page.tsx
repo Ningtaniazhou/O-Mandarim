@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import BeijingCurtainScene from "./beijing-curtain-scene";
+import SupplicationSequence from "./supplication-sequence";
 
 type Stage =
   | "intro"
@@ -863,7 +864,7 @@ export default function Home() {
       <header className="topbar">
         <div className="navigation-actions">
           <button className="wordmark" onClick={reset} aria-label="回到游戏封面">《满大人》<span>· 交互叙事</span></button>
-          {stageHistory.length > 0 && !ringing && !collapsePhase && <button className="back-button" onClick={goBack}>← 返回上一页</button>}
+          {stageHistory.length > 0 && stage !== "supplication" && !ringing && !collapsePhase && <button className="back-button" onClick={goBack}>← 返回上一页</button>}
         </div>
         <div className="top-actions">
           <button className={`sound-button ${sound.enabled ? "is-on" : ""}`} onClick={sound.toggle} aria-label={sound.enabled ? "关闭音乐和音效" : "打开音乐和音效"} title={sound.enabled ? "关闭音乐和音效" : "打开音乐和音效"}>
@@ -905,6 +906,10 @@ export default function Home() {
             </>
           ) : null}
         </BeijingCurtainScene>
+      )}
+
+      {stage === "supplication" && (
+        <SupplicationSequence soundEnabled={sound.enabled} onContinue={() => go("testament")} />
       )}
 
       <section className={`scene-card ${isEast ? "scene-card-east" : ""}`} aria-live="polite" aria-hidden={showBeijingCurtain || undefined}>
