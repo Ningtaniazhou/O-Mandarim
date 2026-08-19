@@ -141,6 +141,50 @@ const refusalLines = [
   "别急着自豪，我亲爱的先生。饥饿很会替哲学修改措辞。",
 ];
 
+const officeDocuments = [
+  {
+    id: "lamp-oil",
+    title: "关于走廊灯油定额之呈报",
+    number: "第 174/B 号 · 行政庶务科",
+    x: 9,
+    y: 76,
+    paragraphs: [
+      "兹据本部西翼三层值役员报告，本月走廊壁灯所耗鲸油较上月增加四分之一品脱。经查，系近日阴雨连绵，午后四时即需点灯，并非保管疏失。",
+      "拟自下月起，将每盏灯每日灯芯长度由八分之一腕尺改为七分之一腕尺。换下之旧灯芯须逐条登记，捆扎后移交库房，毋得擅自丢弃。",
+      "本案无涉新增开支，仅请将修订后的《灯油领取簿》封面由灰色改为浅褐色，以便与旧册区别。",
+    ],
+  },
+  {
+    id: "paper-margin",
+    title: "公文纸左侧页边距统一办法",
+    number: "第 208/C 号 · 文书格式委员会",
+    x: 25,
+    y: 79,
+    paragraphs: [
+      "本委员会于本月十二日午后三时召开第六次例会，就国家公文纸左侧留白宽度再次交换意见。与会七人中，四人赞成一又二分之一指宽，两人赞成一又四分之一指宽，一人因墨水未干未作表示。",
+      "经复核历年样本，决定维持一又二分之一指宽。凡误作一又四分之一指宽者，无须重抄，但应在卷宗目录备注‘页边略窄’，不得因此另立附件。",
+      "请各科抄写员自收到本通告之次日起遵照办理，并于月底汇报所用直尺是否仍能辨清刻度。",
+    ],
+  },
+  {
+    id: "umbrella-rack",
+    title: "雨伞架编号复核清册",
+    number: "第 39/A 号 · 财产保管处",
+    x: 48,
+    y: 62,
+    paragraphs: [
+      "查本部正门雨伞架共有伞孔四十八处，其中第四、十九及三十一号铜牌因年久磨损，数字辨认不清。守门人曾以粉笔临时补写，雨后即告脱落。",
+      "拟请木工房重新錾刻三枚铜牌，字体仍仿一八七二年式样。施工期间，相关伞孔暂以麻绳封闭，任何人不得借用相邻号码，以免登记册发生错位。",
+      "另：无主黑伞一柄已存满六十日。若至下月一日仍无人认领，即移送旧物室，与断柄鸡毛掸一并造册。",
+    ],
+  },
+] as const;
+
+const officeDreams = [
+  "在中央饭店开一瓶香槟，让侍者记住我的名字……",
+  "让一双温柔的手向我伸来，在维纳斯清凉的怀中忘掉这张书桌……",
+] as const;
+
 const camilloffDepartureLines = [
   {
     speaker: "卡米洛夫",
@@ -495,10 +539,12 @@ export default function Home() {
   const [stage, setStage] = useState<Stage>("intro");
   const [transitioning, setTransitioning] = useState(false);
   const [roomFinds, setRoomFinds] = useState<string[]>([]);
-  const [officeDocumentOpen, setOfficeDocumentOpen] = useState(false);
-  const [officeDocumentSeen, setOfficeDocumentSeen] = useState(false);
+  const [officeDocumentsRead, setOfficeDocumentsRead] = useState<string[]>([]);
+  const [activeOfficeDocument, setActiveOfficeDocument] = useState<number | null>(null);
   const [officeDozing, setOfficeDozing] = useState(false);
   const [officeDozed, setOfficeDozed] = useState(false);
+  const [officeDreamsPopped, setOfficeDreamsPopped] = useState<number[]>([]);
+  const [officeDreamsBursting, setOfficeDreamsBursting] = useState<number[]>([]);
   const [refusals, setRefusals] = useState(0);
   const [bellRung, setBellRung] = useState(false);
   const [bellSequence, setBellSequence] = useState<"" | "ringing" | "black">("");
@@ -574,13 +620,17 @@ export default function Home() {
   const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
   const allBeijingStopsVisited = beijingDestinationKeys.every((place) => beijingVisited.includes(place));
   const showBeijingCurtain = stage === "repose" && Boolean(beijingDestination);
+  const officeComplete = officeDocumentsRead.length === officeDocuments.length && officeDozed;
+  const openOfficeDocument = activeOfficeDocument === null ? null : officeDocuments[activeOfficeDocument];
 
   const resetRevisitableStage = (next: Stage) => {
     if (next === "office") {
-      setOfficeDocumentOpen(false);
-      setOfficeDocumentSeen(false);
+      setOfficeDocumentsRead([]);
+      setActiveOfficeDocument(null);
       setOfficeDozing(false);
       setOfficeDozed(false);
+      setOfficeDreamsPopped([]);
+      setOfficeDreamsBursting([]);
     }
     if (next === "market") {
       setVisualFinds((finds) => ({ ...finds, market: [] }));
@@ -643,10 +693,12 @@ export default function Home() {
     setStage("intro");
     setTransitioning(false);
     setRoomFinds([]);
-    setOfficeDocumentOpen(false);
-    setOfficeDocumentSeen(false);
+    setOfficeDocumentsRead([]);
+    setActiveOfficeDocument(null);
     setOfficeDozing(false);
     setOfficeDozed(false);
+    setOfficeDreamsPopped([]);
+    setOfficeDreamsBursting([]);
     setRefusals(0);
     setBellRung(false);
     setBellSequence("");
@@ -690,6 +742,15 @@ export default function Home() {
     // Track transitions follow narrative stages; the sound controller persists between renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage]);
+
+  useEffect(() => {
+    if (activeOfficeDocument === null) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActiveOfficeDocument(null);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [activeOfficeDocument]);
 
   useEffect(() => {
     if (stage !== "tiDeath") return;
@@ -787,16 +848,33 @@ export default function Home() {
     window.setTimeout(() => setCamilloffDeparturePhase("gone"), 2100);
   };
 
-  const toggleOfficeDocument = () => {
-    setOfficeDocumentSeen(true);
-    setOfficeDocumentOpen((open) => !open);
+  const inspectOfficeDocument = (index: number) => {
+    const document = officeDocuments[index];
+    setOfficeDocumentsRead((read) => read.includes(document.id) ? read : [...read, document.id]);
+    setActiveOfficeDocument(index);
     sound.tone(220, 0.55, 0.05, 0, "triangle");
   };
 
   const toggleOfficeDoze = () => {
     setOfficeDozed(true);
-    setOfficeDozing((dozing) => !dozing);
+    setOfficeDozing((dozing) => {
+      if (!dozing) {
+        setOfficeDreamsPopped([]);
+        setOfficeDreamsBursting([]);
+      }
+      return !dozing;
+    });
     sound.tone(123.47, 0.9, 0.045, 0, "sine");
+  };
+
+  const popOfficeDream = (index: number) => {
+    if (officeDreamsBursting.includes(index)) return;
+    setOfficeDreamsBursting((bursting) => [...bursting, index]);
+    sound.tone(392 + index * 80, 0.32, 0.035, 0, "triangle");
+    window.setTimeout(() => {
+      setOfficeDreamsPopped((popped) => popped.includes(index) ? popped : [...popped, index]);
+      setOfficeDreamsBursting((bursting) => bursting.filter((value) => value !== index));
+    }, 460);
   };
 
   const chooseAttack = () => {
@@ -903,6 +981,48 @@ export default function Home() {
         <HotspotLayer items={currentHotspots} visited={currentVisited} active={selectedHotspot?.id} onSelect={inspectHotspot} />
       )}
 
+      {stage === "office" && (
+        <div className="office-document-hotspots" aria-label="桌上的三份公文">
+          {officeDocuments.map((document, index) => (
+            <button
+              key={document.id}
+              className={officeDocumentsRead.includes(document.id) ? "is-read" : ""}
+              style={{ left: `${document.x}%`, top: `${document.y}%` }}
+              type="button"
+              onClick={() => inspectOfficeDocument(index)}
+              aria-label={`展开公文：${document.title}`}
+            >
+              <span>{officeDocumentsRead.includes(document.id) ? "✓" : ["Ⅰ", "Ⅱ", "Ⅲ"][index]}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {stage === "office" && officeDozing && (
+        <div className="office-dream-layer" aria-label="特奥多罗的白日梦">
+          {officeDreams.map((dream, index) => !officeDreamsPopped.includes(index) && (
+            <button key={dream} className={`office-dream-bubble ${officeDreamsBursting.includes(index) ? "is-bursting" : ""}`} type="button" onClick={() => popOfficeDream(index)} aria-label={`白日梦 ${index + 1}`}>
+              <span>“{dream}”</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {stage === "office" && openOfficeDocument && (
+        <div className="office-document-overlay" role="presentation" onMouseDown={(event) => {
+          if (event.target === event.currentTarget) setActiveOfficeDocument(null);
+        }}>
+          <article className="official-paper office-document-sheet" role="dialog" aria-modal="true" aria-labelledby="office-document-title">
+            <button className="office-document-close" type="button" onClick={() => setActiveOfficeDocument(null)} aria-label="合上公文">×</button>
+            <span>葡萄牙王国内政部</span>
+            <h2 id="office-document-title">{openOfficeDocument.title}</h2>
+            <small>{openOfficeDocument.number}</small>
+            {openOfficeDocument.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <footer>谨呈部长阁下核阅<br /><b>里斯本中央书记处</b></footer>
+          </article>
+        </div>
+      )}
+
       {showBeijingCurtain && beijingDestination && (
         <BeijingCurtainScene
           key={beijingDestination}
@@ -960,26 +1080,20 @@ export default function Home() {
           <div className="scene-body office-scene">
             <BilingualQuote pt="A minha existência era bem equilibrada e suave. Toda a semana, de mangas de lustrina à carteira da minha repartição, ia lançando, numa formosa letra cursiva, sobre o papel ‘Tojal’ do Estado, estas frases fáceis..." zh="我的生活平稳而安宁。每周，我戴着黑亮的护袖，伏在部门的书桌前，以优美的草体誊写国家公文。" />
             <p>墨水、火漆与称谓把一周分成整齐的格子。我只须让每一道笔画保持恭敬，便可以安稳地领到每月二万雷斯。</p>
-            <div className="office-actions">
-              <button className={`object-action ${officeDocumentSeen ? "is-read" : ""}`} onClick={toggleOfficeDocument}><span>{officeDocumentOpen ? "收起桌上的公文" : "展开桌上的公文"}</span><small>国家“托雅尔”公文纸</small></button>
-              <button className={`object-action ${officeDozed ? "is-read" : ""}`} onClick={toggleOfficeDoze}><span>{officeDozing ? "从梦里醒来" : "打瞌睡"}</span><small>让笔尖暂时停下</small></button>
+            <div className="office-mobile-documents" aria-label="桌上的三份公文">
+              {officeDocuments.map((document, index) => (
+                <button key={document.id} className={officeDocumentsRead.includes(document.id) ? "is-read" : ""} type="button" onClick={() => inspectOfficeDocument(index)}>
+                  <span>{officeDocumentsRead.includes(document.id) ? "✓" : ["Ⅰ", "Ⅱ", "Ⅲ"][index]}</span>{document.title}
+                </button>
+              ))}
             </div>
-            {officeDocumentOpen && (
-              <article className="official-paper">
-                <span>王国内政部 · 往来公文</span>
-                <p lang="pt">Exmo. Sr. — Tenho a honra de comunicar a V. Exa... Tenho a honra de passar às mãos de V. Exa., Ilmo. e Exmo. Sr...</p>
-                <p>尊敬的阁下：本人谨荣幸地向阁下禀告……本人谨荣幸地将此件呈交尊贵而卓越的阁下钧鉴……</p>
-              </article>
-            )}
-            {officeDozing && (
-              <div className="dream-bubbles" aria-label="特奥多罗的白日梦">
-                <p>“在中央饭店开一瓶香槟，让侍者记住我的名字……”</p>
-                <p>“让一双温柔的手向我伸来，在维纳斯清凉的怀中忘掉这张书桌……”</p>
-              </div>
-            )}
-            {officeDocumentSeen && officeDozed ? (
+            <div className="office-actions">
+              <div className="office-document-progress"><span>桌上的公文</span><b>{officeDocumentsRead.length} / {officeDocuments.length}</b><small>{officeDocumentsRead.length === officeDocuments.length ? "三份无聊公文均已抄写完毕" : "直接点击背景图中的纸页"}</small></div>
+              <button className={`object-action ${officeDozed ? "is-read" : ""}`} onClick={toggleOfficeDoze}><span>{officeDozing ? "醒来" : "打瞌睡"}</span><small>{officeDozing ? "从白日梦中抽身" : "让笔尖暂时停下"}</small></button>
+            </div>
+            {officeComplete ? (
               <button className="primary-action" onClick={() => go("market")}>下班 <span>→</span></button>
-            ) : <p className="discovery-count">桌上的公文与短暂的白日梦，都在等待我。</p>}
+            ) : null}
           </div>
         )}
 

@@ -49,6 +49,15 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /华人街区/);
   assert.doesNotMatch(page, /将军夫人的客厅/);
   assert.match(page, /王国内政部/);
+  assert.match(page, /关于走廊灯油定额之呈报/);
+  assert.match(page, /公文纸左侧页边距统一办法/);
+  assert.match(page, /雨伞架编号复核清册/);
+  assert.match(page, /officeDocumentsRead\.length === officeDocuments\.length && officeDozed/);
+  assert.match(page, />下班 <span>→<\/span>/);
+  assert.match(page, /office-dream-bubble/);
+  assert.match(page, /officeDreamsBursting/);
+  assert.match(page, /醒来/);
+  assert.doesNotMatch(page, /展开桌上的公文|轻点戳破梦境|读完三份公文，并至少做过一次白日梦|让房间自己说话/);
   assert.match(page, /圣克拉拉旧货市场/);
   assert.doesNotMatch(page, /卡米洛夫的建议/);
   assert.match(page, /title: "离府"/);
@@ -229,6 +238,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/pequim-litter-interior-v1.png", import.meta.url)),
     access(new URL("../public/ministry-office-awake-v1.png", import.meta.url)),
     access(new URL("../public/ministry-office-dozing-v1.png", import.meta.url)),
+    access(new URL("../public/dream-cloud.png", import.meta.url)),
     access(new URL("../public/feira-da-ladra-v1.png", import.meta.url)),
     access(new URL("../public/camilloff-meeting-v1.png", import.meta.url)),
     access(new URL("../public/camilloff-departure-v1.png", import.meta.url)),

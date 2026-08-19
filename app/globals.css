@@ -370,6 +370,194 @@ button:focus-visible {
   transform: scale(1.025);
 }
 
+.office-document-hotspots,
+.office-dream-layer {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  pointer-events: none;
+}
+
+.office-document-hotspots button {
+  position: absolute;
+  width: clamp(92px, 16vw, 270px);
+  height: clamp(62px, 12vw, 180px);
+  padding: 0;
+  border: 1px solid transparent;
+  background: radial-gradient(ellipse, rgba(198, 156, 70, 0.02), transparent 68%);
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) rotate(var(--paper-tilt, 0deg));
+  transition: border-color 0.25s ease, background 0.25s ease, filter 0.25s ease;
+}
+
+.office-document-hotspots button:nth-child(1) { --paper-tilt: 7deg; }
+.office-document-hotspots button:nth-child(2) { --paper-tilt: -4deg; }
+.office-document-hotspots button:nth-child(3) { --paper-tilt: 5deg; }
+
+.office-document-hotspots button:hover,
+.office-document-hotspots button:focus-visible {
+  border-color: rgba(216, 183, 105, 0.72);
+  background: radial-gradient(ellipse, rgba(198, 156, 70, 0.18), transparent 70%);
+  filter: drop-shadow(0 0 18px rgba(202, 164, 78, 0.24));
+  outline: none;
+}
+
+.office-document-hotspots button > span {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(226, 203, 151, 0.65);
+  border-radius: 50%;
+  background: rgba(6, 13, 13, 0.88);
+  box-shadow: 0 0 18px rgba(201, 163, 77, 0.2);
+  color: #ead7aa;
+  font: 700 10px Arial, sans-serif;
+}
+
+.office-document-hotspots button:not(.is-read) > span {
+  animation: hotspot-breathe 2.4s ease-in-out infinite;
+}
+
+.office-document-hotspots button.is-read > span {
+  border-color: var(--gold);
+  color: #f1d08d;
+}
+
+.office-dream-layer {
+  z-index: 11;
+}
+
+.office-dream-bubble {
+  position: absolute;
+  top: 11%;
+  left: 20%;
+  width: min(34vw, 500px);
+  aspect-ratio: 3 / 2;
+  padding: 7% 8% 9%;
+  border: 0;
+  background: url("/dream-cloud.png") center / contain no-repeat;
+  color: #33291d;
+  cursor: pointer;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.48));
+  opacity: 0;
+  pointer-events: auto;
+  transform: translateY(45px) scale(0.72);
+  animation: office-dream-arrive 0.85s cubic-bezier(0.18, 0.8, 0.25, 1.2) forwards, office-dream-float 4.6s ease-in-out 0.85s infinite;
+}
+
+.office-dream-bubble:nth-child(2) {
+  top: 1%;
+  left: 39%;
+  width: min(29vw, 430px);
+  animation-delay: 0.45s, 1.3s;
+}
+
+.office-dream-bubble span {
+  display: block;
+  font-size: clamp(12px, 1.05vw, 17px);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.office-dream-bubble.is-bursting {
+  pointer-events: none;
+  animation: office-dream-burst 0.46s ease-in forwards;
+}
+
+.office-dream-bubble.is-bursting::after {
+  position: absolute;
+  inset: 34% 0 auto;
+  color: #d1ac61;
+  content: "✦  ·  ✧  ·  ✦";
+  font-size: 24px;
+  letter-spacing: 0.5em;
+  text-shadow: -45px -28px #77613e, 52px 35px #a6884e;
+}
+
+@keyframes office-dream-arrive {
+  to { opacity: 0.94; transform: translateY(0) scale(1); }
+}
+
+@keyframes office-dream-float {
+  50% { transform: translate(8px, -13px) rotate(0.7deg); }
+}
+
+@keyframes office-dream-burst {
+  45% { opacity: 1; transform: scale(1.12); filter: brightness(1.25) drop-shadow(0 0 30px #b7944d); }
+  100% { opacity: 0; transform: scale(1.55); filter: blur(8px); }
+}
+
+.office-document-overlay {
+  position: fixed;
+  z-index: 40;
+  inset: 0;
+  display: grid;
+  padding: 88px 24px 24px;
+  place-items: center;
+  background: rgba(2, 6, 6, 0.75);
+  backdrop-filter: blur(8px);
+}
+
+.office-document-sheet {
+  width: min(700px, 92vw);
+  max-height: calc(100svh - 118px);
+  margin: 0;
+  padding: 34px 42px 38px;
+  overflow-y: auto;
+  transform: rotate(-0.35deg);
+}
+
+.office-document-sheet h2 {
+  margin: 12px 46px 3px 0;
+  color: #2b2116;
+  font-size: clamp(25px, 3vw, 42px);
+  font-weight: 500;
+  line-height: 1.12;
+}
+
+.office-document-sheet > small {
+  color: rgba(63, 45, 26, 0.65);
+  font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.office-document-sheet footer {
+  margin-top: 24px;
+  color: rgba(55, 38, 20, 0.72);
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: right;
+}
+
+.office-document-sheet footer b {
+  font-weight: 400;
+}
+
+.office-document-close {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 16px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(73, 49, 26, 0.42);
+  border-radius: 50%;
+  background: rgba(226, 209, 173, 0.45);
+  color: #3c2d1c;
+  cursor: pointer;
+  font: 24px/1 Arial, sans-serif;
+}
+
 /* Keep room labels with their objects instead of letting them run into the prose column. */
 .stage-room .scene-hotspot span {
   position: absolute;
@@ -1772,6 +1960,36 @@ blockquote {
   margin: 22px 0 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+}
+
+.office-document-progress {
+  display: grid;
+  min-height: 96px;
+  padding: 17px 19px;
+  border: 1px solid rgba(184, 149, 82, 0.34);
+  background: rgba(5, 12, 12, 0.78);
+  grid-template-columns: 1fr auto;
+}
+
+.office-mobile-documents {
+  display: none;
+}
+
+.office-document-progress > span {
+  color: #efe2c8;
+  font-size: 15px;
+}
+
+.office-document-progress > b {
+  color: var(--gold);
+  font: 700 13px Arial, sans-serif;
+}
+
+.office-document-progress > small {
+  margin-top: 9px;
+  grid-column: 1 / -1;
+  color: rgba(229, 213, 180, 0.56);
+  font: 10px/1.5 Arial, "Noto Sans CJK SC", sans-serif;
 }
 
 .object-action {
@@ -4161,6 +4379,52 @@ blockquote {
 
   .hotspot-layer {
     display: none;
+  }
+
+  .office-document-hotspots {
+    display: none;
+  }
+
+  .office-mobile-documents {
+    display: grid;
+    margin: 18px 0 10px;
+    gap: 8px;
+  }
+
+  .office-mobile-documents button {
+    display: flex;
+    min-height: 48px;
+    padding: 11px 13px;
+    align-items: center;
+    border: 1px solid rgba(220, 205, 171, 0.28);
+    background: rgba(5, 12, 12, 0.72);
+    color: rgba(236, 227, 205, 0.82);
+    cursor: pointer;
+    font: 11px Arial, "Noto Sans CJK SC", sans-serif;
+    gap: 10px;
+    text-align: left;
+  }
+
+  .office-mobile-documents button.is-read {
+    border-color: var(--gold);
+    background: rgba(184, 149, 82, 0.16);
+  }
+
+  .office-mobile-documents button span {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .office-dream-bubble {
+    top: 10%;
+    left: 4%;
+    width: min(72vw, 460px);
+  }
+
+  .office-dream-bubble:nth-child(2) {
+    top: 28%;
+    left: 24%;
+    width: min(68vw, 430px);
   }
 
   .choice-stack.horizontal {
