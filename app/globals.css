@@ -3502,13 +3502,13 @@ blockquote {
 
 .route {
   position: relative;
-  height: 142px;
+  height: 204px;
   margin: 40px 24px 26px 8px;
 }
 
 .route-line {
   position: absolute;
-  top: 55px;
+  top: 116px;
   right: 0;
   left: 0;
   height: 1px;
@@ -3524,7 +3524,7 @@ blockquote {
 
 .route-stop {
   position: absolute;
-  top: 46px;
+  top: 107px;
   width: 52px;
   padding: 0;
   border: 0;
@@ -3568,13 +3568,55 @@ blockquote {
   box-shadow: 0 0 0 5px rgba(164, 56, 45, 0.18);
 }
 
-.route-ship {
+.route-transport-legend {
   position: absolute;
-  top: 26px;
-  color: #15201f;
-  font-size: 18px;
+  inset: 0;
+}
+
+.route-transport {
+  position: absolute;
+  top: 20px;
+  display: grid;
+  width: 20%;
+  grid-template-rows: 82px;
+  justify-items: center;
+  align-items: end;
+  opacity: 0.3;
   transform: translateX(-50%);
-  transition: left 0.85s cubic-bezier(.2, .8, .2, 1);
+  transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
+}
+
+.route-transport i {
+  display: block;
+  width: clamp(64px, 6.5vw, 94px);
+  height: 78px;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: grayscale(0.45) sepia(0.22) contrast(1.04);
+}
+
+.route-transport.transport-train i { background-image: url("/journey-transport-train-v1.png"); }
+.route-transport.transport-mail-steamer i {
+  width: clamp(72px, 7.5vw, 106px);
+  background-image: url("/journey-transport-mail-steamer-v1.png");
+}
+.route-transport.transport-river-steamer i { background-image: url("/journey-transport-river-steamer-v1.png"); }
+.route-transport.transport-flatboat i { background-image: url("/journey-transport-flatboat-v1.png"); }
+.route-transport.transport-pony i {
+  width: clamp(58px, 5.8vw, 82px);
+  background-image: url("/journey-transport-pony-v1.png");
+}
+
+.route-transport.is-complete {
+  opacity: 0.68;
+}
+
+.route-transport.is-current {
+  z-index: 2;
+  opacity: 1;
+  filter: drop-shadow(0 8px 8px rgba(77, 37, 25, 0.22));
+  transform: translateX(-50%) translateY(-3px) scale(1.04);
 }
 
 .travel-caption {
@@ -4952,9 +4994,30 @@ blockquote {
   }
 
   .route {
+    height: 164px;
     margin-right: 18px;
     margin-left: 18px;
   }
+
+  .route-line {
+    top: 90px;
+  }
+
+  .route-stop {
+    top: 81px;
+  }
+
+  .route-transport {
+    grid-template-rows: 68px;
+  }
+
+  .route-transport i {
+    width: 52px;
+    height: 64px;
+  }
+
+  .route-transport.transport-mail-steamer i { width: 60px; }
+  .route-transport.transport-pony i { width: 46px; }
 
   .route-stop span {
     display: none;

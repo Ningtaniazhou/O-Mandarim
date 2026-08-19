@@ -54,13 +54,21 @@ const beijingDestinations: Record<Exclude<BeijingDestination, "">, { title: stri
 const beijingDestinationKeys = ["tartar", "chinese"] as const;
 
 const routes = [
-  ["里斯本", "我离开洛雷托豪宅，决意亲赴北京寻找狄鑫福的家族。"],
+  ["里斯本", "我在夜里离开洛雷托豪宅，赶往马赛，决意亲赴北京寻找狄鑫福的家族。"],
   ["马赛", "我包下整艘名为“锡兰号”的邮船，从马赛向东方启航。"],
   ["上海", "“锡兰号”平静而单调地航行到上海；我一路没有观光的兴致，只想着此行的目的。"],
   ["天津", "从上海沿河乘罗素公司的小轮船抵达天津。"],
-  ["通州", "卡米洛夫派出的翻译萨托在此处迎接。"],
-  ["北京", "在俄罗斯公使卡米洛夫的协助下，我开始寻找狄鑫福的后代。"],
+  ["通州", "从天津换乘低矮的平底船，穿过北河两岸的稻田抵达通州；卡米洛夫派出的翻译萨托在此处迎接。"],
+  ["北京", "我骑上卡米洛夫送来的满洲小马，在哥萨克护送下穿过尘土飞扬的平原，赶往北京。"],
 ];
+
+const routeTransports = [
+  { id: "train", label: "夜行列车", route: "里斯本 → 马赛" },
+  { id: "mail-steamer", label: "“锡兰号”邮船", route: "马赛 → 上海" },
+  { id: "river-steamer", label: "罗素公司小轮船", route: "上海 → 天津" },
+  { id: "flatboat", label: "平底船", route: "天津 → 通州" },
+  { id: "pony", label: "满洲小马", route: "通州 → 北京" },
+] as const;
 
 const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }> = {
   intro: { act: "", title: "未响的铃", subtitle: "一声轻响" },
@@ -1292,18 +1300,31 @@ export default function Home() {
           <div className="scene-body map-scene">
             <BilingualQuote pt="Anelei, suspirei por pisar a terra da China!... pus a proa ao Oriente." zh="我渴望着、叹息着，想要踏上中国的土地！……于是船头转向东方。" />
             <p>为了查明狄鑫福后代的下落，我用成把的金币匆忙办妥准备，从里斯本赶到马赛，包下整艘名为“锡兰号”的邮船。第二天清晨，我迎着海鸥与初升的阳光驶离马赛，船头转向东方。</p>
-            <div className="route" role="img" aria-label={`航线进度：${routes[routeIndex][0]}`}>
+            <div className="route" role="img" aria-label={`旅程进度：${routes[routeIndex][0]}；${routeTransports[Math.min(routeIndex, routeTransports.length - 1)].label}`}>
               <div className="route-line"><span style={{ width: `${(routeIndex / (routes.length - 1)) * 100}%` }} /></div>
+              <div className="route-transport-legend" aria-hidden="true">
+                {routeTransports.map((transport, index) => (
+                  <span
+                    key={transport.id}
+                    className={`route-transport transport-${transport.id} ${index < routeIndex ? "is-complete" : ""} ${index === Math.min(routeIndex, routeTransports.length - 1) ? "is-current" : ""}`}
+                    style={{ left: `${((index + 0.5) / routeTransports.length) * 100}%` }}
+                  >
+                    <i />
+                  </span>
+                ))}
+              </div>
               {routes.map((stop, index) => (
                 <button key={stop[0]} className={`route-stop ${index <= routeIndex ? "is-reached" : ""} ${index === routeIndex ? "is-current" : ""}`} style={{ left: `${(index / (routes.length - 1)) * 100}%` }} disabled aria-label={stop[0]}>
                   <i /><span>{stop[0]}</span>
                 </button>
               ))}
-              <div className="route-ship" style={{ left: `${(routeIndex / (routes.length - 1)) * 100}%` }} aria-hidden="true">▰</div>
             </div>
-            <div className="travel-caption"><strong>{routes[routeIndex][0]}</strong><span>{routes[routeIndex][1]}</span></div>
+            <div className="travel-caption">
+              <strong>{routes[routeIndex][0]}</strong>
+              <span>{routes[routeIndex][1]}</span>
+            </div>
             {routeIndex < routes.length - 1 ? (
-              <button className="primary-action" onClick={() => { setRouteIndex(routeIndex + 1); sound.tone(146.83 + routeIndex * 9, 1, 0.05); }}>继续航行 <span>→</span></button>
+              <button className="primary-action" onClick={() => { setRouteIndex(routeIndex + 1); sound.tone(146.83 + routeIndex * 9, 1, 0.05); }}>继续旅程 <span>→</span></button>
             ) : (
               <button className="primary-action" onClick={() => go("beijing")}>进入北京 <span>→</span></button>
             )}
