@@ -11,11 +11,13 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(page, /FinalReaderAddress/);
   assert.match(page, /preview === "testament"/);
   assert.match(page, /onRing=\{sound\.handbell\}/);
-  assert.match(page, /onEndingMusic=\{\(\) => sound\.playTrack\(musicCues\.mystery\.src/);
-  assert.match(page, /reflection: \{ src: "\/audio\/mystery-dark\.mp3", volume: 0\.28 \}/);
+  assert.match(page, /onEndingMusic=\{\(\) => sound\.restartTrack\(musicCues\.mystery\.src, 0\.58\)\}/);
+  assert.match(page, /reflection: \{ src: "\/audio\/unsolved-investigation-v1\.ogg", volume: 0\.74 \}/);
+  assert.match(page, /const restartTrack = \(src: string, volume: number\)/);
+  assert.match(page, /stage === "testament"\) sound\.restartTrack\(cue\.src, cue\.volume\)/);
   assert.match(page, /mission: musicCues\.reflection/);
   assert.match(page, /letter: musicCues\.reflection/);
-  assert.match(page, /testament: musicCues\.reflection/);
+  assert.match(page, /testament: musicCues\.mystery/);
   assert.doesNotMatch(page, /audio\/contemplation\.mp3/);
   assert.match(page, /我感到自己时日无多，便把自己的经历写成了书，并且立好了遗嘱。/);
   assert.doesNotMatch(page, /返回故事世界的起点/);
@@ -40,7 +42,7 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(styles, /teodoro-final-address-v1\.png/);
 
   const audioSources = [...new Set([...page.matchAll(/["'](\/audio\/[^"']+\.(?:mp3|ogg|wav))["']/g)].map((match) => match[1]))];
-  assert.equal(audioSources.length, 8);
+  assert.equal(audioSources.length, 7);
   for (const source of audioSources) {
     assert.match(versionCopy, new RegExp(`src: ["']${source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`));
   }

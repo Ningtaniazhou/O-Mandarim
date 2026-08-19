@@ -19,7 +19,7 @@ test("connects departure, four-day intercut, and return map", async () => {
   assert.doesNotMatch(page, /将军夫人的客厅|卡米洛夫的建议/);
   assert.match(page, /camilloffDeparture: musicCues\.oriental/);
   assert.match(page, /mansionIntercut: \{ src: "\/audio\/apparitions-ball\.mp3", volume: 0\.16 \}/);
-  assert.match(page, /mapMeeting: \{ src: "\/audio\/mystery-dark\.mp3", volume: 0\.2 \}/);
+  assert.match(page, /mapMeeting: \{ src: "\/audio\/unsolved-investigation-v1\.ogg", volume: 0\.62 \}/);
   assert.match(page, /camilloffIntercut: musicCues\.mansionIntercut/);
   assert.match(page, /camilloffReturn: musicCues\.mapMeeting/);
   assert.match(intercut, /<span>第五章 · 北京<\/span>/);

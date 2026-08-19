@@ -86,7 +86,6 @@ button:focus-visible {
 .stage-camilloffDeparture .scene-image,
 .stage-camilloffReturn .scene-image,
 .stage-devilReturn .scene-image,
-.stage-devilDialogue .scene-image,
 .stage-supplication .scene-image,
 .stage-testament .scene-image {
   background-position: center right;
@@ -94,7 +93,6 @@ button:focus-visible {
 
 .stage-prison .scene-image,
 .stage-devilReturn .scene-image,
-.stage-devilDialogue .scene-image,
 .stage-supplication .scene-image,
 .stage-testament .scene-image {
   filter: saturate(0.8) contrast(1.06) brightness(0.72);
@@ -346,7 +344,6 @@ button:focus-visible {
 .stage-humiliation .scene-card,
 .stage-prison .scene-card,
 .stage-devilReturn .scene-card,
-.stage-devilDialogue .scene-card,
 .stage-supplication .scene-card,
 .stage-testament .scene-card {
   width: min(760px, 54vw);
@@ -358,7 +355,6 @@ button:focus-visible {
 
 .stage-prison .scene-card,
 .stage-devilReturn .scene-card,
-.stage-devilDialogue .scene-card,
 .stage-supplication .scene-card,
 .stage-testament .scene-card {
   width: min(780px, 48vw);
@@ -2082,41 +2078,6 @@ blockquote {
   font-style: italic;
 }
 
-.dream-bubbles {
-  display: grid;
-  margin-top: 14px;
-  gap: 9px;
-  animation: dream-rise 0.8s ease both;
-}
-
-.dream-bubbles p {
-  position: relative;
-  margin: 0;
-  padding: 13px 17px;
-  border: 1px solid rgba(205, 173, 108, 0.42);
-  border-radius: 26px 26px 26px 6px;
-  background: rgba(16, 12, 17, 0.82);
-  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.28);
-  color: #ead9b7;
-  font-size: 13px;
-  font-style: italic;
-}
-
-.dream-bubbles p:nth-child(2) {
-  margin-left: 9%;
-  animation: dream-pulse 3.6s 0.35s ease-in-out infinite;
-}
-
-@keyframes dream-rise {
-  from { opacity: 0; transform: translateY(12px); filter: blur(5px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-
-@keyframes dream-pulse {
-  0%, 100% { opacity: 0.74; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(-3px); }
-}
-
 .room-scene-copy > p:first-child {
   color: rgba(231, 219, 194, 0.78);
 }
@@ -2154,8 +2115,7 @@ blockquote {
   gap: 10px;
 }
 
-.beijing-destination-grid button,
-.generala-topics button {
+.beijing-destination-grid button {
   min-height: 148px;
   padding: 17px;
   border: 1px solid rgba(184, 149, 82, 0.32);
@@ -2166,9 +2126,7 @@ blockquote {
 }
 
 .beijing-destination-grid button:hover,
-.beijing-destination-grid button.is-visited,
-.generala-topics button:hover,
-.generala-topics button.is-read {
+.beijing-destination-grid button.is-visited {
   border-color: var(--gold);
   background: rgba(184, 149, 82, 0.14);
   transform: translateY(-2px);
@@ -2177,9 +2135,7 @@ blockquote {
 .beijing-destination-grid span,
 .beijing-destination-grid strong,
 .beijing-destination-grid em,
-.beijing-destination-grid small,
-.generala-topics span,
-.generala-topics small {
+.beijing-destination-grid small {
   display: block;
 }
 
@@ -2201,8 +2157,7 @@ blockquote {
   font-size: 10px;
 }
 
-.beijing-destination-grid small,
-.generala-topics small {
+.beijing-destination-grid small {
   margin-top: 12px;
   color: rgba(229, 213, 180, 0.58);
   font: 10px/1.55 Arial, "Noto Sans CJK SC", sans-serif;
@@ -3406,8 +3361,7 @@ blockquote {
   width: clamp(440px, 45vw, 770px);
 }
 
-.stage-devilReturn .ti-figure,
-.stage-devilDialogue .ti-figure {
+.stage-devilReturn .ti-figure {
   right: -2vw;
   bottom: -8vh;
   width: clamp(420px, 42vw, 710px);
@@ -3443,7 +3397,6 @@ blockquote {
 }
 
 .stage-devilReturn .corpse-toggle,
-.stage-devilDialogue .corpse-toggle,
 .stage-testament .corpse-toggle {
   right: 17vw;
   bottom: 18vh;
@@ -3592,6 +3545,7 @@ blockquote {
 }
 
 .travel-caption span {
+  flex: 1;
   font-size: 12px;
   line-height: 1.55;
 }
@@ -4167,10 +4121,10 @@ blockquote {
 .th-bg { transition: opacity 1.15s ease, filter 1.2s ease, transform 2.2s ease; }
 .th-dream-bg { filter: saturate(.88) brightness(.82); }
 .th-real-bg { opacity: 0; filter: saturate(.45) brightness(.55); }
-.th-reality .th-dream-bg, .th-identity .th-dream-bg { opacity: 0; }
-.th-reality .th-real-bg, .th-identity .th-real-bg { opacity: 1; }
-.th-bridge .th-dream-bg { opacity: .3; filter: saturate(.38) brightness(.42); transform: scale(1.025); }
-.th-bridge .th-real-bg { opacity: .74; }
+.th-phase-reality .th-dream-bg, .th-phase-identity .th-dream-bg { opacity: 0; }
+.th-phase-reality .th-real-bg, .th-phase-identity .th-real-bg { opacity: 1; }
+.th-phase-bridge .th-dream-bg { opacity: .3; filter: saturate(.38) brightness(.42); transform: scale(1.025); }
+.th-phase-bridge .th-real-bg { opacity: .74; }
 .th-vignette,
 .th-escape-vignette,
 .th-wild-cold {
@@ -4188,26 +4142,27 @@ blockquote {
 .th-story > button:not(.th-coin):not(.th-bowl):not(.th-object-action) { margin-top: 22px; }
 .th-story button:hover, .th-primary:hover, .th-cut:hover { border-color: #e2c27d; background: rgba(115,83,34,.4); }
 .th-story.is-quiet { opacity: .62; }
+.th-phase-lantern .th-story { z-index: 10; }
 .th-rumor { position: absolute; z-index: 9; top: 5vh; right: 3vw; width: min(420px, 34vw); padding: 16px 20px; border: 1px solid rgba(202,169,102,.42); background: rgba(11,10,8,.8); }
 .th-rumor span { color: rgba(240,226,196,.48); font: 10px Arial, sans-serif; letter-spacing: .18em; }
 .th-rumor strong { display: block; margin: 10px 0 14px; font-weight: 400; letter-spacing: .08em; }
 .th-rumor b { display: block; height: 2px; background: rgba(255,255,255,.12); }
 .th-rumor b i { display: block; width: 100%; height: 100%; background: #b78c3d; }
-.th-reality .th-rumor, .th-identity .th-rumor { border-color: rgba(166,51,37,.7); }
-.th-reality .th-rumor b i, .th-identity .th-rumor b i { background: #c64735; }
+.th-phase-reality .th-rumor, .th-phase-identity .th-rumor { border-color: rgba(166,51,37,.7); }
+.th-phase-reality .th-rumor b i, .th-phase-identity .th-rumor b i { background: #c64735; }
 .th-crowd { position: absolute; z-index: 3; top: 37%; left: 47%; width: 420px; height: 160px; opacity: .72; }
 .th-crowd i { position: absolute; bottom: 0; width: 12px; height: 25px; border-radius: 50% 50% 28% 28%; background: rgba(23,17,12,.84); box-shadow: 0 -12px 0 -3px rgba(23,17,12,.84); animation: th-rise .6s ease both; }
 .th-petals { position: absolute; z-index: 5; inset: 0; overflow: hidden; pointer-events: none; }
 .th-petals i { position: absolute; top: -5%; width: 9px; height: 13px; border-radius: 70% 30%; background: #d69b73; opacity: .72; animation: th-fall 7s linear infinite; }
-.th-reality .th-petals i, .th-identity .th-petals i { width: 12px; height: 12px; border: 1px solid #d4a64d; border-radius: 50%; background: #78501e; }
+.th-phase-reality .th-petals i, .th-phase-identity .th-petals i { width: 12px; height: 12px; border: 1px solid #d4a64d; border-radius: 50%; background: #78501e; }
 .th-chant { position: absolute; z-index: 11; top: 48%; left: 50%; opacity: 0; color: #f7e8c5; font-size: clamp(34px, 5vw, 76px); letter-spacing: .22em; text-shadow: 0 3px 22px #210c05; transform: translate(-50%,-50%); pointer-events: none; white-space: nowrap; }
-.th-bridge .th-chant { opacity: 1; animation: th-chant .58s ease-in-out infinite alternate; }
-.th-reality .th-chant { opacity: .28; }
+.th-phase-bridge .th-chant { opacity: 1; animation: th-chant .58s ease-in-out infinite alternate; }
+.th-phase-reality .th-chant { opacity: .28; }
 .th-coin, .th-bowl, .th-object-action { position: absolute; margin: 0 !important; border-radius: 50%; }
 .th-coin { top: 46vh; left: 48vw; width: 64px; height: 64px; border: 2px solid #e3bc63 !important; background: radial-gradient(circle at 35% 30%, #f7df9c, #9c651e 70%) !important; }
 .th-bowl { top: 38vh; left: 57vw; width: 130px; height: 82px; border-color: rgba(227,188,99,.82) !important; background: rgba(64,44,20,.34) !important; }
 .th-object-action { top: 36vh; left: 49vw; width: 150px; height: 105px; }
-.th-lanterns { position: fixed; z-index: 8; inset: 12vh 10vw auto 45vw; display: flex; justify-content: space-between; }
+.th-lanterns { position: fixed; z-index: 10; inset: 12vh 10vw auto 45vw; display: flex; justify-content: space-between; }
 .th-lanterns button { width: 72px; height: 90px; border-radius: 45%; background: rgba(116,50,21,.24); }
 .th-lanterns button.is-lit { background: rgba(255,145,42,.24); box-shadow: 0 0 36px 16px rgba(236,133,36,.38); }
 .th-grip { --grip: 0; position: absolute; z-index: 12; right: 19vw; bottom: 10vh; display: grid; width: 170px; height: 145px; padding-top: 98px; place-items: center; border: 0; border-radius: 50%; background: transparent; color: #f0d9a2; cursor: pointer; touch-action: none; }
@@ -4268,7 +4223,7 @@ blockquote {
 .th-wild-action strong { position: relative; max-width: 125px; font-size: clamp(23px, 1.9vw, 29px); font-weight: 400; line-height: 1.25; letter-spacing: .12em; text-align: center; }
 .th-blackout { position: absolute; z-index: 40; inset: 0; display: grid; opacity: 0; place-items: center; background: #000; pointer-events: none; transition: opacity 1.8s ease; }
 .th-sequence.is-blinking .th-blackout { animation: th-blink .88s ease-in-out both; }
-.th-collapsed .th-blackout { opacity: 1; pointer-events: auto; }
+.th-phase-collapsed .th-blackout { opacity: 1; pointer-events: auto; }
 .th-blackout button { min-width: 140px; padding: 15px 28px; border: 1px solid rgba(225,216,194,.56); background: transparent; color: #f5eddb; cursor: pointer; font: 20px Georgia, "Noto Serif CJK SC", serif; letter-spacing: .28em; text-indent: .28em; animation: th-wake 2.3s ease both; }
 
 @keyframes th-rise { from { opacity: 0; transform: translateY(12px); } }
@@ -4334,7 +4289,6 @@ blockquote {
   .stage-humiliation .scene-image,
   .stage-prison .scene-image,
   .stage-devilReturn .scene-image,
-  .stage-devilDialogue .scene-image,
   .stage-supplication .scene-image,
   .stage-testament .scene-image {
     background-position: 47% center;
@@ -4448,7 +4402,6 @@ blockquote {
   .stage-humiliation .scene-card,
   .stage-prison .scene-card,
   .stage-devilReturn .scene-card,
-  .stage-devilDialogue .scene-card,
   .stage-supplication .scene-card,
   .stage-testament .scene-card {
     width: 100%;
@@ -4504,8 +4457,7 @@ blockquote {
     width: min(88vw, 700px);
   }
 
-  .stage-devilReturn .ti-figure,
-  .stage-devilDialogue .ti-figure {
+  .stage-devilReturn .ti-figure {
     right: -8vw;
     bottom: 14vh;
     width: min(82vw, 660px);
@@ -4527,8 +4479,7 @@ blockquote {
     bottom: 28vh;
   }
 
-  .stage-devilReturn .corpse-toggle,
-  .stage-devilDialogue .corpse-toggle {
+  .stage-devilReturn .corpse-toggle {
     right: 13vw;
     bottom: 21vh;
   }
@@ -4601,7 +4552,6 @@ blockquote {
   }
 
   .beijing-destination-grid,
-  .generala-topics,
   .office-actions {
     grid-template-columns: 1fr;
   }
@@ -4899,7 +4849,6 @@ blockquote {
   .stage-humiliation .scene-card,
   .stage-prison .scene-card,
   .stage-devilReturn .scene-card,
-  .stage-devilDialogue .scene-card,
   .stage-supplication .scene-card,
   .stage-testament .scene-card {
     min-height: 100svh;
@@ -4933,8 +4882,7 @@ blockquote {
     width: 108vw;
   }
 
-  .stage-devilReturn .ti-figure,
-  .stage-devilDialogue .ti-figure {
+  .stage-devilReturn .ti-figure {
     right: -14vw;
     bottom: 7vh;
     width: 102vw;
@@ -4971,8 +4919,7 @@ blockquote {
     bottom: 19vh;
   }
 
-  .stage-devilReturn .corpse-toggle,
-  .stage-devilDialogue .corpse-toggle {
+  .stage-devilReturn .corpse-toggle {
     right: 12vw;
     bottom: 16vh;
   }

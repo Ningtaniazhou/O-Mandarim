@@ -159,6 +159,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(supplication, />\s*乞求 <span>→<\/span>/);
   assert.match(supplication, /devil-alone-street-v1\.png/);
   assert.doesNotMatch(supplication, /phaseCopy|特奥多罗冲向那个黑衣人|跪倒在湿冷的石路上|手指几乎触到衣料时|支撑骤然落空/);
+  assert.match(page, /preview === "devil-return"/);
+  assert.match(page, /preview === "supplication"/);
+  assert.match(page, /preview === "tienho"/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
   assert.match(page, /devil-v1\.png/);
   assert.match(page, /bell-v1\.png/);
@@ -329,6 +332,5 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/audio/pursuit.mp3", import.meta.url)),
     access(new URL("../public/audio/contemplation.mp3", import.meta.url)),
     access(new URL("../public/audio/church-bell-real-v1.mp3", import.meta.url)),
-    access(new URL("../public/audio/mystery-dark.mp3", import.meta.url)),
   ]);
 });

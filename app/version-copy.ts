@@ -4,7 +4,6 @@ export const CREATOR_COPY = "制作者：周宁　　使用模型：chatgpt sol 
 
 export const MUSIC_CREDITS = [
   { src: "/audio/unsolved-investigation-v1.ogg", title: "Unsolved Investigation", creator: "isaiah658", license: "CC0", href: "https://opengameart.org/content/unsolved-investigation" },
-  { src: "/audio/mystery-dark.mp3", title: "Mystery Dark", creator: "leberch", license: "Pixabay Content License", href: "https://pixabay.com/music/ambient-mystery-dark-375266/" },
   { src: "/audio/apparitions-ball.mp3", title: "Apparitions Ball", creator: "Bobjt", license: "CC0", href: "https://opengameart.org/content/apparitions-ball" },
   { src: "/audio/i-swear-i-saw-it.ogg", title: "I Swear I Saw It", creator: "yd", license: "CC0", href: "https://opengameart.org/content/i-swear-i-saw-it-background-track" },
   { src: "/audio/the-journey-begins.ogg", title: "The Journey Begins", creator: "Igor Gundarev", license: "CC0", href: "https://opengameart.org/content/the-journey-begins" },

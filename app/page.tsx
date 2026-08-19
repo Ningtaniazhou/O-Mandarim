@@ -121,10 +121,10 @@ const musicCues = {
   haunting: { src: "/audio/i-swear-i-saw-it.ogg", volume: 0.23 },
   journey: { src: "/audio/the-journey-begins.ogg", volume: 0.22 },
   pursuit: { src: "/audio/pursuit.mp3", volume: 0.2 },
-  reflection: { src: "/audio/mystery-dark.mp3", volume: 0.28 },
+  reflection: { src: "/audio/unsolved-investigation-v1.ogg", volume: 0.74 },
   oriental: { src: "/audio/asianoriental1.ogg", volume: 0.3 },
   mansionIntercut: { src: "/audio/apparitions-ball.mp3", volume: 0.16 },
-  mapMeeting: { src: "/audio/mystery-dark.mp3", volume: 0.2 },
+  mapMeeting: { src: "/audio/unsolved-investigation-v1.ogg", volume: 0.62 },
 } as const;
 
 const stageMusic: Record<Stage, { src: string; volume: number }> = {
@@ -154,7 +154,7 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   prison: musicCues.haunting,
   devilReturn: musicCues.haunting,
   supplication: musicCues.haunting,
-  testament: musicCues.reflection,
+  testament: musicCues.mystery,
 };
 
 const refusalLines = [
@@ -355,8 +355,14 @@ function useSound() {
     currentVolume.current = volume;
     if (currentTrack.current === src) {
       const active = audioPlayers[activePlayer.current];
-      if (enabledRef.current && active.paused) {
+      cancelFade();
+      if (!enabledRef.current) return;
+      if (active.paused) {
+        active.currentTime = 0;
+        active.volume = 0;
         void active.play().then(() => fade(active, null, volume, 500)).catch(() => undefined);
+      } else {
+        active.volume = volume;
       }
       return;
     }
@@ -377,6 +383,19 @@ function useSound() {
       return;
     }
     void incoming.play().then(() => fade(incoming, outgoing, volume)).catch(() => undefined);
+  };
+
+  const restartTrack = (src: string, volume: number) => {
+    const audioPlayers = ensurePlayers();
+    if (!audioPlayers) return;
+    cancelFade();
+    audioPlayers.forEach((player) => {
+      player.pause();
+      player.currentTime = 0;
+      player.volume = 0;
+    });
+    currentTrack.current = "";
+    playTrack(src, volume);
   };
 
   const tone = (frequency: number, duration = 0.8, volume = 0.12, delay = 0, type: OscillatorType = "sine") => {
@@ -507,7 +526,7 @@ function useSound() {
   const toggle = () => setAudio(!enabledRef.current);
   const enable = () => setAudio(true);
 
-  return { enabled, enable, playTrack, fadeTrack, tone, handbell, churchBell, thud, toggle };
+  return { enabled, enable, playTrack, restartTrack, fadeTrack, tone, handbell, churchBell, thud, toggle };
 }
 
 function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; revealed: boolean; onInspect: () => void }) {
@@ -999,7 +1018,8 @@ export default function Home() {
       return;
     }
     const cue = stageMusic[stage];
-    sound.playTrack(cue.src, cue.volume);
+    if (stage === "testament") sound.restartTrack(cue.src, cue.volume);
+    else sound.playTrack(cue.src, cue.volume);
     // Track transitions follow narrative stages; the sound controller persists between renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage]);
@@ -1178,15 +1198,45 @@ export default function Home() {
       setStage("tiDeath");
       setStageHistory([]);
     }
-    if (preview === "camilloff-departure" || preview === "camilloff-sequence") {
-      // These preview targets support isolated visual and interaction QA for the new sequence.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (preview === "office") {
+      setStage("office");
+      setStageHistory([]);
+    }
+    if (preview === "journey") {
+      setStage("map");
+      setStageHistory([]);
+    }
+    if (preview === "camilloff-departure") {
+      // This preview target supports isolated visual and interaction QA for the new transition scene.
       setStage("camilloffDeparture");
       setStageHistory([]);
     }
     if (preview === "camilloff-return") {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStage("camilloffReturn");
+      setStageHistory([]);
+    }
+    if (preview === "camilloff-sequence") {
+      setStage("camilloffDeparture");
+      setStageHistory([]);
+    }
+    if (preview === "devil-return") {
+      setStage("devilReturn");
+      setStageHistory([]);
+    }
+    if (preview === "supplication") {
+      setStage("supplication");
+      setStageHistory([]);
+    }
+    if (preview === "tienho") {
+      setStage("tienho");
+      setStageHistory([]);
+    }
+    if (preview === "mission-awakening") {
+      setStage("tienho");
+      setStageHistory([]);
+    }
+    if (preview === "letter-excuses") {
+      setStage("letter");
       setStageHistory([]);
     }
     if (preview === "testament") {
@@ -1206,7 +1256,7 @@ export default function Home() {
       <header className="topbar">
         <div className="navigation-actions">
           <button className="wordmark" onClick={reset} aria-label="回到游戏封面">《满大人》<span>· 交互叙事</span></button>
-          {stageHistory.length > 0 && stage !== "supplication" && !ringing && camilloffDeparturePhase !== "leaving" && <button className="back-button" onClick={goBack}>← 返回上一页</button>}
+          {stageHistory.length > 0 && !ringing && camilloffDeparturePhase !== "leaving" && <button className="back-button" onClick={goBack}>← 返回上一页</button>}
         </div>
         <div className="top-actions">
           <button className={`sound-button ${sound.enabled ? "is-on" : ""}`} onClick={sound.toggle} aria-label={sound.enabled ? "关闭音乐和音效" : "打开音乐和音效"} title={sound.enabled ? "关闭音乐和音效" : "打开音乐和音效"}>
@@ -1860,7 +1910,7 @@ export default function Home() {
         <FinalReaderAddress
           onSilence={sound.fadeTrack}
           onRing={sound.handbell}
-          onEndingMusic={() => sound.playTrack(musicCues.mystery.src, 0.34)}
+          onEndingMusic={() => sound.restartTrack(musicCues.mystery.src, 0.58)}
           onRestart={reset}
         />
       )}
