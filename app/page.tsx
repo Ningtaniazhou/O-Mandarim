@@ -1119,9 +1119,8 @@ export default function Home() {
         )}
 
         {stage === "room" && (
-          <div className="scene-body">
-            <BilingualQuote pt="Eu chamo-me Teodoro — e fui amanuense do Ministério do Reino." zh="我叫特奥多罗——曾是王国内政部的一名抄写员。" />
-            <p>每周，我弯着背替国家誊写恭敬的公文；每月二万雷斯。夜晚，我回到孔塞桑巷一百零六号，让祷告、彩票和旧书替自己想象幸福。</p>
+          <div className="scene-body room-scene-copy">
+            <p>孔塞桑巷一百零六号的雨夜里，绿色灯罩、彩票、圣母像和那柄搁在法语词典上的铃各自占据一小块光。刚从旧货市场带回的书摊在桌边，绿色缎带正停在一页陌生的文字上。</p>
             <div className="hotspot-index">
               {(sceneHotspots.room ?? []).map((item) => (
                 <button key={item.id} className={roomFinds.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -1129,9 +1128,8 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            {hasInspectedAll ? (
-              <button className="primary-action" onClick={() => go("book")}>仔细翻阅旧书 <span>→</span></button>
-            ) : <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>}
+            <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length} · 旧书是桌上最醒目的线索</p>
+            <button className="primary-action room-book-action" onClick={() => go("book")}>仔细翻阅旧书 <span>→</span></button>
           </div>
         )}
 

@@ -2104,6 +2104,30 @@ blockquote {
   50% { opacity: 1; transform: translateY(-3px); }
 }
 
+.room-scene-copy > p:first-child {
+  color: rgba(231, 219, 194, 0.78);
+}
+
+.room-book-action {
+  min-width: min(100%, 360px);
+}
+
+.room-book-action small {
+  display: block;
+  color: rgba(222, 195, 134, 0.62);
+  font: 700 9px Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.12em;
+}
+
+.stage-room .scene-hotspot:nth-child(2):not(.is-visited) i {
+  animation: room-book-beacon 1.8s ease-in-out infinite;
+}
+
+@keyframes room-book-beacon {
+  0%, 100% { box-shadow: 0 0 0 6px rgba(6, 13, 13, 0.42), 0 0 22px rgba(213, 173, 91, 0.3); }
+  50% { box-shadow: 0 0 0 11px rgba(184, 149, 82, 0.22), 0 0 48px rgba(238, 207, 133, 0.72); }
+}
+
 .beijing-arrival-scene,
 .beijing-tour-scene {
   max-width: 680px;
