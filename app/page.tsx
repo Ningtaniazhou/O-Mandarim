@@ -30,7 +30,6 @@ type Stage =
   | "renounce"
   | "prison"
   | "devilReturn"
-  | "devilDialogue"
   | "supplication"
   | "testament";
 
@@ -86,12 +85,11 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   renounce: { act: "第八章 · 里斯本", title: "放弃一切", subtitle: "重返贫穷" },
   prison: { act: "第八章 · 里斯本", title: "里斯本俯首", subtitle: "回到洛雷托之后" },
   devilReturn: { act: "第八章 · 夜路", title: "荒街上的黑衣人", subtitle: "魔鬼再度出现" },
-  devilDialogue: { act: "第八章 · 夜路", title: "无法撤销的交易", subtitle: "" },
-  supplication: { act: "第八章 · 夜路", title: "空无一人", subtitle: "乞求之后" },
+  supplication: { act: "第八章 · 夜路", title: "乞求", subtitle: "" },
   testament: { act: "正篇结局", title: "留给世人的话", subtitle: "遗嘱与告诫" },
 };
 
-const corpsePresenceStages: Stage[] = ["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
+const corpsePresenceStages: Stage[] = ["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"];
 
 const musicCues = {
   mystery: { src: "/audio/unsolved-investigation-v1.ogg", volume: 0.74 },
@@ -129,7 +127,6 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   renounce: musicCues.haunting,
   prison: musicCues.haunting,
   devilReturn: musicCues.haunting,
-  devilDialogue: musicCues.haunting,
   supplication: musicCues.haunting,
   testament: musicCues.contemplation,
 };
@@ -498,7 +495,6 @@ export default function Home() {
   const [letterDecision, setLetterDecision] = useState<"" | "search" | "return">("");
   const [letterClues, setLetterClues] = useState<string[]>([]);
   const [returnStops, setReturnStops] = useState<string[]>([]);
-  const [supplicated, setSupplicated] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [shake, setShake] = useState(false);
   const [visualFinds, setVisualFinds] = useState<Partial<Record<Stage, string[]>>>({});
@@ -539,9 +535,8 @@ export default function Home() {
     reckoning: "/palace-ghost.png",
     renounce: "/renounce-room-v1.png",
     prison: "/loreto-restored-v1.png",
-    devilReturn: "/devil-street-v1.png",
-    devilDialogue: "/devil-street-v1.png",
-    supplication: "/devil-vanished-v1.png",
+    devilReturn: "/devil-alone-street-v1.png",
+    supplication: "/devil-alone-street-v1.png",
     testament: "/testament-study-v2.png",
   };
   const beijingStreetBackgrounds: Record<Exclude<BeijingDestination, "">, string> = {
@@ -655,7 +650,6 @@ export default function Home() {
     setLetterDecision("");
     setLetterClues([]);
     setReturnStops([]);
-    setSupplicated(false);
     setInfoOpen(false);
     setShake(false);
     setVisualFinds({});
@@ -669,7 +663,7 @@ export default function Home() {
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffSalon", "camilloffMeeting", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
+    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffSalon", "camilloffMeeting", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -811,14 +805,6 @@ export default function Home() {
     setCollapsePhase("waking");
     go("mission");
     window.setTimeout(() => setCollapsePhase(""), 460);
-  };
-
-  const begTheDevil = () => {
-    if (!supplicated) {
-      setSupplicated(true);
-      sound.tone(92, 1.7, 0.11, 0, "sine");
-    }
-    go("supplication");
   };
 
   const openFinalTestament = () => {
@@ -1464,29 +1450,7 @@ export default function Home() {
               zh="一天夜里，我独自走在一条荒无人烟的街上，忽然看见前方那个一身黑衣、腋下夹着雨伞的人——正是他，曾在孔塞桑巷那间幸福的小屋里，让我随着铃的一声轻响继承了那些可憎的千万财富。"
             />
             <p>煤气灯的微光落在他的礼帽和黑色外套上。他仍然像第一次出现时那样庄重、平静，仿佛我们之间从未横过一具尸体与半个世界。</p>
-            <button className="primary-action dangerous-action" onClick={() => go("devilDialogue")}>追上他 <span>→</span></button>
-          </div>
-        )}
-
-        {stage === "devilDialogue" && (
-          <div className="scene-body devil-dialogue-body">
-            <p>我向他冲去，死死抓住他那件市民式长外套的衣襟，喊道：</p>
-            <BilingualQuote pt="Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!" zh="把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！" className="ending-quote" />
-            <p>他庄重地把雨伞移到另一只胳膊下，和善地回答：</p>
-            <BilingualQuote pt="Não pode ser, meu prezado senhor, não pode ser..." zh="不行，我尊贵的先生，不行……" className="ending-quote devil-final" />
-            <button className="primary-action supplication-action" onClick={begTheDevil}>{supplicated ? "回到魔鬼消失的一刻" : "乞求"} <span>→</span></button>
-          </div>
-        )}
-
-        {stage === "supplication" && (
-          <div className="scene-body supplication-body">
-            <BilingualQuote
-              pt="Eu atirei-me aos seus pés numa suplicação abjecta: mas só vi diante de mim, sob uma luz mortiça de gás, a forma magra de um cão farejando o lixo."
-              zh="我扑倒在他脚下，卑微地哀求；可当我抬起头，在煤气灯将熄的微光里，面前只剩一条瘦狗，正在垃圾堆中嗅闻。"
-            />
-            <p>我跪在湿冷的石路上，伸出的双手抓不住任何衣角。魔鬼消失了；他的回答却留了下来。</p>
-            <BilingualQuote compact pt="Nunca mais encontrei este indivíduo." zh="我再也没有遇见过这个人。" />
-            <button className="primary-action" onClick={() => go("testament")}>回到洛雷托 <span>→</span></button>
+            <button className="primary-action dangerous-action" onClick={() => go("supplication")}>追上他 <span>→</span></button>
           </div>
         )}
 

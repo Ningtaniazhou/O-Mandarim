@@ -37,6 +37,7 @@
 }
 
 .street,
+.waitingTableau,
 .streetShade,
 .gasGlow,
 .dogReveal {
@@ -51,6 +52,26 @@
   object-fit: cover;
   filter: brightness(0.84) saturate(0.78) contrast(1.07);
   transition: filter 1.4s ease;
+}
+
+.waitingTableau {
+  z-index: 3;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.waiting .waitingTableau {
+  opacity: 1;
+}
+
+.waiting .street,
+.waiting .streetShade,
+.waiting .gasGlow,
+.waiting .devil,
+.waiting .teodoro {
+  opacity: 0;
 }
 
 .streetShade {
@@ -164,11 +185,54 @@
 }
 
 .storyPanel h1 {
-  margin: 0 0 20px;
-  font-size: clamp(45px, 5.2vw, 88px);
+  margin: 0 0 14px;
+  font-size: clamp(38px, 4.3vw, 72px);
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.08em;
+}
+
+.dialogueExcerpt {
+  display: grid;
+  gap: 13px;
+  max-height: min(54svh, 520px);
+  overflow: auto;
+  padding-right: 8px;
+  scrollbar-color: rgba(191, 147, 75, 0.52) transparent;
+}
+
+.dialogueExcerpt p {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 11px 0 11px 15px;
+  border-left: 1px solid rgba(191, 147, 75, 0.46);
+}
+
+.dialogueExcerpt strong {
+  color: #d05242;
+  font: 700 clamp(11px, 0.82vw, 14px) Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.18em;
+}
+
+.dialogueExcerpt span[lang="pt"] {
+  color: rgba(240, 226, 197, 0.9);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(14px, 1.12vw, 21px);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.dialogueExcerpt span:not([lang="pt"]) {
+  color: rgba(231, 216, 185, 0.74);
+  font-size: clamp(13px, 0.96vw, 18px);
+  line-height: 1.62;
+}
+
+.dialogueExcerpt .narration {
+  border-left-color: rgba(191, 147, 75, 0.2);
+  background: rgba(3, 8, 8, 0.22);
 }
 
 .storyPanel blockquote {
@@ -195,11 +259,17 @@
 }
 
 .status {
-  min-height: 3.4em;
-  margin: 18px 0 16px;
+  min-height: 1.7em;
+  margin: 12px 0 12px;
   color: rgba(230, 217, 188, 0.72);
   font-size: clamp(12px, 1vw, 17px);
   line-height: 1.72;
+}
+
+.sequenceActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .begButton {
@@ -327,23 +397,6 @@
   opacity: 0;
 }
 
-.endLine {
-  position: absolute;
-  z-index: 15;
-  right: 4.6%;
-  bottom: 3.5%;
-  margin: 0;
-  color: rgba(234, 217, 182, 0);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(11px, 0.94vw, 16px);
-  font-style: italic;
-  transition: color 1.2s ease 0.45s;
-}
-
-.aftermath .endLine {
-  color: rgba(234, 217, 182, 0.52);
-}
-
 @keyframes runToDevil {
   0% { transform: translateX(-16%) translateY(0) rotate(-1deg); }
   18% { transform: translateX(-8%) translateY(-1.2%) rotate(0.5deg); }
@@ -440,8 +493,8 @@
     min-height: 4.6em;
   }
 
-  .endLine {
-    display: none;
+  .dialogueExcerpt {
+    max-height: 48svh;
   }
 }
 

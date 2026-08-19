@@ -3,15 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./supplication-prototype/page.module.css";
 
-type Phase = "running" | "kneeling" | "vanishing" | "falling" | "aftermath";
-
-const phaseCopy: Record<Phase, string> = {
-  running: "特奥多罗冲向那个黑衣人。",
-  kneeling: "他跪倒在湿冷的石路上，双手伸向魔鬼的小腿。",
-  vanishing: "手指几乎触到衣料时，黑衣人的轮廓开始消散。",
-  falling: "支撑骤然落空；特奥多罗向前扑倒。",
-  aftermath: "煤气灯暗下去。垃圾堆旁，只剩一条瘦狗。",
-};
+type Phase = "waiting" | "running" | "kneeling" | "vanishing" | "falling" | "aftermath";
 
 function playImpact(context: AudioContext, frequency: number, volume: number, duration: number) {
   const now = context.currentTime;
@@ -38,7 +30,9 @@ type SupplicationSequenceProps = {
 };
 
 export default function SupplicationSequence({ soundEnabled, onContinue, children }: SupplicationSequenceProps) {
-  const [phase, setPhase] = useState<Phase>("running");
+  const [phase, setPhase] = useState<Phase>("waiting");
+  const [started, setStarted] = useState(false);
+  const [replayKey, setReplayKey] = useState(0);
   const timersRef = useRef<number[]>([]);
   const contextRef = useRef<AudioContext | null>(null);
 
@@ -53,7 +47,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
 
   useEffect(() => {
     clearSequence();
-    queue(() => setPhase("running"), 0);
+    if (!started) return clearSequence;
 
     let context: AudioContext | null = null;
     if (soundEnabled) {
@@ -77,7 +71,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
     queue(() => setPhase("aftermath"), 4000);
 
     return clearSequence;
-  }, [clearSequence, queue, soundEnabled]);
+  }, [clearSequence, queue, replayKey, soundEnabled, started]);
 
   useEffect(() => {
     return () => {
@@ -85,13 +79,26 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
     };
   }, []);
 
-  const visibleTeodoro = phase;
+  const visibleTeodoro = phase === "waiting" ? "running" : phase;
+  const startSequence = () => {
+    setPhase("running");
+    setStarted(true);
+    setReplayKey((value) => value + 1);
+  };
+  const replaySequence = () => {
+    clearSequence();
+    setPhase("running");
+    setStarted(true);
+    setReplayKey((value) => value + 1);
+  };
 
   return (
     <div className={styles.integratedPage}>
       <section className={`${styles.stage} ${styles.integratedStage} ${styles[phase]}`} aria-label="特奥多罗跪求魔鬼">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className={styles.street} src="/supplication-street-v1.png" alt="煤气灯照亮的湿石路，远处垃圾堆旁有一条瘦狗" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.waitingTableau} src="/devil-alone-street-v1.png" alt="魔鬼独自站在煤气灯照亮的湿石路上" />
         <div className={styles.streetShade} aria-hidden="true" />
         <div className={styles.gasGlow} aria-hidden="true" />
         {children}
@@ -101,15 +108,36 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
         <aside className={`${styles.storyPanel} ${styles.integratedPanel}`}>
           <p className={styles.eyebrow}>第八章 · 夜路</p>
           <h1>乞求</h1>
-          <blockquote>
-            <span lang="pt">“Eu atirei-me aos seus pés numa suplicação abjecta...”</span>
-            <span>“我扑向他的脚下，卑微地哀求……”</span>
-          </blockquote>
-          <p className={styles.status} aria-live="polite">{phaseCopy[phase]}</p>
-          {phase === "aftermath" && (
-            <button className={styles.begButton} type="button" onClick={onContinue}>
-              回到洛雷托 <span>→</span>
+          <div className={styles.dialogueExcerpt}>
+            <p>
+              <strong>特奥多罗</strong>
+              <span lang="pt">“Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!”</span>
+              <span>“把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！”</span>
+            </p>
+            <p className={styles.narration}>
+              <span lang="pt">Ele passou gravemente o seu guarda-chuva para debaixo do outro braço, e respondeu com bondade:</span>
+              <span>他庄重地把雨伞移到另一只胳膊下，和善地回答：</span>
+            </p>
+            <p>
+              <strong>魔鬼</strong>
+              <span lang="pt">“Não pode ser, meu prezado senhor, não pode ser...”</span>
+              <span>“不行，我尊贵的先生，不行……”</span>
+            </p>
+          </div>
+          {phase === "waiting" && (
+            <button className={styles.begButton} type="button" onClick={startSequence}>
+              乞求 <span>→</span>
             </button>
+          )}
+          {phase === "aftermath" && (
+            <div className={styles.sequenceActions}>
+              <button className={styles.begButton} type="button" onClick={replaySequence}>
+                重播
+              </button>
+              <button className={styles.begButton} type="button" onClick={onContinue}>
+                回到洛雷托 <span>→</span>
+              </button>
+            </div>
           )}
         </aside>
 
@@ -125,8 +153,6 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
             alt={visibleTeodoro === "running" ? "特奥多罗冲向魔鬼" : visibleTeodoro === "kneeling" || visibleTeodoro === "vanishing" ? "特奥多罗跪地伸手试图抱住魔鬼的小腿" : "特奥多罗失去支撑后扑倒在湿石路上"}
           />
         </figure>
-
-        <p className={styles.endLine}>“Não pode ser, meu prezado senhor, não pode ser...”</p>
       </section>
     </div>
   );

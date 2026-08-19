@@ -4,16 +4,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 
-type Phase = "idle" | "running" | "kneeling" | "vanishing" | "falling" | "aftermath";
-
-const phaseCopy: Record<Phase, string> = {
-  idle: "魔鬼已经回答。特奥多罗只剩最后一次卑微的请求。",
-  running: "特奥多罗冲向那个黑衣人。",
-  kneeling: "他跪倒在湿冷的石路上，双手伸向魔鬼的小腿。",
-  vanishing: "手指几乎触到衣料时，黑衣人的轮廓开始消散。",
-  falling: "支撑骤然落空；特奥多罗向前扑倒。",
-  aftermath: "煤气灯暗下去。垃圾堆旁，只剩一条瘦狗。",
-};
+type Phase = "waiting" | "running" | "kneeling" | "vanishing" | "falling" | "aftermath";
 
 function playImpact(context: AudioContext, frequency: number, volume: number, duration: number) {
   const now = context.currentTime;
@@ -34,7 +25,7 @@ function playImpact(context: AudioContext, frequency: number, volume: number, du
 }
 
 export default function SupplicationPrototypePage() {
-  const [phase, setPhase] = useState<Phase>("idle");
+  const [phase, setPhase] = useState<Phase>("waiting");
   const [soundOn, setSoundOn] = useState(true);
   const timersRef = useRef<number[]>([]);
   const contextRef = useRef<AudioContext | null>(null);
@@ -93,14 +84,16 @@ export default function SupplicationPrototypePage() {
     queue(() => setPhase("aftermath"), 4000);
   }, [clearSequence, ensureAudio, queue]);
 
-  const busy = phase !== "idle" && phase !== "aftermath";
-  const visibleTeodoro = phase === "idle" ? "running" : phase;
+  const busy = phase !== "waiting" && phase !== "aftermath";
+  const visibleTeodoro = phase === "waiting" ? "running" : phase;
 
   return (
     <main className={styles.page}>
       <section className={`${styles.stage} ${styles[phase]}`} aria-label="特奥多罗乞求魔鬼的独立动画样片">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className={styles.street} src="/supplication-street-v1.png" alt="煤气灯照亮的湿石路，远处垃圾堆旁有一条瘦狗" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.waitingTableau} src="/devil-alone-street-v1.png" alt="魔鬼独自站在煤气灯照亮的湿石路上" />
         <div className={styles.streetShade} aria-hidden="true" />
         <div className={styles.gasGlow} aria-hidden="true" />
         <div className={styles.dogReveal} aria-hidden="true" />
@@ -119,13 +112,8 @@ export default function SupplicationPrototypePage() {
         <aside className={styles.storyPanel}>
           <p className={styles.eyebrow}>第八章 · 夜路</p>
           <h1>乞求</h1>
-          <blockquote>
-            <span lang="pt">“Eu atirei-me aos seus pés numa suplicação abjecta...”</span>
-            <span>“我扑向他的脚下，卑微地哀求……”</span>
-          </blockquote>
-          <p className={styles.status} aria-live="polite">{phaseCopy[phase]}</p>
           <button className={styles.begButton} type="button" onClick={beginSupplication} disabled={busy}>
-            {phase === "aftermath" ? "重演" : busy ? "……" : "乞求"}
+            {phase === "aftermath" ? "重播" : busy ? "……" : "乞求"}
             {!busy && <span>→</span>}
           </button>
         </aside>
@@ -142,8 +130,6 @@ export default function SupplicationPrototypePage() {
             alt={visibleTeodoro === "running" ? "特奥多罗冲向魔鬼" : visibleTeodoro === "kneeling" || visibleTeodoro === "vanishing" ? "特奥多罗跪地伸手试图抱住魔鬼的小腿" : "特奥多罗失去支撑后扑倒在湿石路上"}
           />
         </figure>
-
-        <p className={styles.endLine}>“Não pode ser, meu prezado senhor, não pode ser...”</p>
       </section>
     </main>
   );
