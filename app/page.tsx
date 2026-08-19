@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import BeijingCurtainScene from "./beijing-curtain-scene";
+import CamilloffIntercut from "./camilloff-intercut";
+import CamilloffReturnMap from "./camilloff-return-map";
 import SupplicationSequence from "./supplication-sequence";
 
 type Stage =
@@ -19,8 +21,9 @@ type Stage =
   | "map"
   | "beijing"
   | "repose"
-  | "camilloffSalon"
-  | "camilloffMeeting"
+  | "camilloffDeparture"
+  | "camilloffIntercut"
+  | "camilloffReturn"
   | "tienho"
   | "wilderness"
   | "mission"
@@ -74,8 +77,9 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   map: { act: "第四章 · 远行", title: "向东方去", subtitle: "从里斯本到北京" },
   beijing: { act: "第五章 · 北京", title: "城门之前", subtitle: "东直门外的轿子" },
   repose: { act: "第五章 · 北京", title: "轿中北京", subtitle: "宫墙与老百姓的街巷" },
-  camilloffSalon: { act: "第五章 · 北京", title: "将军夫人的客厅", subtitle: "月色花园与钢琴" },
-  camilloffMeeting: { act: "第五章 · 北京", title: "卡米洛夫的建议", subtitle: "赎罪的三种办法" },
+  camilloffDeparture: { act: "第五章 · 北京", title: "离府", subtitle: "同一段时间，由此开始" },
+  camilloffIntercut: { act: "第五章 · 北京", title: "宅邸内外", subtitle: "两处黄昏" },
+  camilloffReturn: { act: "第五章 · 北京", title: "归来与地图会谈", subtitle: "纸上的道路" },
   tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
   wilderness: { act: "第六章 · 远东", title: "荒野上的路", subtitle: "马匹消失之后" },
   mission: { act: "第七章 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
@@ -116,8 +120,9 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   map: musicCues.journey,
   beijing: musicCues.journey,
   repose: musicCues.oriental,
-  camilloffSalon: musicCues.oriental,
-  camilloffMeeting: musicCues.oriental,
+  camilloffDeparture: musicCues.oriental,
+  camilloffIntercut: musicCues.oriental,
+  camilloffReturn: musicCues.oriental,
   tienho: musicCues.pursuit,
   wilderness: musicCues.pursuit,
   mission: musicCues.contemplation,
@@ -135,6 +140,25 @@ const refusalLines = [
   "你把良心称作原则，不过是因为今晚的价钱还没有说得足够具体。",
   "别急着自豪，我亲爱的先生。饥饿很会替哲学修改措辞。",
 ];
+
+const camilloffDepartureLines = [
+  {
+    speaker: "卡米洛夫",
+    text: "我先去佟亲王的衙门。若他准许调查，还得跑遍帝国各衙门和档案院，找那些掌管旧籍的书吏。",
+  },
+  {
+    speaker: "卡米洛夫",
+    text: "事情恐怕很麻烦。我要先证明，这番查问既不是危害帝国安全的阴谋，也无意冒犯神圣礼制。",
+  },
+  {
+    speaker: "卡米洛夫",
+    text: "弗拉基米拉，请替我好好招待我们的客人。",
+  },
+  {
+    speaker: "卡米洛夫",
+    text: "我尽量在天黑前回来。特奥多罗，请安心等候——我今天所做的一切，都是为了替你找到狄鑫福的家人。",
+  },
+] as const;
 
 const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
   market: [
@@ -484,11 +508,10 @@ export default function Home() {
   const [chosenLuxuries, setChosenLuxuries] = useState<string[]>([]);
   const [avoidance, setAvoidance] = useState("");
   const [routeIndex, setRouteIndex] = useState(0);
-  const [camilloff, setCamilloff] = useState("");
   const [beijingDestination, setBeijingDestination] = useState<BeijingDestination>("");
   const [beijingVisited, setBeijingVisited] = useState<Exclude<BeijingDestination, "">[]>([]);
-  const [generalaTopics, setGeneralaTopics] = useState<string[]>([]);
-  const [camilloffNews, setCamilloffNews] = useState(false);
+  const [camilloffDepartureStep, setCamilloffDepartureStep] = useState(0);
+  const [camilloffDeparturePhase, setCamilloffDeparturePhase] = useState<"confession" | "briefing" | "leaving" | "gone">("confession");
   const [attackChoice, setAttackChoice] = useState("");
   const [collapsePhase, setCollapsePhase] = useState<"" | "falling" | "dark" | "waking">("");
   const [collapseSeen, setCollapseSeen] = useState(false);
@@ -509,7 +532,7 @@ export default function Home() {
   const ringing = bellSequence === "ringing";
 
   const info = stageInfo[stage];
-  const isEast = ["map", "beijing", "repose", "camilloffSalon", "camilloffMeeting", "tienho", "wilderness", "mission", "letter"].includes(stage);
+  const isEast = ["map", "beijing", "repose", "camilloffDeparture", "camilloffIntercut", "camilloffReturn", "tienho", "wilderness", "mission", "letter"].includes(stage);
   const backgrounds: Record<Stage, string> = {
     intro: "/intro-cover-v1.png",
     office: "/ministry-office-awake-v1.png",
@@ -525,8 +548,9 @@ export default function Home() {
     map: "/east-journey.png",
     beijing: "/pequim-arrival-v1.png",
     repose: "/pequim-litter-interior-v1.png",
-    camilloffSalon: "/pequim-repose-v1.png",
-    camilloffMeeting: "/camilloff-meeting-v1.png",
+    camilloffDeparture: "/camilloff-departure-v1.png",
+    camilloffIntercut: "/camilloff-day1-mansion.png",
+    camilloffReturn: "/camilloff-return-map-v1.png",
     tienho: "/tienho-inn-v3.png",
     wilderness: "/wilderness-v1.png",
     mission: "/mission-cloister-v5.png",
@@ -564,24 +588,17 @@ export default function Home() {
     if (next === "bell" && !bellRung) setRefusals(0);
     if (next === "ghost") setAvoidance("");
     if (next === "beijing") {
-      setCamilloff("");
       setBeijingDestination("");
       setBeijingVisited([]);
-      setGeneralaTopics([]);
-      setCamilloffNews(false);
       setVisualFinds((finds) => ({ ...finds, beijing: [] }));
     }
     if (next === "repose") {
-      setCamilloff("");
       setBeijingDestination("");
       setBeijingVisited([]);
-      setGeneralaTopics([]);
-      setCamilloffNews(false);
     }
-    if (next === "camilloffSalon") setGeneralaTopics([]);
-    if (next === "camilloffMeeting") {
-      setCamilloff("");
-      setCamilloffNews(false);
+    if (next === "camilloffDeparture") {
+      setCamilloffDepartureStep(0);
+      setCamilloffDeparturePhase("confession");
     }
     if (next === "tienho") setAttackChoice("");
     if (next === "wilderness") {
@@ -639,11 +656,10 @@ export default function Home() {
     setChosenLuxuries([]);
     setAvoidance("");
     setRouteIndex(0);
-    setCamilloff("");
     setBeijingDestination("");
     setBeijingVisited([]);
-    setGeneralaTopics([]);
-    setCamilloffNews(false);
+    setCamilloffDepartureStep(0);
+    setCamilloffDeparturePhase("confession");
     setAttackChoice("");
     setCollapsePhase("");
     setCollapseSeen(false);
@@ -663,7 +679,7 @@ export default function Home() {
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffSalon", "camilloffMeeting", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"];
+    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffDeparture", "camilloffIntercut", "camilloffReturn", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -744,10 +760,6 @@ export default function Home() {
     setAvoidance(choice);
   };
 
-  const chooseCamilloff = (choice: string) => {
-    setCamilloff(choice);
-  };
-
   const chooseBeijingDestination = (destination: Exclude<BeijingDestination, "">) => {
     setBeijingDestination(destination);
     setBeijingVisited((visited) => visited.includes(destination) ? visited : [...visited, destination]);
@@ -760,13 +772,19 @@ export default function Home() {
     setSelectedHotspot(null);
   };
 
-  const inspectGeneralaTopic = (topic: string) => {
-    setGeneralaTopics((topics) => topics.includes(topic) ? topics : [...topics, topic]);
-    sound.tone(topic === "europe" ? 261.63 : 329.63, 0.7, 0.06, 0, "triangle");
+  const advanceCamilloffDeparture = () => {
+    setCamilloffDepartureStep((step) => Math.min(step + 1, camilloffDepartureLines.length - 1));
+    sound.tone(220 + camilloffDepartureStep * 18, 0.42, 0.045, 0, "triangle");
   };
 
-  const beginCamilloffMeeting = () => {
-    go("camilloffSalon");
+  const sendCamilloffOff = () => {
+    if (camilloffDeparturePhase !== "briefing") return;
+    setCamilloffDeparturePhase("leaving");
+    sound.thud();
+    [360, 720, 1080, 1440].forEach((delay, index) => {
+      window.setTimeout(() => sound.tone(116 - index * 9, 0.42, 0.035 - index * 0.006, 0, "triangle"), delay);
+    });
+    window.setTimeout(() => setCamilloffDeparturePhase("gone"), 2100);
   };
 
   const toggleOfficeDocument = () => {
@@ -834,25 +852,38 @@ export default function Home() {
   const finalArtifactsRead = finalArtifactsSeen.includes("testament") && finalArtifactsSeen.includes("book");
 
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("preview") === "ti-death") {
+    const preview = new URLSearchParams(window.location.search).get("preview");
+    if (preview === "ti-death") {
       // The preview route intentionally selects its isolated demonstration scene on mount.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setStage("tiDeath");
       setStageHistory([]);
     }
+    if (preview === "camilloff-departure" || preview === "camilloff-sequence") {
+      // These preview targets support isolated visual and interaction QA for the new sequence.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setStage("camilloffDeparture");
+      setStageHistory([]);
+    }
+    if (preview === "camilloff-return") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setStage("camilloffReturn");
+      setStageHistory([]);
+    }
   }, []);
 
   return (
-    <main className={`game-shell stage-${stage} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${shake ? "is-shaking" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
+    <main className={`game-shell stage-${stage} ${stage === "camilloffDeparture" ? `departure-${camilloffDeparturePhase}` : ""} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${shake ? "is-shaking" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
       <div className="scene-image" style={{ backgroundImage: `url(${background})` }} aria-hidden="true" />
       {stage === "office" && <div className={`office-doze-image ${officeDozing ? "is-visible" : ""}`} aria-hidden="true" />}
       <div className="scene-vignette" aria-hidden="true" />
       <div className="paper-grain" aria-hidden="true" />
+      {stage === "camilloffDeparture" && <div className="departure-motion-layer" aria-hidden="true"><span>车轮声渐远</span></div>}
 
       <header className="topbar">
         <div className="navigation-actions">
           <button className="wordmark" onClick={reset} aria-label="回到游戏封面">《满大人》<span>· 交互叙事</span></button>
-          {stageHistory.length > 0 && stage !== "supplication" && !ringing && !collapsePhase && <button className="back-button" onClick={goBack}>← 返回上一页</button>}
+          {stageHistory.length > 0 && stage !== "supplication" && !ringing && !collapsePhase && camilloffDeparturePhase !== "leaving" && <button className="back-button" onClick={goBack}>← 返回上一页</button>}
         </div>
         <div className="top-actions">
           <button className={`sound-button ${sound.enabled ? "is-on" : ""}`} onClick={sound.toggle} aria-label={sound.enabled ? "关闭音乐和音效" : "打开音乐和音效"} title={sound.enabled ? "关闭音乐和音效" : "打开音乐和音效"}>
@@ -1207,57 +1238,62 @@ export default function Home() {
                     );
                   })}
                 </div>
-                {allBeijingStopsVisited && <button className="primary-action" onClick={beginCamilloffMeeting}>前往卡米洛夫府邸 <span>→</span></button>}
+                {allBeijingStopsVisited && <button className="primary-action" onClick={() => go("camilloffDeparture")}>前往卡米洛夫府邸 <span>→</span></button>}
               </>
             )}
           </div>
         )}
 
-        {stage === "camilloffSalon" && (
-          <div className="scene-body generala-visit">
-            <BilingualQuote pt="Era alta e loira; tinha os olhos verdes das sereias de Homero... e nos dedos, que lhe beijei, errava um aroma fino de sândalo e de chá." zh="她身材高挑，一头金发，绿色眼睛像荷马笔下的海妖……我吻过的手指间，浮动着檀香与茶的细微香气。" />
-            <p>轿子停在卡米洛夫府邸。月光洒满花园，流水在黑暗中低语；将军夫人穿白色丝裙，胸前别着一朵猩红玫瑰。在她身边，欧洲的谈话与钢琴声几乎把我从赎罪之旅里带走。</p>
-            <div className="generala-topics">
-              <button className={generalaTopics.includes("europe") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("europe")}><span>和她聊天</span><small>虚无主义、左拉与里奥十三世</small></button>
-              <button className={generalaTopics.includes("piano") ? "is-read" : ""} onClick={() => inspectGeneralaTopic("piano")}><span>请她弹琴</span><small>女低音划破紫禁城的寂静</small></button>
-            </div>
-            {generalaTopics.includes("europe") && <BilingualQuote compact pt="Conversámos muito da Europa, do niilismo, de Zola, de Leão XIII, e da magreza de Sarah Bernhardt..." zh="我们谈了许多欧洲的事：虚无主义、左拉、里奥十三世，还有莎拉·伯恩哈特的消瘦……" />}
-            {generalaTopics.includes("piano") && <BilingualQuote compact pt="Depois ela sentou-se ao piano — e a sua voz de contralto quebrou até tarde os silêncios melancólicos da Cidade Tártara..." zh="后来她坐到钢琴前——她的女低音一直到深夜还在划破紫禁城忧郁的寂静……" />}
-            {generalaTopics.length >= 2 ? <button className="primary-action" onClick={() => go("camilloffMeeting")}>第二天去见卡米洛夫将军 <span>→</span></button> : <p className="discovery-count">与她交谈，再听一段琴声。</p>}
-          </div>
-        )}
-
-        {stage === "camilloffMeeting" && (
-          <div className="scene-body camilloff-meeting">
-            {camilloffNews ? (
-              <div className="dialogue-result repose-news">
-                <div className="speaker">卡米洛夫</div>
-                <BilingualQuote compact pt="Descobrira-se enfim que um opulento mandarim, de nome Ti Chin-Fu, vivera outrora nos confins da Mongólia, na vila de Tien-Hó! Tinha morrido subitamente: e a sua larga descendência residia lá, em miséria, num casebre vil..." zh="终于查明，一位名叫狄鑫福的富有满大人曾住在蒙古边境的天河村。他猝然去世；众多后代仍住在那里，穷困地挤在一间破屋里……" />
-                <BilingualQuote compact pt="Depois desde que chegara a Pequim, eu não tornara a avistar a forma odiosa de Ti Chin-Fu e do seu papagaio. A Consciência era dentro em mim como uma pomba adormecida." zh="自从来到北京，我再没有看见狄鑫福与纸鸢那可憎的形影。良心在我心里，仿佛一只睡着的鸽子。" />
-                <p>我几乎想把这份寂静误认作宽恕。卡米洛夫却已经用铅笔标出路线：线索指向北京以北、越过长城后的天河村；先沿白河北上，再换船、骑马穿过长城，最后还要步行两天。</p>
-                <button className="primary-action" onClick={() => go("tienho")}>告别卡米洛夫，前往天河村 <span>→</span></button>
+        {stage === "camilloffDeparture" && (
+          <div className={`scene-body camilloff-departure ${camilloffDeparturePhase}`}>
+            {camilloffDeparturePhase === "confession" ? (
+              <div className="departure-confession">
+                <div className="departure-time-label">当晚 · 卡米洛夫府邸</div>
+                <BilingualQuote compact pt="Sei duas palavras importantes, general: ‘mandarim’ e ‘chá’." zh="将军，我会两个重要的词：‘满大人’和‘茶’。" />
+                <p>轿游结束后，我回到卡米洛夫府邸，把那柄摇铃、狄鑫福的死与此行的目的告诉了他。卡米洛夫没有追问我的罪，只问这笔补偿应当交到谁手中。</p>
+                <div className="departure-proposal">
+                  <div className="speaker">卡米洛夫</div>
+                  <BilingualQuote compact pt="Faça uma coisa. Procure a família de Ti Chin-Fu..." zh="做一件事吧。去寻找狄鑫福的家人……" />
+                  <p>只有找到死者的家人，补偿才可能真正抵达被夺去财富的人。卡米洛夫答应次日清早先去佟亲王的衙门查问。</p>
+                </div>
+                <button className="primary-action" onClick={() => setCamilloffDeparturePhase("briefing")}>第二天清早 <span>→</span></button>
+              </div>
+            ) : camilloffDeparturePhase === "gone" ? (
+              <div className="departure-afterglow">
+                <p className="departure-soundline">门扉合拢。马蹄与车轮声沿着清晨的石路渐渐远去。</p>
+                <p>卡米洛夫正为我去寻找那个因我而死的人的家人。府邸内外，从这一刻起流过同一段时间。</p>
+                <button className="primary-action" onClick={() => go("camilloffIntercut")}>留在府邸，等待消息 <span>→</span></button>
               </div>
             ) : (
               <>
-                <BilingualQuote pt="Sei duas palavras importantes, general: ‘mandarim’ e ‘chá’." zh="将军，我会两个重要的词：‘满大人’和‘茶’。" />
-                <p>第二天一早，我把那柄摇铃、狄鑫福的死与此行的目的全都告诉卡米洛夫。我们隔桌而坐；老将军捋着浓密的白胡子，逐一驳回我那些过于简单的补偿办法。</p>
-                {!camilloff ? (
-                  <div className="choice-stack">
-                    <button className="choice-button" onClick={() => chooseCamilloff("treasury")}><span>把一半巨款交给国库</span><small>也许狄鑫福会因此平静</small></button>
-                    <button className="choice-button" onClick={() => chooseCamilloff("rice")}><span>私人向饥民分发大米</span><small>以慈善绕开国家</small></button>
-                    <button className="choice-button" onClick={() => chooseCamilloff("family")}><span>寻找狄鑫福的家族</span><small>把巨款直接还给后代</small></button>
-                  </div>
+                <BilingualQuote compact pt="Quando o general saiu com a sua escolta cossaca para o Yamen do príncipe Tong, a informar-se da residência da família Ti Chin-Fu..." zh="将军带着哥萨克卫队前往佟亲王的衙门，打听狄鑫福一家的住处……" />
+                <div className="departure-dialogue" aria-live="polite">
+                  <div className="speaker">{camilloffDepartureLines[camilloffDepartureStep].speaker}</div>
+                  <p>{camilloffDepartureLines[camilloffDepartureStep].text}</p>
+                  <div className="departure-count">{String(camilloffDepartureStep + 1).padStart(2, "0")} / {String(camilloffDepartureLines.length).padStart(2, "0")}</div>
+                </div>
+                {camilloffDepartureStep < camilloffDepartureLines.length - 1 ? (
+                  <button className="primary-action" onClick={advanceCamilloffDeparture}>继续听他说 <span>→</span></button>
                 ) : (
-                  <div className="dialogue-result">
-                    <div className="speaker">卡米洛夫</div>
-                    <BilingualQuote compact pt={camilloff === "treasury" ? "Erro, considerável erro, mancebo! Esses milhões nunca chegariam ao Tesouro imperial." : camilloff === "rice" ? "Funesta... A corte imperial veria aí imediatamente uma ambição política." : "Faça uma coisa. Procure a família de Ti Chin-Fu..."} zh={camilloff === "treasury" ? "错了，大错特错，年轻人！这些钱永远到不了帝国国库。" : camilloff === "rice" ? "这会招致灾祸……朝廷会立刻从中看出政治野心。" : "做一件事吧。去寻找狄鑫福的家人……"} />
-                    <p>{camilloff === "treasury" ? "钱只会留在统治阶层‘深不可测的口袋’里，不能让一个饥民吃饱。" : camilloff === "rice" ? "朝廷会把赈米视为收买民众、威胁王朝的政治野心。" : "只有找到死者的家人，补偿才可能真正抵达被夺去财富的人。"} 卡米洛夫答应向佟亲王查问狄鑫福后代的住处。</p>
-                    <button className="primary-action" onClick={() => setCamilloffNews(true)}>等待佟亲王的回信 <span>→</span></button>
-                  </div>
+                  <button className="primary-action" onClick={sendCamilloffOff}>送卡米洛夫到门前 <span>→</span></button>
                 )}
               </>
             )}
           </div>
+        )}
+
+        {stage === "camilloffIntercut" && (
+          <CamilloffIntercut
+            onTone={(frequency, duration, volume) => sound.tone(frequency, duration, volume, 0, "triangle")}
+            onComplete={() => go("camilloffReturn")}
+          />
+        )}
+
+        {stage === "camilloffReturn" && (
+          <CamilloffReturnMap
+            onTone={(frequency, duration, volume) => sound.tone(frequency, duration, volume, 0, "triangle")}
+            onContinue={() => go("tienho")}
+          />
         )}
 
         {stage === "tienho" && (

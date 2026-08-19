@@ -29,11 +29,14 @@ test("server-renders the Chinese O Mandarim experience", async () => {
 test("ships the complete narrative and its visual assets", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   const curtain = await readFile(new URL("../app/beijing-curtain-scene.tsx", import.meta.url), "utf8");
+  const camilloffIntercut = await readFile(new URL("../app/camilloff-intercut.tsx", import.meta.url), "utf8");
+  const camilloffReturn = await readFile(new URL("../app/camilloff-return-map.tsx", import.meta.url), "utf8");
+  const supplication = await readFile(new URL("../app/supplication-sequence.tsx", import.meta.url), "utf8");
   const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(page, /合上的书页/);
   assert.match(page, /里斯本俯首/);
   assert.match(page, /荒街上的黑衣人/);
-  assert.match(page, /空无一人/);
+  assert.match(page, /title: "乞求", subtitle: ""/);
   assert.match(page, /留给世人的话/);
   assert.match(page, /狄鑫福/);
   assert.match(page, /卡米洛夫/);
@@ -44,18 +47,51 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /鞑靼城/);
   assert.match(page, /老百姓的街巷/);
   assert.doesNotMatch(page, /华人街区/);
-  assert.match(page, /将军夫人的客厅/);
+  assert.doesNotMatch(page, /将军夫人的客厅/);
   assert.match(page, /王国内政部/);
   assert.match(page, /圣克拉拉旧货市场/);
-  assert.match(page, /将军夫人的客厅/);
-  assert.match(page, /卡米洛夫的建议/);
+  assert.doesNotMatch(page, /卡米洛夫的建议/);
+  assert.match(page, /title: "离府"/);
+  assert.match(page, /同一段时间，由此开始/);
+  assert.match(page, /我今天所做的一切，都是为了替你找到狄鑫福的家人/);
+  assert.match(page, /送卡米洛夫到门前/);
+  assert.match(page, /门扉合拢。马蹄与车轮声/);
+  assert.match(page, /title: "归来与地图会谈"/);
+  assert.match(page, /title: "宅邸内外"/);
+  assert.match(page, /留在府邸，等待消息/);
+  assert.match(page, /onComplete=\{\(\) => go\("camilloffReturn"\)\}/);
+  assert.match(camilloffIntercut, /等待卡米洛夫归来/);
+  assert.match(page, /camilloff-return-map-v1\.png/);
   assert.match(page, /前往卡米洛夫府邸/);
-  assert.match(page, /第二天去见卡米洛夫将军/);
-  assert.match(page, /自从来到北京，我再没有看见狄鑫福与纸鸢/);
+  assert.match(page, /轿游结束后，我回到卡米洛夫府邸/);
+  assert.match(page, /Faça uma coisa\. Procure a família de Ti Chin-Fu/);
+  assert.match(camilloffReturn, /自从来到北京，我再没有看见狄鑫福与纸鸢/);
   assert.match(page, /beijingDestination/);
   assert.match(page, /beijingVisited/);
-  assert.match(page, /generalaTopics/);
+  assert.doesNotMatch(page, /generalaTopics|camilloffSalon|camilloffMeeting/);
   assert.match(curtain, /起轿/);
+  assert.match(camilloffIntercut, /印章与茶杯/);
+  assert.match(camilloffIntercut, /名单与扇子/);
+  assert.match(camilloffIntercut, /门槛与门扉/);
+  assert.match(camilloffIntercut, /消息与痕迹/);
+  assert.match(camilloffIntercut, /转动地球仪，切换到衙门/);
+  assert.match(camilloffIntercut, /顺时针转动怀表，推进到下一日/);
+  assert.match(camilloffIntercut, /if \(progress >= 1\) \{/);
+  assert.match(camilloffIntercut, /advanceDay\(\);/);
+  assert.match(camilloffIntercut, /一只浅色手套仍搭在我座椅旁/);
+  assert.match(camilloffReturn, /看向桌角的女士手套/);
+  assert.match(camilloffReturn, /我的视线停了一瞬。手刚伸过去，又收了回来/);
+  assert.match(camilloffReturn, /onPointerUp=\{handlePointerUp\}/);
+  assert.match(camilloffReturn, /onWheel=\{handleWheel\}/);
+  assert.match(camilloffReturn, /event\.key === "Enter"/);
+  assert.match(camilloffReturn, /尼古河/);
+  assert.match(camilloffReturn, /密云/);
+  assert.match(camilloffReturn, /切希亚堡/);
+  assert.match(camilloffReturn, /长城/);
+  assert.match(camilloffReturn, /古北口/);
+  assert.match(camilloffReturn, /天河/);
+  assert.match(camilloffReturn, /从地图上抬起视线/);
+  assert.match(camilloffReturn, /告别卡米洛夫，前往天河村/);
   assert.doesNotMatch(page, /beijingDismounted/);
   assert.match(page, /pequim-litter-interior-v1\.png/);
   assert.doesNotMatch(page, /beijingDrift|reposeInterrupted|文人服饰|隐逸之亭/);
@@ -85,8 +121,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /音乐、酒宴和彻夜狂欢只能暂时淹没罪疚/);
   assert.match(page, /用成把的金币匆忙办妥准备/);
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
-  assert.match(page, /线索指向北京以北、越过长城后的天河村/);
-  assert.match(page, /告别卡米洛夫，前往天河村/);
+  assert.match(camilloffReturn, /线索指向北京以北、越过长城后的天河村/);
+  assert.match(camilloffReturn, /告别卡米洛夫，前往天河村/);
   assert.match(page, /外国魔鬼/);
   assert.match(page, /从官府到乞丐/);
   assert.match(page, /地方官也在暗中主持这场抢掠/);
@@ -98,14 +134,17 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /<button className="final-book-action" onClick=\{closeFinalBook\}>合上<\/button>/);
   assert.doesNotMatch(page, /翻开封面|《满大人》· 扉页/);
   assert.match(page, /Uma noite, recolhendo só por uma rua deserta/);
-  assert.match(page, /Livra-me das minhas riquezas! Ressuscita o Mandarim!/);
-  assert.match(page, /Não pode ser, meu prezado senhor, não pode ser/);
-  assert.match(page, /Eu atirei-me aos seus pés numa suplicação abjecta/);
+  assert.match(supplication, /Livra-me das minhas riquezas! Ressuscita o Mandarim!/);
+  assert.match(supplication, /Não pode ser, meu prezado senhor, não pode ser/);
+  assert.doesNotMatch(page, /Eu atirei-me aos seus pés numa suplicação abjecta/);
+  assert.doesNotMatch(supplication, /Eu atirei-me aos seus pés numa suplicação abjecta|煤气灯暗下去。垃圾堆旁，只剩一条瘦狗/);
   assert.match(page, /又是他！阴魂不散！/);
   assert.match(page, /乞求/);
-  assert.match(page, /title: "无法撤销的交易", subtitle: ""/);
-  assert.doesNotMatch(page, /title: "不能"/);
-  assert.match(page, /supplicated/);
+  assert.doesNotMatch(page, /devilDialogue|无法撤销的交易|supplicated/);
+  assert.match(supplication, /phase === "waiting"/);
+  assert.match(supplication, />\s*乞求 <span>→<\/span>/);
+  assert.match(supplication, /devil-alone-street-v1\.png/);
+  assert.doesNotMatch(supplication, /phaseCopy|特奥多罗冲向那个黑衣人|跪倒在湿冷的石路上|手指几乎触到衣料时|支撑骤然落空/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
   assert.match(page, /devil-v1\.png/);
   assert.match(page, /bell-v1\.png/);
@@ -119,7 +158,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /显出狄鑫福的尸体/);
   assert.match(page, /aria-label=\{revealed \? "还是不看为好" : "显出狄鑫福的尸体"\}/);
   assert.doesNotMatch(page, /这是什么？|还是不看见为好|revealed \? "×"/);
-  assert.match(page, /const corpsePresenceStages: Stage\[\] = \["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "devilDialogue", "supplication", "testament"\]/);
+  assert.match(page, /const corpsePresenceStages: Stage\[\] = \["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"\]/);
   assert.doesNotMatch(page, /LateCorpsePresence|late-ti-corpse/);
   assert.match(page, /stageMusic/);
   assert.match(page, /handbell/);
@@ -129,6 +168,14 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /bellSequence/);
   assert.match(styles, /bell-cinematic-swing/);
   assert.match(styles, /corpse-question-escalate 9s/);
+  assert.match(styles, /@keyframes carriage-fades/);
+  assert.match(styles, /\.intercut-card\.is-yamen/);
+  assert.match(styles, /@keyframes globe-equator-glint/);
+  assert.match(styles, /@keyframes watch-hand-invitation/);
+  assert.match(styles, /@keyframes map-route-draw/);
+  assert.match(styles, /@keyframes map-paper-jump/);
+  assert.match(styles, /@keyframes map-hand-jump/);
+  assert.match(styles, /\.departure-leaving \.scene-image/);
   assert.match(styles, /@keyframes corpse-question-escalate/);
   assert.match(styles, /\.stage-devilReturn \.ti-figure/);
   assert.match(styles, /\.stage-prison \.ti-figure/);
@@ -140,7 +187,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(styles, /\.devil-final span\s*\{[^}]*font:\s*700 9px/s);
   assert.match(page, /hasInspectedAll/);
   assert.match(page, /chooseAvoidance/);
-  assert.match(page, /chooseCamilloff/);
+  assert.doesNotMatch(page, /chooseCamilloff/);
   assert.match(page, /chooseLetterDecision/);
   assert.match(page, /resetRevisitableStage/);
   assert.match(page, /if \(next === "ghost"\) setAvoidance\(""\)/);
@@ -149,7 +196,6 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /if \(next === "tienho"\) setAttackChoice\(""\)/);
   assert.match(page, /if \(next === "letter"\) setLetterDecision\(""\)/);
   assert.match(page, /setAvoidance\(choice\)/);
-  assert.match(page, /setCamilloff\(choice\)/);
   assert.match(page, /setLetterDecision\(choice\)/);
   assert.match(page, /unsolved-investigation-v1\.ogg/);
   assert.match(page, /volume: 0\.74/);
@@ -185,6 +231,17 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/ministry-office-dozing-v1.png", import.meta.url)),
     access(new URL("../public/feira-da-ladra-v1.png", import.meta.url)),
     access(new URL("../public/camilloff-meeting-v1.png", import.meta.url)),
+    access(new URL("../public/camilloff-departure-v1.png", import.meta.url)),
+    access(new URL("../public/camilloff-return-map-v1.png", import.meta.url)),
+    access(new URL("../public/camilloff-map-hand-v1.png", import.meta.url)),
+    access(new URL("../public/camilloff-day1-mansion.png", import.meta.url)),
+    access(new URL("../public/camilloff-day1-yamen.png", import.meta.url)),
+    access(new URL("../public/camilloff-day2-mansion.png", import.meta.url)),
+    access(new URL("../public/camilloff-day2-yamen.png", import.meta.url)),
+    access(new URL("../public/camilloff-day3-mansion.png", import.meta.url)),
+    access(new URL("../public/camilloff-day3-yamen.png", import.meta.url)),
+    access(new URL("../public/camilloff-day4-mansion.png", import.meta.url)),
+    access(new URL("../public/camilloff-day4-yamen.png", import.meta.url)),
     access(new URL("../public/intro-cover-v1.png", import.meta.url)),
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
     access(new URL("../public/tienho-inn-v3.png", import.meta.url)),
@@ -195,6 +252,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
     access(new URL("../public/loreto-restored-v1.png", import.meta.url)),
     access(new URL("../public/devil-street-v1.png", import.meta.url)),
+    access(new URL("../public/devil-alone-street-v1.png", import.meta.url)),
     access(new URL("../public/devil-vanished-v1.png", import.meta.url)),
     access(new URL("../public/testament-ending-v1.png", import.meta.url)),
     access(new URL("../public/testament-study-v2.png", import.meta.url)),
