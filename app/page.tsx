@@ -91,6 +91,8 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   testament: { act: "正篇结局", title: "留给世人的话", subtitle: "遗嘱与告诫" },
 };
 
+const corpsePresenceStages: Stage[] = ["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "devilDialogue", "supplication", "testament"];
+
 const musicCues = {
   mystery: { src: "/audio/unsolved-investigation-v1.ogg", volume: 0.74 },
   ballroom: { src: "/audio/apparitions-ball.mp3", volume: 0.2 },
@@ -399,26 +401,27 @@ function useSound() {
 
 function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; revealed: boolean; onInspect: () => void }) {
   return (
-    <button
-      className={`ti-figure ${revealed ? "is-revealed" : "is-silhouette"}`}
-      style={{ "--ti-opacity": String(Math.min(0.28 + intensity * 0.2, 0.94)) } as React.CSSProperties}
-      onClick={onInspect}
-      aria-label={revealed ? "还是不看见为好" : "这是什么？"}
-    >
-      {/* A raw img keeps the transparent corpse cutout portable in the edge build. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福身穿黄绸、仰卧而死，冷臂抱着纸鸢" />
-      <span>{revealed ? "还是不看见为好" : "这是什么？"}</span>
-    </button>
-  );
-}
-
-function LateCorpsePresence() {
-  return (
-    <figure className="late-ti-corpse" aria-label="狄鑫福的尸体仍横陈在特奥多罗眼前">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福身穿黄绸横卧而死，怀中仍抱着纸鸢" />
-    </figure>
+    <>
+      <button
+        className={`ti-figure ${revealed ? "is-revealed" : "is-silhouette"}`}
+        style={{ "--ti-opacity": String(Math.min(0.28 + intensity * 0.2, 0.94)) } as React.CSSProperties}
+        onClick={onInspect}
+        tabIndex={-1}
+        aria-hidden="true"
+      >
+        {/* A raw img keeps the transparent corpse cutout portable in the edge build. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福身穿黄绸、仰卧而死，冷臂抱着纸鸢" />
+      </button>
+      <button
+        className={`corpse-toggle ${revealed ? "is-dismiss" : "is-question"}`}
+        onClick={onInspect}
+        aria-label={revealed ? "让狄鑫福退回虚影" : "显出狄鑫福的尸体"}
+        aria-pressed={revealed}
+      >
+        <span aria-hidden="true">{revealed ? "×" : "?"}</span>
+      </button>
+    </>
   );
 }
 
@@ -532,7 +535,7 @@ export default function Home() {
     wilderness: "/wilderness-v1.png",
     mission: "/mission-cloister-v5.png",
     letter: "/mission-cloister-v5.png",
-    return: "/east-journey.png",
+    return: "/lisbon-room-v3.png",
     reckoning: "/palace-ghost.png",
     renounce: "/renounce-room-v1.png",
     prison: "/loreto-restored-v1.png",
@@ -546,8 +549,7 @@ export default function Home() {
     chinese: "/pequim-chinese-quarter-v1.png",
   };
   const background = backgrounds[stage];
-  const ghostIntensity = stage === "luxury" ? chosenLuxuries.length : ["ghost", "return", "reckoning", "renounce"].includes(stage) ? 3 : 0;
-  const showLateCorpse = ["devilReturn", "devilDialogue", "testament"].includes(stage);
+  const ghostIntensity = stage === "luxury" ? chosenLuxuries.length : corpsePresenceStages.includes(stage) ? 3 : 0;
   const currentHotspots = sceneHotspots[stage] ?? [];
   const currentVisited = visualFinds[stage] ?? [];
   const hasInspectedAll = currentHotspots.length > 0 && currentVisited.length >= currentHotspots.length;
@@ -909,7 +911,16 @@ export default function Home() {
       )}
 
       {stage === "supplication" && (
-        <SupplicationSequence soundEnabled={sound.enabled} onContinue={() => go("testament")} />
+        <SupplicationSequence soundEnabled={sound.enabled} onContinue={() => go("testament")}>
+          <TiChinFu
+            intensity={ghostIntensity}
+            revealed={ghostRevealed}
+            onInspect={() => {
+              setGhostRevealed(!ghostRevealed);
+              sound.tone(98, 1.8, 0.12, 0, "sine");
+            }}
+          />
+        </SupplicationSequence>
       )}
 
       <section className={`scene-card ${isEast ? "scene-card-east" : ""}`} aria-live="polite" aria-hidden={showBeijingCurtain || undefined}>
@@ -1560,8 +1571,9 @@ export default function Home() {
         </div>
       )}
 
-      {ghostIntensity > 0 && (
+      {ghostIntensity > 0 && stage !== "supplication" && (
         <TiChinFu
+          key={stage}
           intensity={ghostIntensity}
           revealed={ghostRevealed}
           onInspect={() => {
@@ -1570,8 +1582,6 @@ export default function Home() {
           }}
         />
       )}
-
-      {showLateCorpse && <LateCorpsePresence />}
 
       {stage === "bell" && <DevilFigure />}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./supplication-prototype/page.module.css";
 
 type Phase = "running" | "kneeling" | "vanishing" | "falling" | "aftermath";
@@ -34,9 +34,10 @@ function playImpact(context: AudioContext, frequency: number, volume: number, du
 type SupplicationSequenceProps = {
   soundEnabled: boolean;
   onContinue: () => void;
+  children?: ReactNode;
 };
 
-export default function SupplicationSequence({ soundEnabled, onContinue }: SupplicationSequenceProps) {
+export default function SupplicationSequence({ soundEnabled, onContinue, children }: SupplicationSequenceProps) {
   const [phase, setPhase] = useState<Phase>("running");
   const timersRef = useRef<number[]>([]);
   const contextRef = useRef<AudioContext | null>(null);
@@ -52,7 +53,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue }: Suppl
 
   useEffect(() => {
     clearSequence();
-    setPhase("running");
+    queue(() => setPhase("running"), 0);
 
     let context: AudioContext | null = null;
     if (soundEnabled) {
@@ -93,6 +94,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue }: Suppl
         <img className={styles.street} src="/supplication-street-v1.png" alt="煤气灯照亮的湿石路，远处垃圾堆旁有一条瘦狗" />
         <div className={styles.streetShade} aria-hidden="true" />
         <div className={styles.gasGlow} aria-hidden="true" />
+        {children}
         <div className={styles.dogReveal} aria-hidden="true" />
         <div className={styles.dogMask} aria-hidden="true" />
 

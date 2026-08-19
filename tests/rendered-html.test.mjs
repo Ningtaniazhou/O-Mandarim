@@ -68,6 +68,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /好吧，狄鑫福已经满意了/);
   assert.match(page, /地址之谜/);
   assert.match(page, /狄鑫福是在返程的船上突然重新出现的/);
+  assert.match(page, /return: "\/lisbon-room-v3\.png"/);
   assert.doesNotMatch(page, /狄鑫福 · \{place\}/);
   assert.match(page, /来吧，特奥多罗，我的朋友/);
   assert.match(page, /No fundo da China existe um mandarim/);
@@ -113,8 +114,13 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /进入故事世界/);
   assert.match(page, /返回故事世界/);
   assert.match(page, /一柄摇铃/);
-  assert.match(page, /这是什么？/);
-  assert.match(page, /还是不看见为好/);
+  assert.match(page, /className=\{`corpse-toggle \$\{revealed \? "is-dismiss" : "is-question"\}`\}/);
+  assert.match(page, /\{revealed \? "×" : "\?"\}/);
+  assert.match(page, /显出狄鑫福的尸体/);
+  assert.match(page, /让狄鑫福退回虚影/);
+  assert.doesNotMatch(page, /这是什么？|还是不看见为好/);
+  assert.match(page, /const corpsePresenceStages: Stage\[\] = \["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "devilDialogue", "supplication", "testament"\]/);
+  assert.doesNotMatch(page, /LateCorpsePresence|late-ti-corpse/);
   assert.match(page, /stageMusic/);
   assert.match(page, /handbell/);
   assert.match(page, /bellRung/);
@@ -122,6 +128,13 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /collapsePhase/);
   assert.match(page, /bellSequence/);
   assert.match(styles, /bell-cinematic-swing/);
+  assert.match(styles, /corpse-question-escalate 9s/);
+  assert.match(styles, /@keyframes corpse-question-escalate/);
+  assert.match(styles, /\.stage-devilReturn \.ti-figure/);
+  assert.match(styles, /\.stage-prison \.ti-figure/);
+  assert.match(styles, /\.stage-supplication \.ti-figure/);
+  assert.match(styles, /\.stage-testament \.ti-figure/);
+  assert.doesNotMatch(styles, /late-ti-corpse/);
   assert.doesNotMatch(styles, /bell-cinematic-grow/);
   assert.doesNotMatch(styles, /scale\(7\.6\)/);
   assert.doesNotMatch(styles, /\.devil-final span\s*\{[^}]*font:\s*700 9px/s);
