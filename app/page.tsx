@@ -4,8 +4,10 @@ import { useEffect, useMemo, useRef, useState, type DragEvent as ReactDragEvent 
 import BeijingCurtainScene from "./beijing-curtain-scene";
 import CamilloffIntercut from "./camilloff-intercut";
 import CamilloffReturnMap from "./camilloff-return-map";
+import FinalReaderAddress from "./final-reader-address";
 import SupplicationSequence from "./supplication-sequence";
 import TienhoSequence from "./tienho-sequence";
+import { ABOUT_COPY, CREATOR_COPY, MUSIC_CREDITS } from "./version-copy";
 
 type Stage =
   | "intro"
@@ -119,7 +121,7 @@ const musicCues = {
   haunting: { src: "/audio/i-swear-i-saw-it.ogg", volume: 0.23 },
   journey: { src: "/audio/the-journey-begins.ogg", volume: 0.22 },
   pursuit: { src: "/audio/pursuit.mp3", volume: 0.2 },
-  contemplation: { src: "/audio/contemplation.mp3", volume: 0.25 },
+  reflection: { src: "/audio/mystery-dark.mp3", volume: 0.28 },
   oriental: { src: "/audio/asianoriental1.ogg", volume: 0.3 },
   mansionIntercut: { src: "/audio/apparitions-ball.mp3", volume: 0.16 },
   mapMeeting: { src: "/audio/mystery-dark.mp3", volume: 0.2 },
@@ -144,15 +146,15 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   camilloffIntercut: musicCues.mansionIntercut,
   camilloffReturn: musicCues.mapMeeting,
   tienho: musicCues.pursuit,
-  mission: musicCues.contemplation,
-  letter: musicCues.contemplation,
+  mission: musicCues.reflection,
+  letter: musicCues.reflection,
   return: musicCues.haunting,
   reckoning: musicCues.haunting,
   renounce: musicCues.haunting,
   prison: musicCues.haunting,
   devilReturn: musicCues.haunting,
   supplication: musicCues.haunting,
-  testament: musicCues.contemplation,
+  testament: musicCues.reflection,
 };
 
 const refusalLines = [
@@ -801,6 +803,7 @@ export default function Home() {
   const [testamentOpen, setTestamentOpen] = useState(false);
   const [finalBookPhase, setFinalBookPhase] = useState<0 | 1 | 2>(0);
   const [finalArtifactsSeen, setFinalArtifactsSeen] = useState<string[]>([]);
+  const [finaleStarted, setFinaleStarted] = useState(false);
   const [stageHistory, setStageHistory] = useState<Stage[]>([]);
   const sound = useSound();
   const ringing = bellSequence === "ringing";
@@ -881,6 +884,7 @@ export default function Home() {
       setTestamentOpen(false);
       setFinalBookPhase(0);
       setFinalArtifactsSeen([]);
+      setFinaleStarted(false);
     }
   };
 
@@ -979,6 +983,7 @@ export default function Home() {
     setTestamentOpen(false);
     setFinalBookPhase(0);
     setFinalArtifactsSeen([]);
+    setFinaleStarted(false);
     setStageHistory([]);
   };
 
@@ -1140,6 +1145,11 @@ export default function Home() {
     sound.tone(164.81, 0.85, 0.06, 0, "triangle");
   };
 
+  const closeFinalTestament = () => {
+    setTestamentOpen(false);
+    if (finalArtifactsSeen.includes("book")) setFinaleStarted(true);
+  };
+
   const openFinalBook = () => {
     setTestamentOpen(false);
     setFinalBookPhase(1);
@@ -1155,6 +1165,7 @@ export default function Home() {
   const closeFinalBook = () => {
     setFinalBookPhase(0);
     sound.tone(196, 0.65, 0.045, 0, "triangle");
+    if (finalArtifactsSeen.includes("testament")) setFinaleStarted(true);
   };
 
   const finalArtifactsRead = finalArtifactsSeen.includes("testament") && finalArtifactsSeen.includes("book");
@@ -1178,10 +1189,14 @@ export default function Home() {
       setStage("camilloffReturn");
       setStageHistory([]);
     }
+    if (preview === "testament") {
+      setStage("testament");
+      setStageHistory([]);
+    }
   }, []);
 
   return (
-    <main className={`game-shell stage-${stage} ${stage === "camilloffDeparture" ? `departure-${camilloffDeparturePhase}` : ""} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
+    <main className={`game-shell stage-${stage} ${stage === "camilloffDeparture" ? `departure-${camilloffDeparturePhase}` : ""} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${ringing ? "is-ringing-bell" : ""} ${finaleStarted ? "is-final-reader-address" : ""}`}>
       <div className="scene-image" style={{ backgroundImage: `url(${background})` }} aria-hidden="true" />
       {stage === "office" && <div className={`office-doze-image ${officeDozing ? "is-visible" : ""}`} aria-hidden="true" />}
       <div className="scene-vignette" aria-hidden="true" />
@@ -1775,12 +1790,12 @@ export default function Home() {
             <div className="scene-body testament-body">
               <p className="ending-label">正篇结局</p>
               <p>我回到洛雷托豪宅，痛苦地坐在办公桌前。魔鬼不肯撤销交易，狄鑫福的尸影也没有离去；财富仍在身边，我却再也无法把它当作幸福。</p>
-              <p>桌上放着一份已经写好的遗嘱，以及一本记录这一切的书。</p>
+              <p>我感到自己时日无多，便把自己的经历写成了书，并且立好了遗嘱。</p>
               <div className="final-artifact-progress" aria-live="polite">
                 <span className={finalArtifactsSeen.includes("testament") ? "is-read" : ""}>遗嘱</span>
                 <span className={finalArtifactsSeen.includes("book") ? "is-read" : ""}>《满大人》</span>
               </div>
-              {finalArtifactsRead && <button className="primary-action" onClick={reset}>返回故事世界的起点 <span>→</span></button>}
+              {finalArtifactsRead && <p className="ending-transition-note">合上最后一页。</p>}
             </div>
 
             <div className="ending-object-hotspots" aria-label="桌上的物件">
@@ -1795,7 +1810,7 @@ export default function Home() {
             {testamentOpen && (
               <div className="artifact-overlay" role="dialog" aria-modal="true" aria-label="特奥多罗的遗嘱">
                 <article className="will-sheet">
-                  <button className="artifact-close" onClick={() => setTestamentOpen(false)}>收起</button>
+                  <button className="artifact-close" onClick={closeFinalTestament}>收起</button>
                   <p className="will-kicker">遗嘱</p>
                   <h2>特奥多罗最后的意愿</h2>
                   <p><strong>立遗嘱人：</strong>特奥多罗</p>
@@ -1836,9 +1851,19 @@ export default function Home() {
                 </div>
               </div>
             )}
+
           </>
         )}
       </section>
+
+      {finaleStarted && (
+        <FinalReaderAddress
+          onSilence={sound.fadeTrack}
+          onRing={sound.handbell}
+          onEndingMusic={() => sound.playTrack(musicCues.mystery.src, 0.34)}
+          onRestart={reset}
+        />
+      )}
 
       {bellSequence && (
         <div className={`bell-cinematic is-${bellSequence}`} aria-hidden="true">
@@ -1851,7 +1876,7 @@ export default function Home() {
         </div>
       )}
 
-      {ghostIntensity > 0 && stage !== "supplication" && (
+      {ghostIntensity > 0 && stage !== "supplication" && !finaleStarted && (
         <TiChinFu
           key={stage}
           intensity={ghostIntensity}
@@ -1885,22 +1910,16 @@ export default function Home() {
 
       {infoOpen && (
         <div className="modal-backdrop">
-          <section className="info-modal" role="dialog" aria-modal="true" aria-labelledby="about-title">
+          <section className="info-modal" role="dialog" aria-modal="true" aria-label="版本说明">
             <button className="modal-close" onClick={() => setInfoOpen(false)} aria-label="关闭">×</button>
             <div className="scene-kicker">版本说明</div>
-            <h2 id="about-title">关于这个校订版</h2>
-            <p>本交互叙事游戏根据埃萨·德·凯罗斯一八八〇年的小说《满大人》改编。它保留埃萨原作的故事主线，在此基础上，如果三次拒绝魔鬼的摇铃提议则触发特别结局，特别结局为原创内容，与原作无关。本作中涉及的中国是特奥多罗及十九世纪欧洲对于东方的想象，并非历史中国的现实复原。</p>
-            <p className="credits">制作者：周宁&emsp;&emsp;使用模型：chatgpt sol 5.6</p>
+            <p>{ABOUT_COPY}</p>
+            <p className="credits">{CREATOR_COPY}</p>
             <div className="music-credits">
               <span>分幕配乐</span>
-              <a href="https://opengameart.org/content/unsolved-investigation" target="_blank" rel="noreferrer">《Unsolved Investigation》· isaiah658 · CC0</a>
-              <a href="https://opengameart.org/content/apparitions-ball" target="_blank" rel="noreferrer">《Apparitions Ball》· Bobjt · CC0</a>
-              <a href="https://opengameart.org/content/i-swear-i-saw-it-background-track" target="_blank" rel="noreferrer">《I Swear I Saw It》· yd · CC0</a>
-              <a href="https://opengameart.org/content/the-journey-begins" target="_blank" rel="noreferrer">《The Journey Begins》· Igor Gundarev · CC0</a>
-              <a href="https://opengameart.org/content/pursuit" target="_blank" rel="noreferrer">《Pursuit》· Sudocolon · CC0</a>
-              <a href="https://opengameart.org/content/contemplation-0" target="_blank" rel="noreferrer">《Contemplation》· Joth · CC0</a>
-              <a href="https://opengameart.org/content/asianoriental1" target="_blank" rel="noreferrer">《Asianoriental1》· Tozan · CC0</a>
-              <a href="https://freesound.org/people/dsp9000/sounds/76405/" target="_blank" rel="noreferrer">《Old Church Bell》· dsp9000 · CC0</a>
+              {MUSIC_CREDITS.map((credit) => (
+                <a key={credit.title} href={credit.href} target="_blank" rel="noreferrer">《{credit.title}》· {credit.creator} · {credit.license}</a>
+              ))}
             </div>
           </section>
         </div>

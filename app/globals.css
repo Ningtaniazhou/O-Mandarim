@@ -4059,6 +4059,12 @@ blockquote {
   text-transform: uppercase;
 }
 
+.is-final-reader-address .topbar,
+.is-final-reader-address .game-footer {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .modal-backdrop {
   position: fixed;
   z-index: 50;
