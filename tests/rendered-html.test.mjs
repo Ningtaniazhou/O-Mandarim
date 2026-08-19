@@ -32,6 +32,7 @@ test("ships the complete narrative and its visual assets", async () => {
   const camilloffIntercut = await readFile(new URL("../app/camilloff-intercut.tsx", import.meta.url), "utf8");
   const camilloffReturn = await readFile(new URL("../app/camilloff-return-map.tsx", import.meta.url), "utf8");
   const supplication = await readFile(new URL("../app/supplication-sequence.tsx", import.meta.url), "utf8");
+  const tienho = await readFile(new URL("../app/tienho-sequence.tsx", import.meta.url), "utf8");
   const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(page, /合上的书页/);
   assert.match(page, /里斯本俯首/);
@@ -103,9 +104,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /beijingDismounted/);
   assert.match(page, /pequim-litter-interior-v1\.png/);
   assert.doesNotMatch(page, /beijingDrift|reposeInterrupted|文人服饰|隐逸之亭/);
-  assert.match(page, /Tien-Hó/);
-  assert.match(page, /荒野上的路/);
-  assert.match(page, /马匹已经跑得很远/);
+  assert.match(tienho, /天河村章节/);
+  assert.match(tienho, /天河村外 · 荒野/);
+  assert.match(tienho, /马匹已经跑远/);
   assert.match(page, /朱利奥神父/);
   assert.match(page, /神父捡到的弃婴/);
   assert.match(page, /狄鑫福和他的纸鸢始终没有再出现/);
@@ -132,9 +133,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
   assert.match(camilloffReturn, /线索指向北京以北、越过长城后的天河村/);
   assert.match(camilloffReturn, /告别卡米洛夫，前往天河村/);
-  assert.match(page, /外国魔鬼/);
-  assert.match(page, /从官府到乞丐/);
-  assert.match(page, /地方官也在暗中主持这场抢掠/);
+  assert.match(tienho, /官员介绍信/);
+  assert.match(tienho, /让萨托翻译/);
+  assert.match(tienho, /按住钱袋保住金币/);
   assert.match(page, /洛雷托的一夜/);
   assert.match(page, /像罪恶的饰物一样从身上甩掉/);
   assert.match(page, /抛下这笔财产/);
@@ -173,7 +174,14 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /handbell/);
   assert.match(page, /bellRung/);
   assert.match(page, /letterDecision/);
-  assert.match(page, /collapsePhase/);
+  assert.match(page, /TienhoSequence/);
+  assert.match(tienho, /第三阶段 · 身份盘问/);
+  assert.match(tienho, /按住：保住金币 \/ 松开：跑得更快/);
+  assert.match(tienho, /保持清醒/);
+  assert.match(tienho, /不要睡去/);
+  assert.match(tienho, />醒来<\/button>/);
+  assert.doesNotMatch(page, /collapsePhase|attackChoice|go\("wilderness"\)/);
+  assert.doesNotMatch(tienho, /speed-lines|reaching-hand|正在逐渐消失的行动能力|再呼吸一次/);
   assert.match(page, /bellSequence/);
   assert.match(styles, /bell-cinematic-swing/);
   assert.match(styles, /corpse-question-escalate 9s/);
@@ -202,7 +210,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /if \(next === "ghost"\) setAvoidance\(""\)/);
   assert.match(page, /if \(next === "beijing"\) \{/);
   assert.match(page, /setBeijingVisited\(\[\]\)/);
-  assert.match(page, /if \(next === "tienho"\) setAttackChoice\(""\)/);
+  assert.match(page, /onComplete=\{\(\) => go\("mission"\)\}/);
   assert.match(page, /if \(next === "letter"\) setLetterDecision\(""\)/);
   assert.match(page, /setAvoidance\(choice\)/);
   assert.match(page, /setLetterDecision\(choice\)/);
@@ -254,10 +262,11 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/camilloff-day4-yamen.png", import.meta.url)),
     access(new URL("../public/intro-cover-v1.png", import.meta.url)),
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
-    access(new URL("../public/tienho-inn-v3.png", import.meta.url)),
+    access(new URL("../public/tienho-dream-v1.png", import.meta.url)),
+    access(new URL("../public/tienho-reality-v1.png", import.meta.url)),
     access(new URL("../public/mission-cloister-v4.png", import.meta.url)),
     access(new URL("../public/mission-cloister-v5.png", import.meta.url)),
-    access(new URL("../public/wilderness-v1.png", import.meta.url)),
+    access(new URL("../public/wilderness-teodoro-v2.png", import.meta.url)),
     access(new URL("../public/renounce-room-v1.png", import.meta.url)),
     access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
     access(new URL("../public/loreto-restored-v1.png", import.meta.url)),

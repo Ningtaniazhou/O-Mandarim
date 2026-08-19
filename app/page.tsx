@@ -5,6 +5,7 @@ import BeijingCurtainScene from "./beijing-curtain-scene";
 import CamilloffIntercut from "./camilloff-intercut";
 import CamilloffReturnMap from "./camilloff-return-map";
 import SupplicationSequence from "./supplication-sequence";
+import TienhoSequence from "./tienho-sequence";
 
 type Stage =
   | "intro"
@@ -25,7 +26,6 @@ type Stage =
   | "camilloffIntercut"
   | "camilloffReturn"
   | "tienho"
-  | "wilderness"
   | "mission"
   | "letter"
   | "return"
@@ -89,7 +89,6 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   camilloffIntercut: { act: "第五章 · 北京", title: "宅邸内外", subtitle: "两处黄昏" },
   camilloffReturn: { act: "第五章 · 北京", title: "与卡米洛夫的会谈", subtitle: "纸上的道路" },
   tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
-  wilderness: { act: "第六章 · 远东", title: "荒野上的路", subtitle: "马匹消失之后" },
   mission: { act: "第七章 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
   letter: { act: "第七章 · 远东", title: "地址之谜", subtitle: "" },
   return: { act: "第七章 · 返航", title: "死者同行", subtitle: "从中国返回欧洲" },
@@ -134,7 +133,6 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   camilloffIntercut: musicCues.mansionIntercut,
   camilloffReturn: musicCues.mapMeeting,
   tienho: musicCues.pursuit,
-  wilderness: musicCues.pursuit,
   mission: musicCues.contemplation,
   letter: musicCues.contemplation,
   return: musicCues.haunting,
@@ -237,12 +235,6 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
   beijing: [
     { id: "litter", label: "红绸轿子", x: 84, y: 69, translation: "一乘华贵的轿子正在东直门外等我，猩红丝帘上满是金线刺绣。" },
   ],
-  tienho: [
-    { id: "arrow", label: "箭与破洞", x: 84, y: 25, translation: "一块石头从我身旁飞来，击穿了窗格上的油纸；随后一支箭呼啸而过。" },
-    { id: "money-case", label: "钱袋", x: 71, y: 82, translation: "可是，大人，至少保住您宝贵的性命！" },
-    { id: "carts", label: "行李车", x: 61, y: 51, translation: "人群仍不满足，咆哮起来。" },
-    { id: "pony", label: "马匹", x: 90, y: 53, translation: "我扑向那匹马，一把抓住它的鬃毛。" },
-  ],
   mission: [
     { id: "bandage", label: "绷带", x: 46, y: 64, translation: "两位遣使会神父正慢慢清洗我的耳朵。" },
     { id: "well", label: "井与滑轮", x: 66, y: 49, translation: "井上的滑轮缓慢作响；晨祷的钟声响了起来。" },
@@ -320,6 +312,25 @@ function useSound() {
           outgoing.pause();
           outgoing.currentTime = 0;
         }
+      }
+    };
+    fadeFrame.current = window.requestAnimationFrame(step);
+  };
+
+  const fadeTrack = (duration = 1200) => {
+    const audioPlayers = ensurePlayers();
+    if (!audioPlayers) return;
+    cancelFade();
+    const active = audioPlayers[activePlayer.current];
+    const started = performance.now();
+    const startVolume = active.volume;
+    const step = (now: number) => {
+      const ratio = Math.min((now - started) / duration, 1);
+      active.volume = startVolume * (1 - ratio);
+      if (ratio < 1) fadeFrame.current = window.requestAnimationFrame(step);
+      else {
+        fadeFrame.current = null;
+        active.pause();
       }
     };
     fadeFrame.current = window.requestAnimationFrame(step);
@@ -471,7 +482,7 @@ function useSound() {
   const toggle = () => setAudio(!enabledRef.current);
   const enable = () => setAudio(true);
 
-  return { enabled, enable, playTrack, tone, handbell, thud, toggle };
+  return { enabled, enable, playTrack, fadeTrack, tone, handbell, thud, toggle };
 }
 
 function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; revealed: boolean; onInspect: () => void }) {
@@ -568,14 +579,10 @@ export default function Home() {
   const [beijingVisited, setBeijingVisited] = useState<Exclude<BeijingDestination, "">[]>([]);
   const [camilloffDepartureStep, setCamilloffDepartureStep] = useState(0);
   const [camilloffDeparturePhase, setCamilloffDeparturePhase] = useState<"confession" | "briefing" | "leaving" | "gone">("confession");
-  const [attackChoice, setAttackChoice] = useState("");
-  const [collapsePhase, setCollapsePhase] = useState<"" | "falling" | "dark" | "waking">("");
-  const [collapseSeen, setCollapseSeen] = useState(false);
   const [letterDecision, setLetterDecision] = useState<"" | "search" | "return">("");
   const [letterClues, setLetterClues] = useState<string[]>([]);
   const [returnStops, setReturnStops] = useState<string[]>([]);
   const [infoOpen, setInfoOpen] = useState(false);
-  const [shake, setShake] = useState(false);
   const [visualFinds, setVisualFinds] = useState<Partial<Record<Stage, string[]>>>({});
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotItem | null>(null);
   const [ghostRevealed, setGhostRevealed] = useState(false);
@@ -588,7 +595,7 @@ export default function Home() {
   const ringing = bellSequence === "ringing";
 
   const info = stageInfo[stage];
-  const isEast = ["map", "beijing", "repose", "camilloffDeparture", "camilloffIntercut", "camilloffReturn", "tienho", "wilderness", "mission", "letter"].includes(stage);
+  const isEast = ["map", "beijing", "repose", "camilloffDeparture", "camilloffIntercut", "camilloffReturn", "tienho", "mission", "letter"].includes(stage);
   const backgrounds: Record<Stage, string> = {
     intro: "/intro-cover-v1.png",
     office: "/ministry-office-awake-v1.png",
@@ -607,8 +614,7 @@ export default function Home() {
     camilloffDeparture: "/camilloff-departure-v1.png",
     camilloffIntercut: "/camilloff-day1-mansion.png",
     camilloffReturn: "/camilloff-return-map-v1.png",
-    tienho: "/tienho-inn-v3.png",
-    wilderness: "/wilderness-v1.png",
+    tienho: "/tienho-reality-v1.png",
     mission: "/mission-cloister-v5.png",
     letter: "/mission-cloister-v5.png",
     return: "/lisbon-room-v3.png",
@@ -659,11 +665,6 @@ export default function Home() {
     if (next === "camilloffDeparture") {
       setCamilloffDepartureStep(0);
       setCamilloffDeparturePhase("confession");
-    }
-    if (next === "tienho") setAttackChoice("");
-    if (next === "wilderness") {
-      setCollapseSeen(false);
-      setCollapsePhase("");
     }
     if (next === "letter") setLetterDecision("");
     if (next === "testament") {
@@ -722,14 +723,10 @@ export default function Home() {
     setBeijingVisited([]);
     setCamilloffDepartureStep(0);
     setCamilloffDeparturePhase("confession");
-    setAttackChoice("");
-    setCollapsePhase("");
-    setCollapseSeen(false);
     setLetterDecision("");
     setLetterClues([]);
     setReturnStops([]);
     setInfoOpen(false);
-    setShake(false);
     setVisualFinds({});
     setSelectedHotspot(null);
     setGhostRevealed(false);
@@ -741,7 +738,7 @@ export default function Home() {
   };
 
   const progress = useMemo(() => {
-    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffDeparture", "camilloffIntercut", "camilloffReturn", "tienho", "wilderness", "mission", "letter", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"];
+    const order: Stage[] = ["intro", "office", "market", "room", "book", "bell", "tiDeath", "inheritance", "luxury", "ghost", "map", "beijing", "repose", "camilloffDeparture", "camilloffIntercut", "camilloffReturn", "tienho", "mission", "letter", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"];
     const value = order.indexOf(stage);
     return Math.max(2, ((value < 0 ? 2 : value + 1) / order.length) * 100);
   }, [stage]);
@@ -887,30 +884,8 @@ export default function Home() {
     }, 460);
   };
 
-  const chooseAttack = () => {
-    if (attackChoice) return;
-    setAttackChoice("escape");
-    setShake(true);
-    sound.thud();
-    window.setTimeout(() => setShake(false), 620);
-  };
-
-  const collapseInWilderness = () => {
-    if (collapseSeen || collapsePhase) return;
-    setCollapsePhase("falling");
-    sound.thud();
-    window.setTimeout(() => setCollapsePhase("dark"), 2020);
-  };
-
   const chooseLetterDecision = (choice: "search" | "return") => {
     setLetterDecision(choice);
-  };
-
-  const wakeAtMission = () => {
-    setCollapseSeen(true);
-    setCollapsePhase("waking");
-    go("mission");
-    window.setTimeout(() => setCollapsePhase(""), 460);
   };
 
   const openFinalTestament = () => {
@@ -961,7 +936,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={`game-shell stage-${stage} ${stage === "camilloffDeparture" ? `departure-${camilloffDeparturePhase}` : ""} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${shake ? "is-shaking" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
+    <main className={`game-shell stage-${stage} ${stage === "camilloffDeparture" ? `departure-${camilloffDeparturePhase}` : ""} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${ringing ? "is-ringing-bell" : ""}`}>
       <div className="scene-image" style={{ backgroundImage: `url(${background})` }} aria-hidden="true" />
       {stage === "office" && <div className={`office-doze-image ${officeDozing ? "is-visible" : ""}`} aria-hidden="true" />}
       <div className="scene-vignette" aria-hidden="true" />
@@ -971,7 +946,7 @@ export default function Home() {
       <header className="topbar">
         <div className="navigation-actions">
           <button className="wordmark" onClick={reset} aria-label="回到游戏封面">《满大人》<span>· 交互叙事</span></button>
-          {stageHistory.length > 0 && stage !== "supplication" && !ringing && !collapsePhase && camilloffDeparturePhase !== "leaving" && <button className="back-button" onClick={goBack}>← 返回上一页</button>}
+          {stageHistory.length > 0 && stage !== "supplication" && !ringing && camilloffDeparturePhase !== "leaving" && <button className="back-button" onClick={goBack}>← 返回上一页</button>}
         </div>
         <div className="top-actions">
           <button className={`sound-button ${sound.enabled ? "is-on" : ""}`} onClick={sound.toggle} aria-label={sound.enabled ? "关闭音乐和音效" : "打开音乐和音效"} title={sound.enabled ? "关闭音乐和音效" : "打开音乐和音效"}>
@@ -1431,49 +1406,12 @@ export default function Home() {
         )}
 
         {stage === "tienho" && (
-          <div className="scene-body attack-scene">
-            <BilingualQuote pt="Já a tarde declinava, e o Sol descia vermelho como um escudo de metal candente, quando chegámos a Tien-Hó." zh="我们抵达天河村时，午后已经衰退，太阳像一面烧红的金属盾牌缓缓下沉。" />
-            <p>黑色村墙倚着咆哮的溪流；东面的荒原一直伸向天主教修道院，北方仍是悬在空中的蒙古紫山。我住进气味污浊的“尘世安慰客栈”，屋梁下吊满纸龙。短暂走进街巷后，我因泥泞、污水、饥饿的狗和围观人群而匆匆返回。</p>
-            <p>我和萨托原计划第二天找到狄鑫福的遗孀，把存放在北京的巨款交给她，再经地方官同意向全村分米。可是入夜以后，消息先一步传遍街巷：一个“外国魔鬼”带着装满财宝的行李车来到村里。白天那些惊异的目光开始在客栈周围徘徊，萨托只得把行李车推到门前作成路障。</p>
-            <BilingualQuote compact pt="Desde as autoridades até aos mendigos, a fama da minha riqueza, a legenda das carretas carregadas de ouro inflamara todos os apetites!..." zh="从官府到乞丐，我富有的传闻、那些装满黄金的车辆传说，已经点燃了所有人的欲望！……" />
-            <p>午夜时，低沉的声浪包围客栈。萨托怀疑连地方官也在暗中主持这场抢掠：在财富传言面前，原本等待救济的人群、旅店主人和官府忽然有了同一个目的——在天亮前夺走我带来的全部财物。</p>
-            <BilingualQuote pt="era em roda da estalagem toda a populaça de Tien-Hó, rosnando sinistramente..." zh="天河村的全部民众围在客栈四周，发出阴森的低吼……" />
-            <div className="hotspot-index">
-              {(sceneHotspots.tienho ?? []).map((item) => (
-                <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
-                  <span>{currentVisited.includes(item.id) ? "✓" : "+"}</span>{item.label}
-                </button>
-              ))}
-            </div>
-            {!hasInspectedAll ? (
-              <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>
-            ) : !attackChoice ? (
-              <button className="primary-action" onClick={chooseAttack}>把钱币撒向人群 <span>→</span></button>
-            ) : (
-              <div className="consequence">
-                <p>萨托把成串的铜钱一把把撒下；人群短暂满足，随后又齐声索要“更多”。钱袋很快见底，行李车和木箱也被冲破，全部财物在乱刀与无数双手之间散尽。</p>
-                <BilingualQuote compact pt="A turba rugia, insaciada... Não tenho mais, criatura! O resto está em Pequim!" zh="人群仍不满足，咆哮起来……我没有了，朋友！其余的都在北京！" />
-                <p>人群闯进客栈搜寻更大的财宝。我拆开后院竹栅，扑向拴在横梁上的马，死死抓住鬃毛；箭与砖块从身旁飞过，我沿黑暗的街巷冲向城墙的缺口。</p>
-                <button className="primary-action" onClick={() => go("wilderness")}>策马冲出天河村 <span>→</span></button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {stage === "wilderness" && (
-          <div className="scene-body wilderness-scene">
-            <BilingualQuote pt="De repente o pónei, eu, rolámos com um baque surdo. Era uma lagoa... vi o pónei, correndo, muito longe, como uma sombra, com os estribos ao vento..." zh="突然，我和马匹砰然滚倒——那是一片水塘……等我重新站稳，只见马匹已经跑得很远，像一道黑影，空马镫在风中甩动……" />
-            <p>我浑身湿透，耳边的血一路滴到肩上。马匹消失以后，只剩我独自穿过泥地与荆棘；寒气把衣服冻结在皮肤上，黑暗里仿佛有野兽的眼睛闪动。</p>
-            <BilingualQuote compact pt="Então comecei a caminhar por aquela solidão, enterrando-me nas terras lodosas, cortando através do mato espinhoso." zh="于是，我开始穿过那片荒凉之地，陷进泥泞的土地，劈开带刺的灌木前行。" />
-            {collapseSeen ? (
-              <div className="consequence locked-choice">
-                <p>我已经倒在废弃棺木旁的荒野里；两位前往天河村的遣使会神父把我抬回了修道院。</p>
-                <button className="primary-action" onClick={() => go("mission")}>回到修道院的清晨 <span>→</span></button>
-              </div>
-            ) : (
-              <button className="primary-action" onClick={collapseInWilderness}>支撑着继续走 <span>→</span></button>
-            )}
-          </div>
+          <TienhoSequence
+            soundEnabled={sound.enabled}
+            onMusic={sound.playTrack}
+            onSilence={sound.fadeTrack}
+            onComplete={() => go("mission")}
+          />
         )}
 
         {stage === "mission" && (
@@ -1718,13 +1656,6 @@ export default function Home() {
       )}
 
       {stage === "bell" && <DevilFigure />}
-
-      {collapsePhase && (
-        <div className={`faint-overlay is-${collapsePhase}`} role={collapsePhase === "dark" ? "dialog" : undefined} aria-live="assertive">
-          <div className="falling-horizon" aria-hidden="true" />
-          {collapsePhase === "dark" && <button className="wake-button" onClick={wakeAtMission}>醒来</button>}
-        </div>
-      )}
 
       <footer className="game-footer">
         <span>{stage === "intro" ? "一八八〇 / 二〇二六" : info.subtitle ? `${info.act} · ${info.subtitle}` : info.act}</span>
