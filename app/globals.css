@@ -395,7 +395,12 @@ button:focus-visible {
 .office-document-hotspots button:nth-child(2) { --paper-tilt: -4deg; }
 .office-document-hotspots button:nth-child(3) { --paper-tilt: 5deg; }
 
-.office-document-hotspots button:hover,
+.office-document-hotspots button:hover {
+  border-color: transparent;
+  background: radial-gradient(ellipse, rgba(198, 156, 70, 0.18), transparent 70%);
+  filter: drop-shadow(0 0 18px rgba(202, 164, 78, 0.24));
+}
+
 .office-document-hotspots button:focus-visible {
   border-color: rgba(216, 183, 105, 0.72);
   background: radial-gradient(ellipse, rgba(198, 156, 70, 0.18), transparent 70%);
@@ -1826,39 +1831,91 @@ blockquote {
 
 .sealed-letter {
   display: grid;
-  min-height: 240px;
+  min-height: 280px;
   place-items: center;
   border: 1px solid rgba(184, 149, 82, 0.38);
-  background: rgba(8, 15, 14, 0.38);
+  background: radial-gradient(circle at 50% 46%, rgba(190, 171, 132, 0.08), transparent 54%), rgba(8, 15, 14, 0.38);
 }
 
 .sealed-letter button {
-  display: flex;
-  align-items: center;
-  border: 0;
-  background: transparent;
+  position: relative;
+  display: grid;
+  width: min(430px, 82%);
+  aspect-ratio: 1.72 / 1;
+  padding: 0;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(79, 68, 53, 0.48);
+  background:
+    linear-gradient(148deg, transparent 49.4%, rgba(88, 75, 57, 0.2) 50%, transparent 50.7%) bottom left / 50.5% 68% no-repeat,
+    linear-gradient(212deg, transparent 49.4%, rgba(88, 75, 57, 0.2) 50%, transparent 50.7%) bottom right / 50.5% 68% no-repeat,
+    linear-gradient(26deg, transparent 49.4%, rgba(88, 75, 57, 0.13) 50%, transparent 50.7%) bottom left / 51% 68% no-repeat,
+    linear-gradient(-26deg, transparent 49.4%, rgba(88, 75, 57, 0.13) 50%, transparent 50.7%) bottom right / 51% 68% no-repeat,
+    linear-gradient(165deg, #f7f3e8 0%, #e9e2d2 48%, #d8cfbc 100%);
+  box-shadow: 0 22px 38px rgba(0, 0, 0, 0.44), inset 0 0 32px rgba(91, 73, 47, 0.12);
   cursor: pointer;
-  flex-direction: column;
-  gap: 10px;
+  transform: rotate(-1.2deg);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.sealed-letter button::before {
+  position: absolute;
+  z-index: 1;
+  top: -42%;
+  left: 8%;
+  width: 84%;
+  aspect-ratio: 1 / 1;
+  border-right: 1px solid rgba(91, 75, 55, 0.24);
+  border-bottom: 1px solid rgba(91, 75, 55, 0.24);
+  background: linear-gradient(135deg, #fbf7ec, #dfd6c4);
+  content: "";
+  transform: rotate(45deg) skew(-7deg, -7deg);
+}
+
+.sealed-letter button:hover,
+.sealed-letter button:focus-visible {
+  filter: brightness(1.04) drop-shadow(0 0 18px rgba(222, 205, 166, 0.2));
+  transform: rotate(-0.4deg) translateY(-3px);
+}
+
+.sealed-letter button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 5px;
 }
 
 .wax-seal {
+  position: absolute;
+  z-index: 3;
+  top: 45%;
+  left: 50%;
   display: grid;
-  width: 60px;
-  height: 60px;
+  width: clamp(54px, 7vw, 72px);
+  aspect-ratio: 1;
   place-items: center;
-  border-radius: 50%;
-  background: #7f241d;
-  box-shadow: inset 0 0 0 7px rgba(77, 14, 11, 0.28), 0 5px 18px rgba(0, 0, 0, 0.4);
-  color: #c8876f;
-  font-size: 24px;
+  border-radius: 47% 53% 51% 49% / 53% 46% 54% 47%;
+  background: radial-gradient(circle at 38% 31%, #3a3935 0 7%, #171815 28%, #050606 72%);
+  box-shadow: inset 0 0 0 7px rgba(255, 255, 255, 0.025), inset 5px 8px 15px rgba(255, 255, 255, 0.06), 0 6px 11px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -50%) rotate(4deg);
 }
 
-.sealed-letter small {
-  color: var(--ink-dim);
-  font: 10px Arial, sans-serif;
+.wax-seal::after {
+  color: rgba(154, 151, 140, 0.34);
+  content: "S";
+  font: 24px Georgia, serif;
+  transform: rotate(-4deg);
+}
+
+.sealed-letter-open {
+  position: absolute;
+  z-index: 4;
+  right: 20px;
+  bottom: 16px;
+  padding: 7px 12px;
+  border: 1px solid rgba(34, 31, 26, 0.42);
+  background: rgba(248, 244, 233, 0.7);
+  color: #29251f;
+  font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.2em;
-  text-transform: uppercase;
 }
 
 .money-number {
@@ -2109,7 +2166,8 @@ blockquote {
 }
 
 .room-book-action {
-  min-width: min(100%, 360px);
+  width: min(100%, 300px);
+  min-width: 0;
 }
 
 .room-book-action small {
@@ -3543,6 +3601,12 @@ blockquote {
 .map-scene .primary-action {
   border-color: rgba(25, 34, 33, 0.72);
   background: rgba(13, 22, 21, 0.86);
+}
+
+.map-scene .primary-action:hover {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #10110e;
 }
 
 .map-scene .perspective-note {

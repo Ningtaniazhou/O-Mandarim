@@ -57,7 +57,7 @@
 
 .departButton {
   display: flex;
-  width: min(420px, 100%);
+  width: min(250px, 100%);
   min-height: 68px;
   margin-top: 22px;
   padding: 0 24px;

@@ -14,7 +14,6 @@ type SceneCopy = {
 };
 
 type IntercutDay = {
-  title: string;
   theme: string;
   mansion: SceneCopy;
   yamen: SceneCopy;
@@ -22,7 +21,6 @@ type IntercutDay = {
 
 const intercutDays: IntercutDay[] = [
   {
-    title: "印章与茶杯",
     theme: "等待、礼节与第一次试探",
     mansion: {
       image: "/camilloff-day1-mansion.png",
@@ -42,7 +40,6 @@ const intercutDays: IntercutDay[] = [
     },
   },
   {
-    title: "名单与扇子",
     theme: "展开、遮掩与关系靠近",
     mansion: {
       image: "/camilloff-day2-mansion.png",
@@ -62,7 +59,6 @@ const intercutDays: IntercutDay[] = [
     },
   },
   {
-    title: "门槛与门扉",
     theme: "进入的许可",
     mansion: {
       image: "/camilloff-day3-mansion.png",
@@ -82,7 +78,6 @@ const intercutDays: IntercutDay[] = [
     },
   },
   {
-    title: "消息与痕迹",
     theme: "两条时间线重新靠拢",
     mansion: {
       image: "/camilloff-day4-mansion.png",
@@ -204,8 +199,8 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
       <div className={`intercut-vignette ${place}`} aria-hidden="true" />
 
       <header className="intercut-heading">
-        <span>第一小章 · 第 {day + 1} 日</span>
-        <h2>{current.title}</h2>
+        <span>第五章 · 北京</span>
+        <h2>府邸内外</h2>
         <p>{current.theme}</p>
       </header>
 
@@ -219,7 +214,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
       </article>
 
       <div className="intercut-day-track" aria-label={`当前为第 ${day + 1} 日，共四日`}>
-        {intercutDays.map((item, index) => <i key={item.title} className={index <= day ? "is-past" : ""} />)}
+        {intercutDays.map((_, index) => <i key={index} className={index <= day ? "is-past" : ""} />)}
       </div>
 
       <div className="intercut-controls">

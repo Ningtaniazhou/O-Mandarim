@@ -60,12 +60,12 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /展开桌上的公文|轻点戳破梦境|读完三份公文，并至少做过一次白日梦|让房间自己说话/);
   assert.match(page, /圣克拉拉旧货市场/);
   assert.doesNotMatch(page, /卡米洛夫的建议/);
-  assert.match(page, /title: "离府"/);
+  assert.match(page, /title: "临行嘱托"/);
   assert.match(page, /同一段时间，由此开始/);
   assert.match(page, /我今天所做的一切，都是为了替你找到狄鑫福的家人/);
   assert.match(page, /送卡米洛夫到门前/);
   assert.match(page, /门扉合拢。马蹄与车轮声/);
-  assert.match(page, /title: "归来与地图会谈"/);
+  assert.match(page, /title: "与卡米洛夫的会谈"/);
   assert.match(page, /title: "宅邸内外"/);
   assert.match(page, /留在府邸，等待消息/);
   assert.match(page, /onComplete=\{\(\) => go\("camilloffReturn"\)\}/);
@@ -79,10 +79,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /beijingVisited/);
   assert.doesNotMatch(page, /generalaTopics|camilloffSalon|camilloffMeeting/);
   assert.match(curtain, /起轿/);
-  assert.match(camilloffIntercut, /印章与茶杯/);
-  assert.match(camilloffIntercut, /名单与扇子/);
-  assert.match(camilloffIntercut, /门槛与门扉/);
-  assert.match(camilloffIntercut, /消息与痕迹/);
+  assert.match(camilloffIntercut, /<span>第五章 · 北京<\/span>/);
+  assert.match(camilloffIntercut, /<h2>府邸内外<\/h2>/);
+  assert.doesNotMatch(camilloffIntercut, /第一小章|印章与茶杯|名单与扇子|门槛与门扉|消息与痕迹/);
   assert.match(camilloffIntercut, /转动地球仪，切换到衙门/);
   assert.match(camilloffIntercut, /顺时针转动怀表，推进到下一日/);
   assert.match(camilloffIntercut, /if \(progress >= 1\) \{/);
@@ -121,7 +120,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /桌旁传来人声/);
   assert.match(page, /book: \{ act: "第一章 · 旧书", title: "发亮的字句", subtitle: "" \}/);
   assert.match(page, /看见一个秃顶的老头在我的床前俯下身/);
-  assert.match(page, /<strong>黑蜡封缄的信<\/strong>/);
+  assert.match(page, /aria-label="拆开黑蜡封缄的信"/);
+  assert.doesNotMatch(page, /<strong>黑蜡封缄的信<\/strong>/);
   assert.match(page, /搬入洛雷托豪宅/);
   assert.match(page, /我无法忽视……/);
   assert.doesNotMatch(page, /if \(stage === "ghost"\) setAvoidance\(""\)/);
@@ -275,5 +275,6 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/audio/the-journey-begins.ogg", import.meta.url)),
     access(new URL("../public/audio/pursuit.mp3", import.meta.url)),
     access(new URL("../public/audio/contemplation.mp3", import.meta.url)),
+    access(new URL("../public/audio/mystery-dark.mp3", import.meta.url)),
   ]);
 });

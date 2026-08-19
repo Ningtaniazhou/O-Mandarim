@@ -77,9 +77,9 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   map: { act: "第四章 · 远行", title: "向东方去", subtitle: "从里斯本到北京" },
   beijing: { act: "第五章 · 北京", title: "城门之前", subtitle: "东直门外的轿子" },
   repose: { act: "第五章 · 北京", title: "轿中北京", subtitle: "宫墙与老百姓的街巷" },
-  camilloffDeparture: { act: "第五章 · 北京", title: "离府", subtitle: "同一段时间，由此开始" },
+  camilloffDeparture: { act: "第五章 · 北京", title: "临行嘱托", subtitle: "同一段时间，由此开始" },
   camilloffIntercut: { act: "第五章 · 北京", title: "宅邸内外", subtitle: "两处黄昏" },
-  camilloffReturn: { act: "第五章 · 北京", title: "归来与地图会谈", subtitle: "纸上的道路" },
+  camilloffReturn: { act: "第五章 · 北京", title: "与卡米洛夫的会谈", subtitle: "纸上的道路" },
   tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
   wilderness: { act: "第六章 · 远东", title: "荒野上的路", subtitle: "马匹消失之后" },
   mission: { act: "第七章 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
@@ -103,6 +103,8 @@ const musicCues = {
   pursuit: { src: "/audio/pursuit.mp3", volume: 0.2 },
   contemplation: { src: "/audio/contemplation.mp3", volume: 0.25 },
   oriental: { src: "/audio/asianoriental1.ogg", volume: 0.3 },
+  mansionIntercut: { src: "/audio/apparitions-ball.mp3", volume: 0.16 },
+  mapMeeting: { src: "/audio/mystery-dark.mp3", volume: 0.2 },
 } as const;
 
 const stageMusic: Record<Stage, { src: string; volume: number }> = {
@@ -121,8 +123,8 @@ const stageMusic: Record<Stage, { src: string; volume: number }> = {
   beijing: musicCues.journey,
   repose: musicCues.oriental,
   camilloffDeparture: musicCues.oriental,
-  camilloffIntercut: musicCues.oriental,
-  camilloffReturn: musicCues.oriental,
+  camilloffIntercut: musicCues.mansionIntercut,
+  camilloffReturn: musicCues.mapMeeting,
   tienho: musicCues.pursuit,
   wilderness: musicCues.pursuit,
   mission: musicCues.contemplation,
@@ -196,7 +198,7 @@ const camilloffDepartureLines = [
   },
   {
     speaker: "卡米洛夫",
-    text: "弗拉基米拉，请替我好好招待我们的客人。",
+    text: "弗拉基米拉，我亲爱的夫人，请替我好好招待客人。",
   },
   {
     speaker: "卡米洛夫",
@@ -1225,10 +1227,9 @@ export default function Home() {
                   <p>他矮小而肥胖，白色络腮胡擦着黑色呢外套的翻领，金丝眼镜在圆脸上微微发颤；双手捧着一只鼓胀的信封，黑蜡封印沉沉压在纸上。</p>
                 </div>
                 <div className="sealed-letter">
-                  <button onClick={() => { setInheritanceOpened(true); sound.tone(329.63, 0.9, 0.08); }}>
-                    <span className="wax-seal">S</span>
-                    <strong>黑蜡封缄的信</strong>
-                    <small>拆开</small>
+                  <button type="button" aria-label="拆开黑蜡封缄的信" onClick={() => { setInheritanceOpened(true); sound.tone(329.63, 0.9, 0.08); }}>
+                    <span className="wax-seal" aria-hidden="true" />
+                    <span className="sealed-letter-open">拆开</span>
                   </button>
                 </div>
               </>
