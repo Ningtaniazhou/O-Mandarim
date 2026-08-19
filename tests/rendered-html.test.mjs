@@ -33,6 +33,10 @@ test("ships the complete narrative and its visual assets", async () => {
   const camilloffReturn = await readFile(new URL("../app/camilloff-return-map.tsx", import.meta.url), "utf8");
   const supplication = await readFile(new URL("../app/supplication-sequence.tsx", import.meta.url), "utf8");
   const tienho = await readFile(new URL("../app/tienho-sequence.tsx", import.meta.url), "utf8");
+  const tienhoMarkup = await readFile(new URL("../public/tienho-prototype/index.html", import.meta.url), "utf8");
+  const tienhoScript = await readFile(new URL("../public/tienho-prototype/script.js", import.meta.url), "utf8");
+  const tienhoStyles = await readFile(new URL("../public/tienho-prototype/styles.css", import.meta.url), "utf8");
+  const tienhoPrototype = `${tienhoMarkup}\n${tienhoScript}\n${tienhoStyles}`;
   const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(page, /合上的书页/);
   assert.match(page, /里斯本俯首/);
@@ -104,9 +108,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /beijingDismounted/);
   assert.match(page, /pequim-litter-interior-v1\.png/);
   assert.doesNotMatch(page, /beijingDrift|reposeInterrupted|文人服饰|隐逸之亭/);
-  assert.match(tienho, /天河村章节/);
-  assert.match(tienho, /天河村外 · 荒野/);
-  assert.match(tienho, /马匹已经跑远/);
+  assert.match(tienho, /tienho-prototype\/index\.html\?embedded=1/);
+  assert.match(tienhoPrototype, /天河村外 · 荒野/);
+  assert.match(tienhoPrototype, /马匹已经跑远/);
   assert.match(page, /朱利奥神父/);
   assert.match(page, /神父捡到的弃婴/);
   assert.match(page, /狄鑫福和他的纸鸢始终没有再出现/);
@@ -133,9 +137,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /卡米洛夫派出的翻译萨托在此处迎接/);
   assert.match(camilloffReturn, /线索指向北京以北、越过长城后的天河村/);
   assert.match(camilloffReturn, /告别卡米洛夫，前往天河村/);
-  assert.match(tienho, /官员介绍信/);
-  assert.match(tienho, /让萨托翻译/);
-  assert.match(tienho, /按住钱袋保住金币/);
+  assert.match(tienhoPrototype, /官员介绍信/);
+  assert.match(tienhoPrototype, /让萨托翻译/);
+  assert.match(tienhoPrototype, /按住钱袋保住金币/);
   assert.match(page, /洛雷托的一夜/);
   assert.match(page, /像罪恶的饰物一样从身上甩掉/);
   assert.match(page, /抛下这笔财产/);
@@ -176,13 +180,15 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /LetterOfExcuses/);
   assert.match(page, /letterReasons/);
   assert.match(page, /TienhoSequence/);
-  assert.match(tienho, /第三阶段 · 身份盘问/);
-  assert.match(tienho, /按住：保住金币 \/ 松开：跑得更快/);
-  assert.match(tienho, /保持清醒/);
-  assert.match(tienho, /不要睡去/);
-  assert.match(tienho, />醒来<\/button>/);
+  assert.match(tienhoPrototype, /第三阶段 · 身份盘问/);
+  assert.match(tienhoPrototype, /按住：保住金币 \/ 松开：跑得更快/);
+  assert.match(tienhoPrototype, /保持清醒/);
+  assert.match(tienhoPrototype, /不要睡去/);
+  assert.doesNotMatch(tienhoPrototype, />醒来<\/button>|wakeAction|wake-action/);
+  assert.match(tienhoScript, /later\(wakeInMonastery, 2450\)/);
+  assert.match(tienhoScript, /tienho:complete/);
   assert.doesNotMatch(page, /collapsePhase|attackChoice|go\("wilderness"\)/);
-  assert.doesNotMatch(tienho, /speed-lines|reaching-hand|正在逐渐消失的行动能力|再呼吸一次/);
+  assert.doesNotMatch(tienhoPrototype, /speed-lines|reaching-hand|正在逐渐消失的行动能力|再呼吸一次/);
   assert.match(page, /bellSequence/);
   assert.match(styles, /bell-cinematic-swing/);
   assert.match(styles, /corpse-question-escalate 9s/);
@@ -267,6 +273,12 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /狄青福|开启声音并翻开书页|原创程序化配乐|浏览器实时合成|翻到黄色高亮的书页|一个满大人死了|魔鬼 · 第|入住洛雷托的宫殿|看向镜子里的第四个人|小说直到上海才重新标出地点|哥萨克与译员萨托|原作让“后代”|选择“再寻找一次”并没有制造|特奥多罗只在脑中排演|原作没有给特奥多罗|原作提供的稳定出口|终局并不是“享受或悔恨”的二选一|告诫因此也沾染了自我开脱/);
 
   await Promise.all([
+    access(new URL("../public/tienho-prototype/index.html", import.meta.url)),
+    access(new URL("../public/tienho-prototype/script.js", import.meta.url)),
+    access(new URL("../public/tienho-prototype/styles.css", import.meta.url)),
+    access(new URL("../public/tienho-prototype/assets/tienho-dream.png", import.meta.url)),
+    access(new URL("../public/tienho-prototype/assets/tienho-reality.png", import.meta.url)),
+    access(new URL("../public/tienho-prototype/assets/wilderness-teodoro-v2.png", import.meta.url)),
     access(new URL("../public/lisbon-room-v3.png", import.meta.url)),
     access(new URL("../public/palace-ghost.png", import.meta.url)),
     access(new URL("../public/east-journey.png", import.meta.url)),

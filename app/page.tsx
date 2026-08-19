@@ -989,6 +989,10 @@ export default function Home() {
   }, [stage]);
 
   useEffect(() => {
+    if (stage === "tienho") {
+      sound.fadeTrack(500);
+      return;
+    }
     const cue = stageMusic[stage];
     sound.playTrack(cue.src, cue.volume);
     // Track transitions follow narrative stages; the sound controller persists between renders.
@@ -1284,6 +1288,12 @@ export default function Home() {
             }}
           />
         </SupplicationSequence>
+      )}
+
+      {stage === "tienho" && (
+        <TienhoSequence
+          onComplete={beginMissionAwakening}
+        />
       )}
 
       <section className={`scene-card ${isEast ? "scene-card-east" : ""}`} aria-live="polite" aria-hidden={showBeijingCurtain || undefined}>
@@ -1643,15 +1653,6 @@ export default function Home() {
           <CamilloffReturnMap
             onTone={(frequency, duration, volume) => sound.tone(frequency, duration, volume, 0, "triangle")}
             onContinue={() => go("tienho")}
-          />
-        )}
-
-        {stage === "tienho" && (
-          <TienhoSequence
-            soundEnabled={sound.enabled}
-            onMusic={sound.playTrack}
-            onSilence={sound.fadeTrack}
-            onComplete={beginMissionAwakening}
           />
         )}
 

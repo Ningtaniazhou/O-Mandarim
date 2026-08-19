@@ -121,6 +121,33 @@ button:focus-visible {
   display: none;
 }
 
+/* Tianhe is a self-contained full-screen sequence, not a scene-card chapter page. */
+.stage-tienho .scene-card,
+.stage-tienho .game-footer {
+  display: none;
+}
+
+.stage-tienho .top-actions .sound-button {
+  display: none;
+}
+
+.tienho-prototype-frame {
+  position: fixed;
+  z-index: 20;
+  inset: 76px 0 0;
+  width: 100%;
+  height: calc(100svh - 76px);
+  border: 0;
+  background: #0d0d0a;
+}
+
+@media (max-width: 760px) {
+  .tienho-prototype-frame {
+    inset: 62px 0 0;
+    height: calc(100svh - 62px);
+  }
+}
+
 .scene-vignette {
   z-index: -3;
   background:
@@ -5285,7 +5312,14 @@ blockquote {
 }
 .closed-letter-paper span { font-size: clamp(21px, 3vw, 34px); letter-spacing: 0.14em; }
 .closed-letter-paper i { position: absolute; right: 24px; bottom: 18px; color: #843229; font: normal 700 9px Arial, sans-serif; letter-spacing: 0.18em; }
-.write-reply-action { min-width: min(360px, 76vw); }
+.write-reply-action {
+  width: fit-content;
+  min-width: 0;
+  padding-right: 28px;
+  padding-left: 28px;
+  justify-self: center;
+  gap: 32px;
+}
 
 .reply-composer { display: grid; gap: 22px; }
 .reply-guidance { width: min(780px, 88%); margin: 0 auto; color: #eadbbd; text-align: center; }
@@ -5354,9 +5388,10 @@ blockquote {
 
 .seal-letter-action {
   display: flex;
-  width: min(420px, 80vw);
+  width: fit-content;
+  min-width: 0;
   margin: 25px auto 0;
-  padding: 16px 24px;
+  padding: 16px 28px;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(217, 194, 139, 0.48);
@@ -5388,8 +5423,20 @@ blockquote {
 .folded-letter-result strong { margin-top: 28px; color: #6f261f; font-size: clamp(24px, 3.5vw, 38px); font-weight: 500; }
 .folded-letter-result small { margin-top: 16px; color: rgba(45, 33, 23, 0.52); font-style: italic; line-height: 1.6; }
 .folded-letter-result em { position: absolute; right: 24px; bottom: 19px; color: #843229; font: normal 700 9px Arial, sans-serif; letter-spacing: 0.18em; }
-.letter-experience.is-complete > blockquote,
-.letter-return-action { width: min(600px, 82vw); margin-right: auto; margin-left: auto; }
+.letter-experience.is-complete > blockquote {
+  width: min(600px, 82vw);
+  margin-right: auto;
+  margin-left: auto;
+}
+.letter-return-action {
+  width: fit-content;
+  min-width: 0;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 28px;
+  padding-left: 28px;
+  gap: 32px;
+}
 
 .mission-awakening { position: fixed; z-index: 110; inset: 0; overflow: hidden; background: #000; }
 .mission-awakening-scene,
