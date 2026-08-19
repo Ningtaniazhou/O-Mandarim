@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type DragEvent as ReactDragEvent } from "react";
 import BeijingCurtainScene from "./beijing-curtain-scene";
 import CamilloffIntercut from "./camilloff-intercut";
 import CamilloffReturnMap from "./camilloff-return-map";
@@ -70,6 +70,17 @@ const routeTransports = [
   { id: "pony", label: "满洲小马", route: "通州 → 北京" },
 ] as const;
 
+const letterReasons = [
+  { id: "distance", text: "我已经走过半个世界。", mark: "漫长的路已经足以证明诚意。" },
+  { id: "tienho", text: "我险些死在天河村。", mark: "干涸的血迹停在这一行旁边。" },
+  { id: "addresses", text: "两个地址都无法确认。", mark: "两个相同的姓名在纸上重叠。" },
+  { id: "absence", text: "狄鑫福已经很久没有出现。", mark: "死者的沉默仿佛也是一种回答。" },
+  { id: "donation", text: "我已经留下了足够的捐款。", mark: "钞票的边缘在纸上压出一道浅痕。" },
+  { id: "uncertainty", text: "再寻找也未必能找到真正的家人。", mark: "句末的墨迹在抵达答案前消失。" },
+] as const;
+
+type LetterReasonId = (typeof letterReasons)[number]["id"];
+
 const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }> = {
   intro: { act: "", title: "未响的铃", subtitle: "一声轻响" },
   office: { act: "第一章 · 里斯本", title: "王国内政部", subtitle: "抄写员的白昼" },
@@ -90,7 +101,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   camilloffReturn: { act: "第五章 · 北京", title: "与卡米洛夫的会谈", subtitle: "纸上的道路" },
   tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
   mission: { act: "第七章 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
-  letter: { act: "第七章 · 远东", title: "地址之谜", subtitle: "" },
+  letter: { act: "第七章 · 修道院", title: "特奥多罗的小房间", subtitle: "桌上的来信" },
   return: { act: "第七章 · 返航", title: "死者同行", subtitle: "从中国返回欧洲" },
   reckoning: { act: "第八章 · 里斯本", title: "洛雷托的一夜", subtitle: "无法平息的亡灵" },
   renounce: { act: "第八章 · 里斯本", title: "放弃一切", subtitle: "重返贫穷" },
@@ -239,7 +250,6 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
     { id: "bandage", label: "绷带", x: 46, y: 64, translation: "两位遣使会神父正慢慢清洗我的耳朵。" },
     { id: "well", label: "井与滑轮", x: 66, y: 49, translation: "井上的滑轮缓慢作响；晨祷的钟声响了起来。" },
     { id: "breviary", label: "《日课经》", x: 60, y: 82, translation: "我把一卷英格兰银行钞票放在他的《日课经》上，那书正翻到《贫穷福音》的一页。" },
-    { id: "letter", label: "卡米洛夫的信", x: 72, y: 82, translation: "关于狄鑫福的遗孀和家人，事情弄错了。" },
     { id: "found-child", label: "神父捡到的弃婴", x: 91, y: 82, translation: "洛里奥神父在路旁发现这个赤裸、濒死的孩子，立刻为她施洗，并抱回修道院喂养。" },
   ],
   renounce: [
@@ -258,6 +268,7 @@ function useSound() {
   const currentVolume = useRef(0.22);
   const fadeFrame = useRef<number | null>(null);
   const enabledRef = useRef(false);
+  const churchBellPlayers = useRef<HTMLAudioElement[]>([]);
   const [enabled, setEnabled] = useState(false);
 
   const ensure = () => {
@@ -451,6 +462,18 @@ function useSound() {
     strike.start();
   };
 
+  const churchBell = () => {
+    if (typeof window === "undefined" || !enabledRef.current) return;
+    const bell = new Audio("/audio/church-bell-real-v1.mp3");
+    bell.preload = "auto";
+    bell.volume = 0.68;
+    churchBellPlayers.current.push(bell);
+    bell.addEventListener("ended", () => {
+      churchBellPlayers.current = churchBellPlayers.current.filter((player) => player !== bell);
+    }, { once: true });
+    void bell.play().catch(() => undefined);
+  };
+
   const thud = () => {
     tone(88, 0.32, 0.22);
     tone(55, 0.52, 0.16, 0.08);
@@ -482,7 +505,7 @@ function useSound() {
   const toggle = () => setAudio(!enabledRef.current);
   const enable = () => setAudio(true);
 
-  return { enabled, enable, playTrack, fadeTrack, tone, handbell, thud, toggle };
+  return { enabled, enable, playTrack, fadeTrack, tone, handbell, churchBell, thud, toggle };
 }
 
 function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; revealed: boolean; onInspect: () => void }) {
@@ -556,6 +579,192 @@ function HotspotLayer({ items, visited, active, onSelect }: { items: HotspotItem
   );
 }
 
+function LetterOfExcuses({ onTone, onReturn }: { onTone: (frequency: number, duration?: number, volume?: number) => void; onReturn: () => void }) {
+  const [letterPhase, setLetterPhase] = useState<"room" | "envelope" | "incoming" | "incomingClosed" | "reply">("room");
+  const [unfoldStep, setUnfoldStep] = useState<1 | 2 | 3>(1);
+  const [reasonSlots, setReasonSlots] = useState<Array<LetterReasonId | null>>([null, null, null]);
+  const [draggingReason, setDraggingReason] = useState<LetterReasonId | null>(null);
+  const [letterFolded, setLetterFolded] = useState(false);
+  const chosenReasons = reasonSlots.filter((reason): reason is LetterReasonId => reason !== null);
+  const reasoningComplete = chosenReasons.length === 3;
+
+  const advanceUnfold = () => {
+    if (unfoldStep === 3) {
+      setLetterPhase("incomingClosed");
+      onTone(164.81, 0.75, 0.045);
+      return;
+    }
+    setUnfoldStep((step) => Math.min(3, step + 1) as 1 | 2 | 3);
+    onTone(184 + unfoldStep * 24, 0.65, 0.055);
+  };
+
+  const placeReason = (reasonId: LetterReasonId, requestedSlot?: number) => {
+    if (reasonSlots.includes(reasonId) || letterFolded) return;
+    const slot = requestedSlot ?? reasonSlots.findIndex((reason) => reason === null);
+    if (slot < 0 || slot > 2 || reasonSlots[slot] !== null) return;
+    setReasonSlots((slots) => slots.map((reason, index) => index === slot ? reasonId : reason));
+    onTone(220 + slot * 36, 0.52, 0.045);
+  };
+
+  const removeReason = (slot: number) => {
+    if (letterFolded || reasonSlots[slot] === null) return;
+    setReasonSlots((slots) => slots.map((reason, index) => index === slot ? null : reason));
+    onTone(164.81, 0.45, 0.035);
+  };
+
+  const dropReason = (event: ReactDragEvent<HTMLButtonElement>, slot: number) => {
+    event.preventDefault();
+    const reasonId = event.dataTransfer.getData("text/plain") as LetterReasonId;
+    if (letterReasons.some((reason) => reason.id === reasonId)) placeReason(reasonId, slot);
+    setDraggingReason(null);
+  };
+
+  const sealReply = () => {
+    if (!reasoningComplete || letterFolded) return;
+    setLetterFolded(true);
+    onTone(98, 1.1, 0.065);
+  };
+
+  const reasonById = (reasonId: LetterReasonId | null) => letterReasons.find((reason) => reason.id === reasonId);
+
+  if (letterFolded) {
+    return (
+      <div className="letter-experience is-complete">
+        <div className="folded-letter-result" aria-live="polite">
+          <span>俄罗斯公使馆 · 北京</span>
+          <strong>致卡米洛夫将军</strong>
+          <small>特奥多罗</small>
+          <em>已封缄</em>
+        </div>
+        <BilingualQuote compact pt="Bem, Ti Chin-Fu está contente." zh="好吧，狄鑫福已经满意了。" />
+        <button className="primary-action letter-return-action" onClick={onReturn}>返回欧洲 <span>→</span></button>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`letter-experience phase-${letterPhase}`}>
+      {letterPhase === "room" && (
+        <button
+          className="room-letter-hotspot"
+          type="button"
+          onClick={() => { setLetterPhase("envelope"); onTone(196, 0.55, 0.045); }}
+          aria-label="拿起桌上的来信"
+        >
+          <span>桌上的来信</span><i aria-hidden="true" />
+        </button>
+      )}
+
+      {letterPhase === "envelope" && (
+        <button className="camilloff-envelope" type="button" onClick={() => { setLetterPhase("incoming"); onTone(208, 0.65, 0.05); }} aria-label="拆开卡米洛夫的来信">
+          <span>俄罗斯公使馆 · 北京</span>
+          <b>致特奥多罗先生</b>
+          <i>卡米洛夫</i>
+          <em>拆信</em>
+        </button>
+      )}
+
+      {letterPhase === "incoming" && (
+        <article className={`camilloff-letter unfold-${unfoldStep}`} aria-label="卡米洛夫的三折信">
+          <div className="camilloff-letter-panels">
+            <section className="letter-fact-panel fact-error">
+              <p lang="pt">Enquanto à viúva e família de Ti Chin-Fu, houve um engano...</p>
+              <p>关于狄鑫福的遗孀和家人，事情弄错了……</p>
+            </section>
+            <section className="letter-fact-panel fact-cantao" aria-hidden={unfoldStep < 2}>
+              <p lang="pt">É no Sul da China, na província de Cantão.</p>
+              <p>他们住在中国南方的广东省。</p>
+            </section>
+            <section className="letter-fact-panel fact-kaoli" aria-hidden={unfoldStep < 3}>
+              <p lang="pt">Mas também há uma família Ti Chin-Fu para além da Grande Muralha...</p>
+              <p>但长城之外也有一个狄鑫福家族……</p>
+            </section>
+          </div>
+          <button className="letter-unfold-control" type="button" onClick={advanceUnfold}>
+            {unfoldStep < 3 ? "继续读信" : "合上信"} <span>→</span>
+          </button>
+        </article>
+      )}
+
+      {letterPhase === "incomingClosed" && (
+        <div className="incoming-letter-closed" aria-live="polite">
+          <div className="closed-letter-paper" aria-label="已经合上的卡米洛夫来信">
+            <span>卡米洛夫的来信</span><i>已读</i>
+          </div>
+          <button className="primary-action write-reply-action" type="button" onClick={() => { setLetterPhase("reply"); onTone(196, 0.7, 0.05); }}>
+            写回信 <span>→</span>
+          </button>
+        </div>
+      )}
+
+      {letterPhase === "reply" && (
+        <section className="reply-composer" aria-label="撰写回信">
+          <div className="reply-guidance">
+            <p>狄鑫福和他的纸鸢始终没有再出现。死者的沉默，渐渐变成了允许我离开的理由。</p>
+            <strong>从信纸外选取三个念头，写进信里</strong>
+          </div>
+          <div className="reason-margin" aria-label="特奥多罗浮现的六个念头">
+            {letterReasons.map((reason) => {
+              const selected = reasonSlots.includes(reason.id);
+              return (
+                <button
+                  key={reason.id}
+                  className={`reason-note reason-${reason.id} ${selected ? "is-selected" : ""} ${draggingReason === reason.id ? "is-dragging" : ""}`}
+                  type="button"
+                  draggable={!selected}
+                  disabled={selected}
+                  onClick={() => placeReason(reason.id)}
+                  onDragStart={(event) => {
+                    event.dataTransfer.setData("text/plain", reason.id);
+                    event.dataTransfer.effectAllowed = "move";
+                    setDraggingReason(reason.id);
+                  }}
+                  onDragEnd={() => setDraggingReason(null)}
+                >
+                  <span>{reason.text}</span><small>{reason.mark}</small>
+                </button>
+              );
+            })}
+          </div>
+          <article className="reply-letter" aria-label="特奥多罗写给卡米洛夫的三折回信">
+            <div className="reason-folds" aria-label="回信的三道折面">
+              {reasonSlots.map((reasonId, index) => {
+                const reason = reasonById(reasonId);
+                return (
+                  <button
+                    key={index}
+                    className={`reason-fold-slot ${reason ? "is-filled" : ""}`}
+                    type="button"
+                    onClick={() => removeReason(index)}
+                    onDragOver={(event) => event.preventDefault()}
+                    onDrop={(event) => dropReason(event, index)}
+                    aria-label={reason ? `移除理由：${reason.text}` : `第 ${index + 1} 道空白折面`}
+                  >
+                    <b>{["第一折", "第二折", "第三折"][index]}</b>
+                    {reason ? <span>{reason.text}</span> : <em>把一个念头写在这里</em>}
+                  </button>
+                );
+              })}
+            </div>
+            {reasoningComplete && (
+              <div className="letter-conclusion" aria-live="polite" aria-label="所以，我已经尽力了。">
+                <div className="ink-lines" aria-hidden="true"><i /><i /><i /></div>
+                <span>所以，</span><strong>我已经尽力了。</strong>
+              </div>
+            )}
+          </article>
+        </section>
+      )}
+
+      {reasoningComplete && (
+        <button className="seal-letter-action" type="button" onClick={sealReply}>
+          装入信封 <span>→</span>
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const [stage, setStage] = useState<Stage>("intro");
   const [transitioning, setTransitioning] = useState(false);
@@ -579,8 +788,10 @@ export default function Home() {
   const [beijingVisited, setBeijingVisited] = useState<Exclude<BeijingDestination, "">[]>([]);
   const [camilloffDepartureStep, setCamilloffDepartureStep] = useState(0);
   const [camilloffDeparturePhase, setCamilloffDeparturePhase] = useState<"confession" | "briefing" | "leaving" | "gone">("confession");
-  const [letterDecision, setLetterDecision] = useState<"" | "search" | "return">("");
-  const [letterClues, setLetterClues] = useState<string[]>([]);
+  const [missionWaking, setMissionWaking] = useState(false);
+  const [missionWakeAttempt, setMissionWakeAttempt] = useState<1 | 2 | 3>(1);
+  const [missionWakePhase, setMissionWakePhase] = useState<"opening" | "closing">("opening");
+  const missionWakeTimers = useRef<number[]>([]);
   const [returnStops, setReturnStops] = useState<string[]>([]);
   const [infoOpen, setInfoOpen] = useState(false);
   const [visualFinds, setVisualFinds] = useState<Partial<Record<Stage, string[]>>>({});
@@ -615,8 +826,8 @@ export default function Home() {
     camilloffIntercut: "/camilloff-day1-mansion.png",
     camilloffReturn: "/camilloff-return-map-v1.png",
     tienho: "/tienho-reality-v1.png",
-    mission: "/mission-cloister-v5.png",
-    letter: "/mission-cloister-v5.png",
+    mission: "/mission-cloister-v7.png",
+    letter: "/mission-room-v1.png",
     return: "/lisbon-room-v3.png",
     reckoning: "/palace-ghost.png",
     renounce: "/renounce-room-v1.png",
@@ -666,7 +877,6 @@ export default function Home() {
       setCamilloffDepartureStep(0);
       setCamilloffDeparturePhase("confession");
     }
-    if (next === "letter") setLetterDecision("");
     if (next === "testament") {
       setTestamentOpen(false);
       setFinalBookPhase(0);
@@ -700,6 +910,38 @@ export default function Home() {
     }, 280);
   };
 
+  const beginMissionAwakening = () => {
+    missionWakeTimers.current.forEach((timer) => window.clearTimeout(timer));
+    missionWakeTimers.current = [];
+    go("mission");
+    setMissionWaking(true);
+    setMissionWakeAttempt(1);
+    setMissionWakePhase("closing");
+    sound.churchBell();
+
+    const schedule = (delay: number, action: () => void) => {
+      missionWakeTimers.current.push(window.setTimeout(action, delay));
+    };
+
+    schedule(360, () => setMissionWakePhase("opening"));
+    schedule(1850, () => setMissionWakePhase("closing"));
+    schedule(2850, () => {
+      setMissionWakeAttempt(2);
+      setMissionWakePhase("opening");
+      sound.churchBell();
+    });
+    schedule(4450, () => setMissionWakePhase("closing"));
+    schedule(5600, () => {
+      setMissionWakeAttempt(3);
+      setMissionWakePhase("opening");
+      sound.churchBell();
+    });
+    schedule(7700, () => {
+      setMissionWaking(false);
+      missionWakeTimers.current = [];
+    });
+  };
+
   const reset = () => {
     setStage("intro");
     setTransitioning(false);
@@ -723,8 +965,11 @@ export default function Home() {
     setBeijingVisited([]);
     setCamilloffDepartureStep(0);
     setCamilloffDeparturePhase("confession");
-    setLetterDecision("");
-    setLetterClues([]);
+    missionWakeTimers.current.forEach((timer) => window.clearTimeout(timer));
+    missionWakeTimers.current = [];
+    setMissionWaking(false);
+    setMissionWakeAttempt(1);
+    setMissionWakePhase("opening");
     setReturnStops([]);
     setInfoOpen(false);
     setVisualFinds({});
@@ -884,10 +1129,6 @@ export default function Home() {
     }, 460);
   };
 
-  const chooseLetterDecision = (choice: "search" | "return") => {
-    setLetterDecision(choice);
-  };
-
   const openFinalTestament = () => {
     setFinalBookPhase(0);
     setTestamentOpen(true);
@@ -962,7 +1203,7 @@ export default function Home() {
         </div>
       )}
 
-      {currentHotspots.length > 0 && (
+      {currentHotspots.length > 0 && !(stage === "mission" && missionWaking) && (
         <HotspotLayer items={currentHotspots} visited={currentVisited} active={selectedHotspot?.id} onSelect={inspectHotspot} />
       )}
 
@@ -1410,7 +1651,7 @@ export default function Home() {
             soundEnabled={sound.enabled}
             onMusic={sound.playTrack}
             onSilence={sound.fadeTrack}
-            onComplete={() => go("mission")}
+            onComplete={beginMissionAwakening}
           />
         )}
 
@@ -1427,7 +1668,7 @@ export default function Home() {
               ))}
             </div>
             {hasInspectedAll ? (
-              <button className="primary-action" onClick={() => go("letter")}>拆开卡米洛夫的信 <span>→</span></button>
+              <button className="primary-action" onClick={() => go("letter")}>回到房间 <span>→</span></button>
             ) : (
               <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length}</p>
             )}
@@ -1435,44 +1676,10 @@ export default function Home() {
         )}
 
         {stage === "letter" && (
-          <div className="scene-body">
-            <div className="letter-sheet">
-              <span>附言 · 卡米洛夫将军</span>
-              <p><span lang="pt">“Enquanto à viúva e família de Ti Chin-Fu, houve um engano...”</span><span>“关于狄鑫福的遗孀和家人，事情弄错了……”</span></p>
-              <button className={letterClues.includes("cantao") ? "is-read" : ""} onClick={() => setLetterClues((clues) => clues.includes("cantao") ? clues : [...clues, "cantao"])}>
-                <b>广东</b><em><span lang="pt">“É no Sul da China, na província de Cantão.”</span><span>“他们住在中国南方的广东省。”</span></em>
-              </button>
-              <button className={letterClues.includes("kaoli") ? "is-read" : ""} onClick={() => setLetterClues((clues) => clues.includes("kaoli") ? clues : [...clues, "kaoli"])}>
-                <b>高丽</b><em><span lang="pt">“Mas também há uma família Ti Chin-Fu para além da Grande Muralha...”</span><span>“但长城之外也有一个狄鑫福家族……”</span></em>
-              </button>
-            </div>
-            {letterClues.length < 2 ? (
-              <p className="discovery-count">已展开 {letterClues.length} / 2</p>
-            ) : !letterDecision ? (
-              <>
-                <p>这封信里居然涉及两个死去的狄鑫福，两个在贫困中挣扎的家庭。我要把财富还给谁？那个原本确切的名字，在眼前重新变得无法辨认。</p>
-                <div className="choice-stack horizontal">
-                  <button className="choice-button" onClick={() => chooseLetterDecision("search")}><span>再寻找一次</span><small>去广东，或去高丽</small></button>
-                  <button className="choice-button dangerous" onClick={() => chooseLetterDecision("return")}><span>返回欧洲</span><small>我已经尽力了</small></button>
-                </div>
-              </>
-            ) : (
-              <div className="consequence">
-                <BilingualQuote compact pt="Além disso, Ti Chin-Fu e o seu papagaio continuavam invisíveis... e já o aplacamento do remorso visível diminuíra em mim singularmente o desejo da expiação..." zh="此外，狄鑫福和他的纸鸢始终没有再出现……随着那可见的悔恨平息，我赎罪的愿望也显著减弱了……" />
-                <p>自从踏入中国，我一次也没有再看见狄鑫福的尸身。我把这段沉默解释成死者已经看见我的奔波，也已经平息了怨怼。</p>
-                {letterDecision === "search" ? (
-                  <>
-                    <BilingualQuote compact pt="Ir de novo bater as estradas da China? Jamais!" zh="还要重新踏遍中国的道路？绝不！" />
-                    <p>广东、高丽、又一次漫长旅途与袭击的阴影在我眼前交替出现。我把两条路线默念了一遍，却再也无法让受伤的身体迈向其中任何一条；最终，我把信折起，决定返回欧洲。</p>
-                  </>
-                ) : (
-                  <p>我没有再去追逐信上互相冲突的地址。受伤的身体、天河村的砖石和那两个同名家族在眼前纠缠；回廊却寂静无声，我终于说服自己：已经做过合理、慷慨而合乎逻辑的事。</p>
-                )}
-                <BilingualQuote compact pt="Bem, Ti Chin-Fu está contente." zh="好吧，狄鑫福已经满意了。" />
-                <button className="primary-action" onClick={() => go("return")}>返回欧洲 <span>→</span></button>
-              </div>
-            )}
-          </div>
+          <LetterOfExcuses
+            onTone={(frequency, duration, volume) => sound.tone(frequency, duration, volume, 0, "triangle")}
+            onReturn={() => go("return")}
+          />
         )}
 
         {stage === "return" && (
@@ -1657,6 +1864,19 @@ export default function Home() {
 
       {stage === "bell" && <DevilFigure />}
 
+      {stage === "mission" && missionWaking && (
+        <div
+          className={`mission-awakening attempt-${missionWakeAttempt} phase-${missionWakePhase}`}
+          role="dialog"
+          aria-modal="true"
+          aria-live="assertive"
+          aria-label={`晨祷钟声响起，特奥多罗第${missionWakeAttempt}次艰难睁眼`}
+        >
+          <div className="mission-awakening-scene" aria-hidden="true" />
+          <div className="mission-awakening-darkness" aria-hidden="true" />
+        </div>
+      )}
+
       <footer className="game-footer">
         <span>{stage === "intro" ? "一八八〇 / 二〇二六" : info.subtitle ? `${info.act} · ${info.subtitle}` : info.act}</span>
         <span>{sound.enabled ? "声音开启" : "静音模式"}</span>
@@ -1679,6 +1899,7 @@ export default function Home() {
               <a href="https://opengameart.org/content/pursuit" target="_blank" rel="noreferrer">《Pursuit》· Sudocolon · CC0</a>
               <a href="https://opengameart.org/content/contemplation-0" target="_blank" rel="noreferrer">《Contemplation》· Joth · CC0</a>
               <a href="https://opengameart.org/content/asianoriental1" target="_blank" rel="noreferrer">《Asianoriental1》· Tozan · CC0</a>
+              <a href="https://freesound.org/people/dsp9000/sounds/76405/" target="_blank" rel="noreferrer">《Old Church Bell》· dsp9000 · CC0</a>
             </div>
           </section>
         </div>

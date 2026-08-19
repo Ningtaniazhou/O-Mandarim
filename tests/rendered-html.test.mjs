@@ -111,7 +111,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /神父捡到的弃婴/);
   assert.match(page, /狄鑫福和他的纸鸢始终没有再出现/);
   assert.match(page, /好吧，狄鑫福已经满意了/);
-  assert.match(page, /地址之谜/);
+  assert.match(page, /特奥多罗的小房间/);
   assert.match(page, /狄鑫福是在返程的船上突然重新出现的/);
   assert.match(page, /return: "\/lisbon-room-v3\.png"/);
   assert.doesNotMatch(page, /狄鑫福 · \{place\}/);
@@ -173,7 +173,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /stageMusic/);
   assert.match(page, /handbell/);
   assert.match(page, /bellRung/);
-  assert.match(page, /letterDecision/);
+  assert.match(page, /LetterOfExcuses/);
+  assert.match(page, /letterReasons/);
   assert.match(page, /TienhoSequence/);
   assert.match(tienho, /第三阶段 · 身份盘问/);
   assert.match(tienho, /按住：保住金币 \/ 松开：跑得更快/);
@@ -205,23 +206,54 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /hasInspectedAll/);
   assert.match(page, /chooseAvoidance/);
   assert.doesNotMatch(page, /chooseCamilloff/);
-  assert.match(page, /chooseLetterDecision/);
+  assert.doesNotMatch(page, /chooseLetterDecision|letterDecision|letterClues/);
   assert.match(page, /resetRevisitableStage/);
   assert.match(page, /if \(next === "ghost"\) setAvoidance\(""\)/);
   assert.match(page, /if \(next === "beijing"\) \{/);
   assert.match(page, /setBeijingVisited\(\[\]\)/);
-  assert.match(page, /onComplete=\{\(\) => go\("mission"\)\}/);
-  assert.match(page, /if \(next === "letter"\) setLetterDecision\(""\)/);
+  assert.match(page, /onComplete=\{beginMissionAwakening\}/);
+  assert.match(page, /missionWaking/);
+  assert.match(page, /churchBell/);
   assert.match(page, /setAvoidance\(choice\)/);
-  assert.match(page, /setLetterDecision\(choice\)/);
   assert.match(page, /unsolved-investigation-v1\.ogg/);
   assert.match(page, /volume: 0\.74/);
   assert.match(page, /西尔维斯特/);
   assert.doesNotMatch(page, /setInheritanceOpened\(true\); setGhostRevealed\(true\)/);
   assert.doesNotMatch(page, /stage === "inheritance" && inheritanceOpened/);
-  assert.match(page, /拆开卡米洛夫的信/);
-  assert.doesNotMatch(page, /拆开卡米洛夫的附言/);
-  assert.match(page, /这封信里居然涉及两个死去的狄鑫福，两个在贫困中挣扎的家庭/);
+  assert.match(page, /回到房间/);
+  assert.match(page, /mission-cloister-v7\.png/);
+  assert.match(page, /mission-room-v1\.png/);
+  assert.doesNotMatch(page, /id: "letter", label: "卡米洛夫的信"/);
+  assert.match(page, /拿起桌上的来信/);
+  assert.match(page, /拆开卡米洛夫的来信/);
+  assert.match(page, />拆信</);
+  assert.doesNotMatch(page, /抽出信纸|拆开卡米洛夫的附言/);
+  assert.match(page, /继续读信/);
+  assert.match(page, /合上信/);
+  assert.match(page, /incomingClosed/);
+  assert.match(page, /写回信/);
+  assert.match(page, /从信纸外选取三个念头，写进信里/);
+  assert.match(page, /特奥多罗写给卡米洛夫的三折回信/);
+  assert.match(page, /我已经走过半个世界/);
+  assert.match(page, /我险些死在天河村/);
+  assert.match(page, /两个地址都无法确认/);
+  assert.match(page, /狄鑫福已经很久没有出现/);
+  assert.match(page, /我已经留下了足够的捐款/);
+  assert.match(page, /再寻找也未必能找到真正的家人/);
+  assert.match(page, /所以，我已经尽力了/);
+  assert.match(page, /装入信封/);
+  assert.match(page, /onClick=\{sealReply\}/);
+  assert.doesNotMatch(page, /按住，折起信纸|holdWithPointer|foldHolding|foldTimer/);
+  assert.match(page, /onDragStart/);
+  assert.match(page, /onDrop/);
+  assert.match(styles, /phase-opening\.attempt-1/);
+  assert.match(styles, /phase-opening\.attempt-3/);
+  assert.match(styles, /phase-closing/);
+  assert.match(styles, /room-letter-hotspot/);
+  assert.match(styles, /incoming-letter-closed/);
+  assert.match(styles, /reason-fold-slot/);
+  assert.match(styles, /seal-letter-action/);
+  assert.doesNotMatch(styles, /hold-to-fold|fold-hold-progress|reply-letter\.is-folding|folded-letter-settles/);
   assert.match(page, /回到洛雷托 <span>→<\/span>/);
   assert.doesNotMatch(page, /回到洛雷托写下遗嘱/);
   assert.match(page, /testament-study-v2\.png/);
@@ -264,8 +296,8 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
     access(new URL("../public/tienho-dream-v1.png", import.meta.url)),
     access(new URL("../public/tienho-reality-v1.png", import.meta.url)),
-    access(new URL("../public/mission-cloister-v4.png", import.meta.url)),
-    access(new URL("../public/mission-cloister-v5.png", import.meta.url)),
+    access(new URL("../public/mission-cloister-v7.png", import.meta.url)),
+    access(new URL("../public/mission-room-v1.png", import.meta.url)),
     access(new URL("../public/wilderness-teodoro-v2.png", import.meta.url)),
     access(new URL("../public/renounce-room-v1.png", import.meta.url)),
     access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
@@ -284,6 +316,7 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/audio/the-journey-begins.ogg", import.meta.url)),
     access(new URL("../public/audio/pursuit.mp3", import.meta.url)),
     access(new URL("../public/audio/contemplation.mp3", import.meta.url)),
+    access(new URL("../public/audio/church-bell-real-v1.mp3", import.meta.url)),
     access(new URL("../public/audio/mystery-dark.mp3", import.meta.url)),
   ]);
 });
