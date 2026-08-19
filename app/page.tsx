@@ -416,10 +416,10 @@ function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; 
       <button
         className={`corpse-toggle ${revealed ? "is-dismiss" : "is-question"}`}
         onClick={onInspect}
-        aria-label={revealed ? "让狄鑫福退回虚影" : "显出狄鑫福的尸体"}
+        aria-label={revealed ? "还是不看为好" : "显出狄鑫福的尸体"}
         aria-pressed={revealed}
       >
-        <span aria-hidden="true">{revealed ? "×" : "?"}</span>
+        <span aria-hidden="true">{revealed ? "还是不看为好" : "?"}</span>
       </button>
     </>
   );

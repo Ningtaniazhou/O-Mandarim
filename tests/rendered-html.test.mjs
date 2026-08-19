@@ -115,10 +115,10 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /返回故事世界/);
   assert.match(page, /一柄摇铃/);
   assert.match(page, /className=\{`corpse-toggle \$\{revealed \? "is-dismiss" : "is-question"\}`\}/);
-  assert.match(page, /\{revealed \? "×" : "\?"\}/);
+  assert.match(page, /\{revealed \? "还是不看为好" : "\?"\}/);
   assert.match(page, /显出狄鑫福的尸体/);
-  assert.match(page, /让狄鑫福退回虚影/);
-  assert.doesNotMatch(page, /这是什么？|还是不看见为好/);
+  assert.match(page, /aria-label=\{revealed \? "还是不看为好" : "显出狄鑫福的尸体"\}/);
+  assert.doesNotMatch(page, /这是什么？|还是不看见为好|revealed \? "×"/);
   assert.match(page, /const corpsePresenceStages: Stage\[\] = \["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "devilDialogue", "supplication", "testament"\]/);
   assert.doesNotMatch(page, /LateCorpsePresence|late-ti-corpse/);
   assert.match(page, /stageMusic/);
