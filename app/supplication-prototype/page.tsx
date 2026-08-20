@@ -93,7 +93,7 @@ export default function SupplicationPrototypePage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className={styles.street} src="/supplication-street-v1.png" alt="煤气灯照亮的湿石路，远处垃圾堆旁有一条瘦狗" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.waitingTableau} src="/devil-alone-street-v1.png" alt="魔鬼独自站在煤气灯照亮的湿石路上" />
+        <img className={styles.waitingTableau} src="/devil-alone-street-v2.png" alt="魔鬼独自站在煤气灯照亮的湿石路上，雨伞夹在腋下" />
         <div className={styles.streetShade} aria-hidden="true" />
         <div className={styles.gasGlow} aria-hidden="true" />
         <div className={styles.dogReveal} aria-hidden="true" />

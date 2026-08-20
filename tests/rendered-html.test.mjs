@@ -157,13 +157,14 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /devilDialogue|无法撤销的交易|supplicated/);
   assert.match(supplication, /phase === "waiting"/);
   assert.match(supplication, />\s*乞求 <span>→<\/span>/);
-  assert.match(supplication, /devil-alone-street-v1\.png/);
+  assert.match(supplication, /devil-alone-street-v2\.png/);
   assert.doesNotMatch(supplication, /phaseCopy|特奥多罗冲向那个黑衣人|跪倒在湿冷的石路上|手指几乎触到衣料时|支撑骤然落空/);
   assert.match(page, /preview === "devil-return"/);
   assert.match(page, /preview === "supplication"/);
+  assert.match(page, /preview === "bell"/);
   assert.match(page, /preview === "tienho"/);
   assert.match(page, /ti-chin-fu-corpse-v3\.png/);
-  assert.match(page, /devil-v1\.png/);
+  assert.match(page, /devil-seated-cutout-v2\.png/);
   assert.match(page, /bell-v1\.png/);
   assert.match(page, /返回上一页/);
   assert.match(page, /物件摘录/);
@@ -318,12 +319,12 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
     access(new URL("../public/loreto-restored-v1.png", import.meta.url)),
     access(new URL("../public/devil-street-v1.png", import.meta.url)),
-    access(new URL("../public/devil-alone-street-v1.png", import.meta.url)),
+    access(new URL("../public/devil-alone-street-v2.png", import.meta.url)),
     access(new URL("../public/devil-vanished-v1.png", import.meta.url)),
     access(new URL("../public/testament-ending-v1.png", import.meta.url)),
     access(new URL("../public/testament-study-v2.png", import.meta.url)),
     access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
-    access(new URL("../public/devil-v1.png", import.meta.url)),
+    access(new URL("../public/devil-seated-cutout-v2.png", import.meta.url)),
     access(new URL("../public/bell-v1.png", import.meta.url)),
     access(new URL("../public/audio/unsolved-investigation-v1.ogg", import.meta.url)),
     access(new URL("../public/audio/apparitions-ball.mp3", import.meta.url)),

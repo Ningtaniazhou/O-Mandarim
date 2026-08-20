@@ -559,7 +559,7 @@ function DevilFigure() {
   return (
     <figure className="devil-figure" aria-label="魔鬼：黑衣、高礼帽、黑手套，双手按在雨伞柄上">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/devil-v1.png" alt="身穿黑衣、戴高礼帽、双手戴黑手套并按着雨伞柄的魔鬼" />
+      <img src="/devil-seated-cutout-v2.png" alt="身穿黑衣、戴高礼帽、双手戴黑手套并按着雨伞柄的魔鬼" />
     </figure>
   );
 }
@@ -854,8 +854,8 @@ export default function Home() {
     reckoning: "/palace-ghost.png",
     renounce: "/renounce-room-v1.png",
     prison: "/loreto-restored-v1.png",
-    devilReturn: "/devil-alone-street-v1.png",
-    supplication: "/devil-alone-street-v1.png",
+    devilReturn: "/devil-alone-street-v2.png",
+    supplication: "/devil-alone-street-v2.png",
     testament: "/testament-study-v2.png",
   };
   const beijingStreetBackgrounds: Record<Exclude<BeijingDestination, "">, string> = {
@@ -1200,6 +1200,10 @@ export default function Home() {
     }
     if (preview === "office") {
       setStage("office");
+      setStageHistory([]);
+    }
+    if (preview === "bell") {
+      setStage("bell");
       setStageHistory([]);
     }
     if (preview === "journey") {
