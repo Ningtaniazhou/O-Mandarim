@@ -310,8 +310,8 @@ export default function BeijingCurtainScene({
   return (
     <div className={styles.overlay}>
       <section className={styles.copy} aria-live="polite">
-        <p className={styles.chapter}>第五幕 · 北京</p>
-        <h1>{title}</h1>
+        <p className={`${styles.chapter} chapter-kicker`}>第五幕 · 北京</p>
+        <h1 className="chapter-title">{title}</h1>
         <div className={styles.copyScroll}>{children}</div>
         <button className={styles.departButton} type="button" onClick={onDepart}>
           起轿 <span>→</span>

@@ -191,7 +191,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
   const nextDay = intercutDays[day + 1];
 
   return (
-    <section className="intercut-stage" aria-label="宅邸内外双线">
+    <section className="intercut-stage" aria-label="府邸内外双线">
       <div className={`intercut-card ${place === "yamen" ? "is-yamen" : "is-mansion"}`}>
         <div className="intercut-face mansion-face" style={{ backgroundImage: `url(${current.mansion.image})` }} aria-hidden="true" />
         <div className="intercut-face yamen-face" style={{ backgroundImage: `url(${current.yamen.image})` }} aria-hidden="true" />
@@ -199,8 +199,8 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
       <div className={`intercut-vignette ${place}`} aria-hidden="true" />
 
       <header className="intercut-heading">
-        <span>第五幕 · 北京</span>
-        <h2>府邸内外</h2>
+        <span className="chapter-kicker">第五幕 · 北京</span>
+        <h2 className="chapter-title">府邸内外</h2>
         <p>{current.theme}</p>
       </header>
 
@@ -210,7 +210,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
           <span lang="pt">“{copy.pt}”</span>
           <span className="quote-translation">“{copy.zh}”</span>
         </blockquote>
-        <p><strong>{copy.speaker}</strong>{copy.line}</p>
+        <p><strong>{copy.speaker}：</strong>{copy.line}</p>
       </article>
 
       <div className="intercut-day-track" aria-label={`双线进度 ${day + 1} / ${intercutDays.length}`}>

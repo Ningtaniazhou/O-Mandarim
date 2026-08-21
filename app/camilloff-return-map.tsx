@@ -205,8 +205,8 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
       {phase === "map" && (
         <section className="map-workbench" aria-label="卡米洛夫绘制北京到天河的路线">
           <header className="map-workbench-heading">
-            <span>第二小章</span>
-            <h2>纸上的道路</h2>
+            <span>寻访路线</span>
+            <h2 className="section-title">纸上的道路</h2>
             <p>{mapStep < mapRoutes.length ? "推动铅笔、轻拖纸张，或滚动一次。" : "六段道路已经连在一起。"}</p>
           </header>
           <div

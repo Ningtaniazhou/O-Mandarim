@@ -240,14 +240,16 @@
 
 .chapter {
   margin: 0 0 12px;
-  color: #d15342;
+  color: var(--chapter-kicker-color, #d15342);
   font: 700 clamp(10px, 0.85vw, 13px) Arial, "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.24em;
 }
 
 .intro h1 {
   margin: 0;
-  font-size: clamp(38px, 5.2vw, 88px);
+  color: var(--chapter-title-color, #f3ead7);
+  font-family: var(--chapter-title-font, Georgia, "Songti SC", serif);
+  font-size: var(--chapter-title-size, clamp(42px, 6vw, 92px));
   font-weight: 500;
   line-height: 1.03;
   letter-spacing: 0.04em;

@@ -416,7 +416,7 @@ function beginDream() {
   resonantTap({ frequency: 920, duration: .18, volume: .012, when: .035 });
   setPhase("coin");
   setDot(0);
-  eyebrow.textContent = "梦里 · 天河村";
+  eyebrow.textContent = "梦境演绎 · 天河村";
   storyText.textContent = "狄鑫福的遗孀站在晨光里。她没有开口，只把一只空碗捧向我。";
   instruction.textContent = "把金币放进她的碗里。";
   startButton.hidden = true;
@@ -479,7 +479,7 @@ function beginBridge() {
 
 function beginReality() {
   setPhase("reality");
-  eyebrow.textContent = "午夜 · 尘世安慰客栈";
+  eyebrow.textContent = "现实演绎 · 尘世安慰客栈";
   storyText.textContent = "鼓声没有停，变成了撞门声。门外有人喊，另一只手伸向钱袋。";
   instruction.textContent = "抓住钱袋。";
   setRumor("带着财物的外国人", 100);
@@ -867,7 +867,7 @@ function reset() {
   scene.querySelectorAll(".lantern").forEach((lantern) => lantern.classList.remove("is-lit"));
   document.querySelector("#narrativeCard").className = "narrative-card";
   document.querySelector("#narrativeCard").style.opacity = "";
-  eyebrow.textContent = "尘世安慰客栈 · 入夜";
+  eyebrow.textContent = "游戏改编 · 尘世安慰客栈";
   storyText.textContent = "茶还温着。萨托说起明天：找到遗孀，把钱和米送过去。";
   instruction.textContent = "困意渐渐压下来。";
   startButton.hidden = false;

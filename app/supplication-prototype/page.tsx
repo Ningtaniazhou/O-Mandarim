@@ -112,6 +112,22 @@ export default function SupplicationPrototypePage() {
         <aside className={styles.storyPanel}>
           <p className={styles.eyebrow}>第八幕 · 夜路</p>
           <h1>乞求</h1>
+          <div className={styles.dialogueExcerpt}>
+            <p>
+              <strong>特奥多罗</strong>
+              <span lang="pt">“Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!”</span>
+              <span>“把我从这笔财富中救出来！让满大人复活！把贫穷的安宁还给我！”</span>
+            </p>
+            <p className={styles.narration}>
+              <span lang="pt">Ele passou gravemente o seu guarda-chuva para debaixo do outro braço, e respondeu com bondade:</span>
+              <span>他庄重地把雨伞移到另一只胳膊下，和善地回答：</span>
+            </p>
+            <p>
+              <strong>魔鬼</strong>
+              <span lang="pt">“Não pode ser, meu prezado senhor, não pode ser...”</span>
+              <span>“不行，我亲爱的先生，不行……”</span>
+            </p>
+          </div>
           <button className={styles.begButton} type="button" onClick={beginSupplication} disabled={busy}>
             {phase === "aftermath" ? "重播" : busy ? "……" : "乞求"}
             {!busy && <span>→</span>}

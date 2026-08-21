@@ -388,13 +388,12 @@ export default function CurtainPrototypePage() {
             <button className={styles.soundButton} type="button" onClick={toggleSound}>
               {soundOn ? "声音：开" : "声音：关"}
             </button>
-            <span className={styles.prototypeTag}>交互试作</span>
           </div>
         </header>
 
         <section className={styles.intro} aria-live="polite">
           <p className={styles.chapter}>第五幕 · 北京</p>
-          <h1>帘外的北京</h1>
+          <h1>轿中北京</h1>
           <p className={styles.instruction}>
             {progress === 1
               ? "宫墙、车轮与人群的声浪涌入轿中。"

@@ -25,15 +25,16 @@
 
 .chapter {
   margin: 0 0 10px;
-  color: #d15342;
+  color: var(--chapter-kicker-color);
   font: 700 11px Arial, "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.24em;
 }
 
 .copy h1 {
   margin: 0 0 clamp(20px, 3vh, 36px);
-  color: #f0e5ce;
-  font-size: clamp(42px, 5.5vw, 88px);
+  color: var(--chapter-title-color);
+  font-family: var(--chapter-title-font);
+  font-size: var(--chapter-title-size);
   font-weight: 500;
   line-height: 1.04;
   letter-spacing: 0.03em;

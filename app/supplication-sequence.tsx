@@ -106,8 +106,8 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
         <div className={styles.dogMask} aria-hidden="true" />
 
         <aside className={`${styles.storyPanel} ${styles.integratedPanel}`}>
-          <p className={styles.eyebrow}>第八幕 · 夜路</p>
-          <h1>乞求</h1>
+          <p className={`${styles.eyebrow} chapter-kicker`}>第八幕 · 夜路</p>
+          <h1 className="chapter-title">乞求</h1>
           <div className={styles.dialogueExcerpt}>
             <p>
               <strong>特奥多罗</strong>

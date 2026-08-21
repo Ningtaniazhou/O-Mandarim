@@ -23,8 +23,8 @@ test("connects departure, abstract intercut, and return map", async () => {
   assert.match(page, /mapMeeting: \{ src: "\/audio\/unsolved-investigation-v1\.ogg", volume: 0\.62 \}/);
   assert.match(page, /camilloffIntercut: musicCues\.mansionIntercut/);
   assert.match(page, /camilloffReturn: musicCues\.mapMeeting/);
-  assert.match(intercut, /<span>第五幕 · 北京<\/span>/);
-  assert.match(intercut, /<h2>府邸内外<\/h2>/);
+  assert.match(intercut, /<span className="chapter-kicker">第五幕 · 北京<\/span>/);
+  assert.match(intercut, /<h2 className="chapter-title">府邸内外<\/h2>/);
   assert.match(intercut, /推进到下一段/);
   assert.doesNotMatch(intercut, /四日|下一日|同一天|这一天/);
   assert.doesNotMatch(intercut, /第一小章|印章与茶杯|名单与扇子|门槛与门扉|消息与痕迹/);
