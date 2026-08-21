@@ -45,8 +45,8 @@ const intercutDays: IntercutDay[] = [
       image: "/camilloff-day2-mansion.png",
       place: "府邸 · 离扇面更近",
       speaker: "特奥多罗",
-      pt: "Ao lado um arroio fresco ia cantando docemente... e junto à janela rendilhada... pousava aberto ao alto um leque...",
-      zh: "一旁清凉的溪流低声歌唱……雕花窗边，一柄扇子高高展开，微风使它发出温柔而忧郁的颤音……",
+      pt: "Ao lado um arroio fresco ia cantando docemente […] e junto à janela rendilhada […] pousava aberto ao alto um leque formado de lâminas de cristal separadas, que a aragem entrando fazia vibrar, numa modulação melancólica e terna.",
+      zh: "一旁清凉的溪流轻声歌唱……雕花窗边，一柄水晶薄片制成的扇子高高展开，微风吹入，扇片便发出温柔而忧郁的颤音。",
       line: "她展开扇子，像是遮住笑意。我越过扇沿继续讲巴黎，声音也随之低了下来。",
     },
     yamen: {
@@ -64,8 +64,8 @@ const intercutDays: IntercutDay[] = [
       image: "/camilloff-day3-mansion.png",
       place: "府邸 · 静憩亭门前",
       speaker: "将军夫人",
-      pt: "Eu... ia entreabrir a porta do Repouso Discreto: — Mimi? E a voz da generala respondia, suave como um beijo: — All right...",
-      zh: "我轻轻推开静憩亭的门：‘咪咪？’将军夫人的声音像吻一样柔和：‘进来吧……’",
+      pt: "Eu então, de leque na mão, pisando subtilmente na ponta das babouches de cetim as ruazinhas areadas do jardim, ia entreabrir a porta do Repouso Discreto: — Mimi? E a voz da generala respondia, suave como um beijo: — All right...",
+      zh: "于是我拿着折扇，踮着缎鞋，轻轻走过花园的沙径，推开静憩亭的门：‘咪咪？’将军夫人的声音像一个吻：‘进来吧……’",
       line: "门从里面打开。她伸出戴着手套的手，把我引进比客厅更私密的静憩亭。",
     },
     yamen: {
@@ -83,8 +83,8 @@ const intercutDays: IntercutDay[] = [
       image: "/camilloff-day4-mansion.png",
       place: "府邸 · 被留下的手套",
       speaker: "特奥多罗",
-      pt: "Eu arregaçava-lhe a larga manga... e ia fazendo viajar os meus lábios devotos pela pele fresca dos seus belos braços...",
-      zh: "我卷起她宽大的衣袖，让虔诚的吻沿着她美丽手臂上清凉的肌肤缓缓游移……",
+      pt: "Eu arregaçava-lhe a larga manga do casabeque de seda cor de folha morta, e ia fazendo viajar os meus lábios devotos pela pele fresca dos seus belos braços; […]",
+      zh: "我卷起她那枯叶色绸褂的宽袖，让虔诚的吻沿着她美丽手臂上清凉的肌肤缓缓游移……",
       line: "她离开后，一只浅色手套仍搭在我座椅旁。我的手在它上方停了一瞬，没有把它送回去。",
     },
     yamen: {
@@ -191,7 +191,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
   const nextDay = intercutDays[day + 1];
 
   return (
-    <section className="intercut-stage" aria-label="宅邸内外四日双线">
+    <section className="intercut-stage" aria-label="宅邸内外双线">
       <div className={`intercut-card ${place === "yamen" ? "is-yamen" : "is-mansion"}`}>
         <div className="intercut-face mansion-face" style={{ backgroundImage: `url(${current.mansion.image})` }} aria-hidden="true" />
         <div className="intercut-face yamen-face" style={{ backgroundImage: `url(${current.yamen.image})` }} aria-hidden="true" />
@@ -199,7 +199,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
       <div className={`intercut-vignette ${place}`} aria-hidden="true" />
 
       <header className="intercut-heading">
-        <span>第五章 · 北京</span>
+        <span>第五幕 · 北京</span>
         <h2>府邸内外</h2>
         <p>{current.theme}</p>
       </header>
@@ -213,7 +213,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
         <p><strong>{copy.speaker}</strong>{copy.line}</p>
       </article>
 
-      <div className="intercut-day-track" aria-label={`当前为第 ${day + 1} 日，共四日`}>
+      <div className="intercut-day-track" aria-label={`双线进度 ${day + 1} / ${intercutDays.length}`}>
         {intercutDays.map((_, index) => <i key={index} className={index <= day ? "is-past" : ""} />)}
       </div>
 
@@ -258,7 +258,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
               advanceDay();
             }
           }}
-          aria-label={seenBoth ? (day === intercutDays.length - 1 ? "顺时针转动怀表，等待卡米洛夫归来" : "顺时针转动怀表，推进到下一日") : "先用地球仪查看同一天的另一处"}
+          aria-label={seenBoth ? (day === intercutDays.length - 1 ? "顺时针转动怀表，等待卡米洛夫归来" : "顺时针转动怀表，推进到下一段") : "先用地球仪查看另一处"}
           aria-disabled={!seenBoth}
         >
           <span className="watch-crown" aria-hidden="true" />
@@ -266,7 +266,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
         </button>
       </div>
 
-      <p className="sr-only" aria-live="polite">{seenBoth ? "这一天的宅邸与衙门都已查看，可以转动怀表。" : "转动地球仪，查看同一天的另一处。"}</p>
+      <p className="sr-only" aria-live="polite">{seenBoth ? "这一段的宅邸与衙门都已查看，可以转动怀表。" : "转动地球仪，查看另一处。"}</p>
       {nextDay && <div className="intercut-preload" aria-hidden="true"><span style={{ backgroundImage: `url(${nextDay.mansion.image})` }} /><span style={{ backgroundImage: `url(${nextDay.yamen.image})` }} /></div>}
     </section>
   );

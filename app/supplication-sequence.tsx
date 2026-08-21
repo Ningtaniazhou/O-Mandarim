@@ -106,13 +106,13 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
         <div className={styles.dogMask} aria-hidden="true" />
 
         <aside className={`${styles.storyPanel} ${styles.integratedPanel}`}>
-          <p className={styles.eyebrow}>第八章 · 夜路</p>
+          <p className={styles.eyebrow}>第八幕 · 夜路</p>
           <h1>乞求</h1>
           <div className={styles.dialogueExcerpt}>
             <p>
               <strong>特奥多罗</strong>
               <span lang="pt">“Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!”</span>
-              <span>“把我从财富中解救出来！让满大人复活！把贫穷的安宁还给我！”</span>
+              <span>“把我从这笔财富中救出来！让满大人复活！把贫穷的安宁还给我！”</span>
             </p>
             <p className={styles.narration}>
               <span lang="pt">Ele passou gravemente o seu guarda-chuva para debaixo do outro braço, e respondeu com bondade:</span>
@@ -121,7 +121,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
             <p>
               <strong>魔鬼</strong>
               <span lang="pt">“Não pode ser, meu prezado senhor, não pode ser...”</span>
-              <span>“不行，我尊贵的先生，不行……”</span>
+              <span>“不行，我亲爱的先生，不行……”</span>
             </p>
           </div>
           {phase === "waiting" && (

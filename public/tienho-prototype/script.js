@@ -80,29 +80,29 @@ const evidenceOutcomes = {
   letter: {
     intent: "我受官府委托而来",
     perception: "无人能读的外国字与红印",
-    outcome: "伪造官文的异乡术士",
-    quote: "纸张在人群中倒着传了一圈。有人指着印章说：‘这是召来灾祸的符牒。’",
+    outcome: "来历不明的外国文书",
+    quote: "信在人群中传了一圈。没人能读。有人指着红印摇头。",
     pressure: 84,
   },
   cross: {
     intent: "我的信仰约束着我的行为",
     perception: "一个陌生的金属刑具",
-    outcome: "携带异邦法器的人",
-    quote: "十字架举得越高，门外的人退得越远；下一刻，他们弯腰捡起了石块。",
+    outcome: "陌生的异邦法器",
+    quote: "十字架举起，人群先退了一步，随后有人弯腰捡起石块。",
     pressure: 88,
   },
   gold: {
     intent: "我确实有能力帮助你们",
     perception: "传闻中的财宝就在眼前",
-    outcome: "装满黄金的外国人",
-    quote: "第一枚金币反射出月光。低语骤然停止，然后所有人同时向前一步。",
+    outcome: "传闻中的黄金",
+    quote: "金币一露出来，低语停了一瞬，人群随即向前。",
     pressure: 100,
   },
   sato: {
     intent: "我们只是来帮助穷人",
     perception: "萨托说：他要把财物给全村",
-    outcome: "必须在天亮前兑现的承诺",
-    quote: "萨托：‘他……他来把财物分给全村！’　话音未落，最后一辆行李车已经开始移动。",
+    outcome: "要分给全村的财物",
+    quote: "萨托说他来帮助穷人。后排却已经开始搬动行李。",
     pressure: 96,
   },
 };
@@ -416,9 +416,9 @@ function beginDream() {
   resonantTap({ frequency: 920, duration: .18, volume: .012, when: .035 });
   setPhase("coin");
   setDot(0);
-  eyebrow.textContent = "第二日 · 仿佛已经到来";
+  eyebrow.textContent = "梦里 · 天河村";
   storyText.textContent = "狄鑫福的遗孀站在晨光里。她没有开口，只把一只空碗捧向我。";
-  instruction.textContent = "把发光的金币拖进她的碗里（也可依次点击金币与碗）。";
+  instruction.textContent = "把金币放进她的碗里。";
   startButton.hidden = true;
   setRumor("一位远道而来的陌生人", 12);
   addCrowd(3);
@@ -430,7 +430,7 @@ function completeCoin() {
   playCoinClink(2, .9);
   setRumor("慷慨的陌生人", 38);
   addCrowd(4);
-  storyText.textContent = "金币落入碗底。她的笑容像一道许可，人群随即为我让出通往粮车的路。";
+  storyText.textContent = "金币落入碗底。她笑了笑，人群让出粮车前的路。";
   instruction.textContent = "点击车上的粮袋，开始分发米粮。";
   setPhase("rice");
   setDot(1);
@@ -442,8 +442,8 @@ function completeRice() {
   riceTarget.classList.add("is-complete");
   setRumor("富有的陌生人", 67);
   addCrowd(5);
-  storyText.textContent = "队伍整齐地向前移动。每只盛满的碗，都把更多面孔吸引到客栈门前。";
-  instruction.textContent = "点亮三盏灯笼，让全村加入庆典。";
+  storyText.textContent = "队伍向前移动。每只装满的碗后面，又多出几张脸。";
+  instruction.textContent = "点亮三盏灯笼。";
   setPhase("lantern");
   setDot(2);
 }
@@ -457,8 +457,8 @@ function lightLantern(button) {
   addCrowd(2);
   if (lanternCount === 3) {
     scene.classList.add("celebrating");
-    setRumor("带着无数黄金的陌生人", 100);
-    storyText.textContent = "最后一盏灯亮了。所有人都在呼喊同一句话。";
+    setRumor("带着财物的外国人", 100);
+    storyText.textContent = "最后一盏灯亮起。欢呼声从近处传来。";
     instruction.textContent = "鼓点从人群深处传来……";
     later(beginBridge, 850);
   }
@@ -480,9 +480,9 @@ function beginBridge() {
 function beginReality() {
   setPhase("reality");
   eyebrow.textContent = "午夜 · 尘世安慰客栈";
-  storyText.textContent = "鼓声没有停。它只是变成了撞门声。窗外那句欢呼仍在重复，而一只手已经伸向钱袋。";
-  instruction.textContent = "按住钱袋，别让它被夺走。";
-  setRumor("带着无数黄金的陌生人", 100);
+  storyText.textContent = "鼓声没有停，变成了撞门声。门外有人喊，另一只手伸向钱袋。";
+  instruction.textContent = "抓住钱袋。";
+  setRumor("带着财物的外国人", 100);
   document.querySelector("#narrativeCard").classList.remove("is-quiet");
 }
 
@@ -510,7 +510,7 @@ function cancelGrip() {
   scene.classList.remove("is-gripping");
   moneyBag.classList.remove("is-held");
   moneyBag.style.setProperty("--hold", 0);
-  instruction.textContent = "那只手没有松开。按住钱袋，坚持片刻。";
+  instruction.textContent = "那只手没有松开。抓紧钱袋。";
 }
 
 function finishGrip() {
@@ -523,7 +523,7 @@ function finishGrip() {
   document.querySelector("#narrativeCard").style.opacity = "0";
   identityPanel.hidden = false;
   setDot(4);
-  setRumor("带着无数黄金的陌生人", 100);
+  setRumor("带着财物的外国人", 100);
 }
 
 function chooseEvidence(card) {
@@ -570,7 +570,7 @@ function beginEscape() {
   lastCoinAt = 0;
   escapeBag.disabled = false;
   wallGate.hidden = true;
-  escapeInstruction.textContent = "按住钱袋开始逃跑；松手时金币会洒落，人群也会转身争抢。";
+  escapeInstruction.textContent = "按住钱袋向前；松手，金币会落下。";
   updateEscapeHud();
 }
 
@@ -627,7 +627,7 @@ function runEscape(now) {
   escapeGold = Math.max(0, escapeGold);
   escapeCrowd = Math.max(8, Math.min(98, escapeCrowd));
   if (escapeCrowd > 84 && escapeHeld) {
-    escapeInstruction.textContent = "钱袋还在，但身后的手越来越近——松开它，才能拉开距离。";
+    escapeInstruction.textContent = "身后的手越来越近。松开钱袋，才能拉开距离。";
   } else if (!escapeHeld) {
     escapeInstruction.textContent = "金币落进泥里。脚步声正在远离你。";
   }
@@ -688,7 +688,7 @@ const wildernessMoments = [
   {
     action: "向前走",
     heading: "马匹已经跑远，空马镫在风里甩动。",
-    narration: "我的衣服冻在皮肤上。金币、身份和向导都留在了身后。",
+    narration: "衣服冻在皮肤上。钱袋留在客栈，马也跑远了。",
   },
   {
     action: "站稳",
@@ -868,8 +868,8 @@ function reset() {
   document.querySelector("#narrativeCard").className = "narrative-card";
   document.querySelector("#narrativeCard").style.opacity = "";
   eyebrow.textContent = "尘世安慰客栈 · 入夜";
-  storyText.textContent = "茶气尚温。萨托仍在说着明日的计划：找到遗孀，分发米粮，让整个村庄亮起灯火。";
-  instruction.textContent = "疲倦正把屋梁下的纸龙慢慢融进暮色。";
+  storyText.textContent = "茶还温着。萨托说起明天：找到遗孀，把钱和米送过去。";
+  instruction.textContent = "困意渐渐压下来。";
   startButton.hidden = false;
   coinSource.style.opacity = "";
   riceTarget.classList.remove("is-complete");
@@ -1006,7 +1006,7 @@ if (previewStage === "identity") {
   document.querySelector("#narrativeCard").style.opacity = "0";
   identityPanel.hidden = false;
   setDot(4);
-  setRumor("带着无数黄金的陌生人", 100);
+  setRumor("带着财物的外国人", 100);
   phase = "identity";
 } else if (previewStage === "escape") {
   startButton.hidden = true;

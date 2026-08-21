@@ -110,7 +110,7 @@ export default function SupplicationPrototypePage() {
         </header>
 
         <aside className={styles.storyPanel}>
-          <p className={styles.eyebrow}>第八章 · 夜路</p>
+          <p className={styles.eyebrow}>第八幕 · 夜路</p>
           <h1>乞求</h1>
           <button className={styles.begButton} type="button" onClick={beginSupplication} disabled={busy}>
             {phase === "aftermath" ? "重播" : busy ? "……" : "乞求"}

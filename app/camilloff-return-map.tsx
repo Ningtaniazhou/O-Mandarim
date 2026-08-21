@@ -56,8 +56,8 @@ const mapRoutes: MapRoute[] = [
   },
   {
     label: "天河",
-    pt: "E com dois dias de caminhada está em Tien-Hó... Brilhante, hem?...",
-    zh: "再步行两天，就到天河了……很漂亮，对吧？……",
+    pt: "E com dois dias de caminhada está em Tien-Hó... Brilhante, hem?... Quando quer partir? Amanhã?...",
+    zh: "再走两天就到天河了……很不错吧？……您想什么时候动身？明天？",
     response: "明天。",
     path: "M781 194 C823 173 858 145 895 116",
     point: [895, 116],
@@ -190,7 +190,7 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
 
       {phase === "arrival" && (
         <div className="scene-body camilloff-return-arrival">
-          <ReturnQuote pt="Uma manhã, Camilloff, entrando na chancelaria onde eu fumava o cachimbo de amizade de companhia com Meriskoff, atirou o seu enorme sabre para um canapé, e contou-nos radiante as notícias..." zh="一天早晨，卡米洛夫走进秘书处，把那柄硕大的军刀扔到长榻上，兴高采烈地告诉我们他带回的消息……" />
+          <ReturnQuote pt="Uma manhã, Camilloff, entrando na Chancelaria, onde eu fumava o cachimbo da amizade de companhia com Meriskoff, atirou o seu enorme sabre para um canapé, e contou-nos radiante as notícias que lhe dera o penetrante príncipe Tong." zh="一天早晨，卡米洛夫走进秘书处；当时我正和梅里斯科夫抽着友谊烟斗作伴。他把硕大的军刀扔到长榻上，兴高采烈地告诉我们佟亲王带来的消息。" />
           <p>自从来到北京，我再没有看见狄鑫福与纸鸢。门外的车轮声刚刚停住，卡米洛夫便带回成捆的公文、名单和封缄；夫人已经离开，桌角却还留着一件不属于这场会谈的东西。</p>
           <div className="dialogue-result">
             <div className="speaker">卡米洛夫</div>

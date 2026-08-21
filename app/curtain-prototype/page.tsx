@@ -393,7 +393,7 @@ export default function CurtainPrototypePage() {
         </header>
 
         <section className={styles.intro} aria-live="polite">
-          <p className={styles.chapter}>第五章 · 北京</p>
+          <p className={styles.chapter}>第五幕 · 北京</p>
           <h1>帘外的北京</h1>
           <p className={styles.instruction}>
             {progress === 1

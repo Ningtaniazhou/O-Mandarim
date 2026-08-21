@@ -85,31 +85,31 @@ type LetterReasonId = (typeof letterReasons)[number]["id"];
 
 const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }> = {
   intro: { act: "", title: "未响的铃", subtitle: "一声轻响" },
-  office: { act: "第一章 · 里斯本", title: "王国内政部", subtitle: "抄写员的白昼" },
-  market: { act: "第一章 · 里斯本", title: "圣克拉拉旧货市场", subtitle: "Feira da Ladra" },
-  room: { act: "第一章 · 里斯本", title: "特奥多罗的房间", subtitle: "一个贫穷的小职员" },
-  book: { act: "第一章 · 旧书", title: "发亮的字句", subtitle: "" },
-  bell: { act: "第一章 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
-  tiDeath: { act: "第一章 · 远方", title: "狄鑫福之死", subtitle: "铃声抵达中国" },
+  office: { act: "第一幕 · 里斯本", title: "王国内政部", subtitle: "抄写员的白昼" },
+  market: { act: "第一幕 · 里斯本", title: "圣克拉拉旧货市场", subtitle: "Feira da Ladra" },
+  room: { act: "第一幕 · 里斯本", title: "特奥多罗的房间", subtitle: "一个贫穷的小职员" },
+  book: { act: "第一幕 · 旧书", title: "发亮的字句", subtitle: "" },
+  bell: { act: "第一幕 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
+  tiDeath: { act: "第一幕 · 远方", title: "狄鑫福之死", subtitle: "铃声抵达中国" },
   refusalEnding: { act: "特别结局", title: "合上的书页", subtitle: "拒绝诱惑" },
-  inheritance: { act: "第二章 · 财富", title: "陌生人的遗产", subtitle: "" },
-  luxury: { act: "第三章 · 黄金", title: "洛雷托的盛宴", subtitle: "百万富翁" },
-  ghost: { act: "第三章 · 亡者", title: "宴席上的客人", subtitle: "狄鑫福" },
-  map: { act: "第四章 · 远行", title: "向东方去", subtitle: "从里斯本到北京" },
-  beijing: { act: "第五章 · 北京", title: "城门之前", subtitle: "东直门外的轿子" },
-  repose: { act: "第五章 · 北京", title: "轿中北京", subtitle: "宫墙与老百姓的街巷" },
-  camilloffDeparture: { act: "第五章 · 北京", title: "临行嘱托", subtitle: "同一段时间，由此开始" },
-  camilloffIntercut: { act: "第五章 · 北京", title: "宅邸内外", subtitle: "两处黄昏" },
-  camilloffReturn: { act: "第五章 · 北京", title: "与卡米洛夫的会谈", subtitle: "纸上的道路" },
-  tienho: { act: "第六章 · 远东", title: "天河村", subtitle: "客栈外的人群" },
-  mission: { act: "第七章 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
-  letter: { act: "第七章 · 修道院", title: "特奥多罗的小房间", subtitle: "桌上的来信" },
-  return: { act: "第七章 · 返航", title: "死者同行", subtitle: "从中国返回欧洲" },
-  reckoning: { act: "第八章 · 里斯本", title: "洛雷托的一夜", subtitle: "无法平息的亡灵" },
-  renounce: { act: "第八章 · 里斯本", title: "放弃一切", subtitle: "重返贫穷" },
-  prison: { act: "第八章 · 里斯本", title: "里斯本俯首", subtitle: "回到洛雷托之后" },
-  devilReturn: { act: "第八章 · 夜路", title: "荒街上的黑衣人", subtitle: "魔鬼再度出现" },
-  supplication: { act: "第八章 · 夜路", title: "乞求", subtitle: "" },
+  inheritance: { act: "第二幕 · 财富", title: "陌生人的遗产", subtitle: "" },
+  luxury: { act: "第三幕 · 黄金", title: "洛雷托的盛宴", subtitle: "百万富翁" },
+  ghost: { act: "第三幕 · 亡者", title: "宴席上的客人", subtitle: "狄鑫福" },
+  map: { act: "第四幕 · 远行", title: "向东方去", subtitle: "从里斯本到北京" },
+  beijing: { act: "第五幕 · 北京", title: "城门之前", subtitle: "东直门外的轿子" },
+  repose: { act: "第五幕 · 北京", title: "轿中北京", subtitle: "宫墙与老百姓的街巷" },
+  camilloffDeparture: { act: "第五幕 · 北京", title: "临行嘱托", subtitle: "同一段时间，由此开始" },
+  camilloffIntercut: { act: "第五幕 · 北京", title: "宅邸内外", subtitle: "两地之间" },
+  camilloffReturn: { act: "第五幕 · 北京", title: "与卡米洛夫的会谈", subtitle: "纸上的道路" },
+  tienho: { act: "第六幕 · 远东", title: "天河村", subtitle: "客栈外的人群" },
+  mission: { act: "第七幕 · 修道院", title: "修道院的清晨", subtitle: "获救，却未获宽恕" },
+  letter: { act: "第七幕 · 修道院", title: "特奥多罗的小房间", subtitle: "桌上的来信" },
+  return: { act: "第七幕 · 返航", title: "死者同行", subtitle: "从中国返回欧洲" },
+  reckoning: { act: "第八幕 · 里斯本", title: "洛雷托的一夜", subtitle: "无法平息的亡灵" },
+  renounce: { act: "第八幕 · 里斯本", title: "放弃一切", subtitle: "重返贫穷" },
+  prison: { act: "第八幕 · 里斯本", title: "里斯本俯首", subtitle: "回到洛雷托之后" },
+  devilReturn: { act: "第八幕 · 夜路", title: "荒街上的黑衣人", subtitle: "魔鬼再度出现" },
+  supplication: { act: "第八幕 · 夜路", title: "乞求", subtitle: "" },
   testament: { act: "正篇结局", title: "留给世人的话", subtitle: "遗嘱与告诫" },
 };
 
@@ -243,7 +243,7 @@ const sceneHotspots: Partial<Record<Stage, HotspotItem[]>> = {
   luxury: [
     { id: "gold-bed", label: "金床", x: 63, y: 67, translation: "我的床以铺满錾花金片的床沿闻名欧洲，趣味夸张而野蛮。" },
     { id: "decanter", label: "酒与水晶", x: 78, y: 59, translation: "世上有勃艮第葡萄酒，例如一八五八年的罗曼尼·康帝和一八六一年的香贝丹。" },
-    { id: "coins", label: "金币", x: 86, y: 72, translation: "我感到整个世界都在脚下——像一头餍足的狮子般打了个哈欠。" },
+    { id: "coins", label: "金币", x: 86, y: 72, translation: "我感到整个世界都在脚下——像一头吃饱的狮子般打了个哈欠。" },
   ],
   beijing: [
     { id: "litter", label: "红绸轿子", x: 84, y: 69, translation: "一乘华贵的轿子正在东直门外等我，猩红丝帘上满是金线刺绣。" },
@@ -771,6 +771,7 @@ function LetterOfExcuses({ onTone, onReturn }: { onTone: (frequency: number, dur
               <div className="letter-conclusion" aria-live="polite" aria-label="所以，我已经尽力了。">
                 <div className="ink-lines" aria-hidden="true"><i /><i /><i /></div>
                 <span>所以，</span><strong>我已经尽力了。</strong>
+                <p>另请您把我存放在清佛商人处的那笔钱，寄给狄鑫福的遗孀。清佛商号在茶瓜大道，佟牌楼旁、观音庙附近。</p>
               </div>
             )}
           </article>
@@ -1334,13 +1335,13 @@ export default function Home() {
             <>
               <BilingualQuote pt="A habitação de Camilloff ficava na Cidade Tártara, nos bairros militares e nobres. Há aqui uma tranquilidade austera." zh="卡米洛夫的住所位于紫禁城的军人和贵族街区。这里笼罩着一种严肃的宁静。" />
               <p>金钉高轮马车和官轿从宽阔街道上掠过；富丽店铺陈列明代瓷器、青铜、珐琅、象牙、丝绸与镶嵌武器。禁城高墙后，帝宫明黄屋顶在树海间发亮；贵族弓手、孔雀翎官员和飘在高空的巨大纸鸢共同维护着一个不可接近的世界。</p>
-              <BilingualQuote compact pt="Aqui está o vasto palácio imperial, entre arvoredos misteriosos, com os seus telhados de um amarelo de oiro vivo!" zh="那就是辽阔的帝宫，藏在神秘的树木之间，屋顶闪着鲜明的金黄色！" />
+              <BilingualQuote compact pt="Aqui está o vasto palácio imperial, entre arvoredos misteriosos, com os seus telhados de um amarelo de ouro vivo!" zh="那就是辽阔的帝宫，藏在神秘的树木之间，屋顶闪着鲜明的金黄色！" />
             </>
           ) : beijingDestination === "chinese" ? (
             <>
               <BilingualQuote pt="E lá fomos penetrando na Cidade Chinesa, pela porta monstruosa de Tchin-Men. Aqui habita a burguesia, o mercador, a populaça." zh="我们从巨大的前门进入老百姓的街巷。商人、市民和普通百姓都住在这里。" />
               <p>世代污物压成的泥泞覆盖路面，只剩几块粉红色明代石板。饥饿的狗在空地哀叫，黑色污水散发刺鼻气味；尘土把人群罩成昏黄一片，骆驼商队缓慢挤过穷铺、棚屋、苦役和成群乞丐。越靠近天坛，贫困越像一堵没有尽头的墙。</p>
-              <BilingualQuote compact pt="Uma multidão rumorosa e espessa... a poeira envolve tudo de uma névoa amarelada; um fedor acre exala-se dos enxurros negros." zh="喧闹而稠密的人群川流不息……尘土给一切罩上黄雾，黑色污水沟散出刺鼻恶臭。" />
+              <BilingualQuote compact pt="Uma multidão rumorosa e espessa, onde domina o tom pardo e azulado dos trajes, circula sem cessar; a poeira envolve tudo de uma névoa amarelada; um fedor acre exala-se dos enxurros negros […]" zh="喧闹而稠密的人群川流不息……尘土给一切罩上黄雾，黑色污水沟散出刺鼻恶臭。" />
             </>
           ) : null}
         </BeijingCurtainScene>
@@ -1383,7 +1384,7 @@ export default function Home() {
 
         {stage === "office" && (
           <div className="scene-body office-scene">
-            <BilingualQuote pt="A minha existência era bem equilibrada e suave. Toda a semana, de mangas de lustrina à carteira da minha repartição, ia lançando, numa formosa letra cursiva, sobre o papel ‘Tojal’ do Estado, estas frases fáceis..." zh="我的生活平稳而安宁。每周，我戴着黑亮的护袖，伏在部门的书桌前，以优美的草体誊写国家公文。" />
+            <BilingualQuote pt="A minha existência era bem equilibrada e suave. Toda a semana, de mangas de lustrina à carteira da minha repartição, ia lançando, numa formosa letra cursiva, sobre o papel «Tojal» do Estado, estas frases fáceis: […]" zh="我的生活平稳而安宁。每周，我戴着黑亮的护袖，伏在部门的书桌前，在国家的‘托雅尔’纸上，以漂亮的草体写下这些熟套的句子……" />
             <p>墨水、火漆与称谓把一周分成整齐的格子。我只须让每一道笔画保持恭敬，便可以安稳地领到每月二万雷斯。</p>
             <div className="office-mobile-documents" aria-label="桌上的三份公文">
               {officeDocuments.map((document, index) => (
@@ -1404,7 +1405,7 @@ export default function Home() {
 
         {stage === "market" && (
           <div className="scene-body market-scene">
-            <BilingualQuote pt="Tinha tomado o hábito discreto de comprar na Feira da Ladra antigos volumes desirmanados, e à noite, no meu quarto, repastava-me dessas leituras curiosas." zh="我养成了一个不动声色的习惯：到旧货市场买些零散残旧的古书，晚上带回房间，在这些古怪的读物里消磨时间。" />
+            <BilingualQuote pt="Tinha tomado o hábito discreto de comprar na Feira da Ladra antigos volumes desirmanados, e à noite, no meu quarto, repastava-me dessas leituras curiosas." zh="我悄悄养成一个习惯：去旧货市场买些零散残旧的书，晚上回到房间，便拿这些奇异读物当作精神食粮。" />
             <p>圣克拉拉的摊位沿着斜坡铺开。旧望远镜、失去圣骨的匣子、剥釉的圣像与停摆的怀表挤在一起；书摊上那些庄严而荒诞的题名，总比一顿晚餐更容易落入我的预算。</p>
             <div className="hotspot-index">
               {(sceneHotspots.market ?? []).map((item) => (
@@ -1538,10 +1539,10 @@ export default function Home() {
               </>
             ) : (
               <>
-                <BilingualQuote pt="São cento e seis mil contos, senhor!... da herança depositada do mandarim Ti Chin-Fu!" zh="是十万六千孔托，先生！……那是满大人狄鑫福存下的遗产！" />
+                <BilingualQuote pt="São cento e seis mil contos, senhor! […] da herança depositada do mandarim Ti Chin-Fu!" zh="十万六千孔托，先生！……是满大人狄鑫福留下的遗产！" />
                 <p>西尔维斯特说，这封信由他在澳门、香港与南安普敦的事务所辗转送达。一个月前还是穷抄写员的我，如今成了陌生死者的唯一继承人。</p>
-                <div className="money-number">106,000 <small>孔托雷斯</small></div>
-                <BilingualQuote compact pt="Pobre Ti Chin-Fu!... Estava no seu jardim, sossegado, armando, para o lançar ao ar, um papagaio de papel..." zh="可怜的狄鑫福！……他本来安静地待在花园里，正扎着一只准备放飞的纸鸢……" />
+                <div className="money-number">106,000 <small>孔托</small></div>
+                <BilingualQuote compact pt="— Pobre Ti Chin-Fu!... — Morreu? — Estava no seu jardim, sossegado, armando, para o lançar ao ar, um papagaio de papel […]" zh="——可怜的狄鑫福！…… ——他死了？ ——他当时安静地待在花园里，正扎着一只准备放飞的纸鸢……" />
                 <p>直到这时，铃声与遗产终于有了名字。狄鑫福身穿黄绸，倒在溪边的草地上，怀中仍抱着尚未放飞的纸鸢。</p>
                 <button className="primary-action" onClick={() => go("luxury")}>搬入洛雷托豪宅 <span>→</span></button>
               </>
@@ -1580,7 +1581,7 @@ export default function Home() {
               <p className="discovery-count">尸影尚未显出原貌。</p>
             ) : (
               <>
-                <BilingualQuote compact pt="Tinha eliminado a criatura, de longe, com uma campainha... eu assassinara um velho!" zh="我从远方摇响一柄摇铃除掉了这个人……我杀死了一个老人！" />
+                <BilingualQuote compact pt="Tinha eliminado a criatura, de longe, com uma campainha. […] eu assassinara um velho!" zh="我从远方摇响一柄摇铃除掉了这个人……我杀死了一个老人！" />
                 <div className="choice-stack horizontal">
                   <button className="choice-button" onClick={() => chooseAvoidance("pleasure")}><span>加倍享乐</span><small>让音乐盖过铃声</small></button>
                   <button className="choice-button" onClick={() => chooseAvoidance("church")}><span>求助教会</span><small>为死者购买弥撒</small></button>
@@ -1593,7 +1594,7 @@ export default function Home() {
 
         {stage === "map" && (
           <div className="scene-body map-scene">
-            <BilingualQuote pt="Anelei, suspirei por pisar a terra da China!... pus a proa ao Oriente." zh="我渴望着、叹息着，想要踏上中国的土地！……于是船头转向东方。" />
+            <BilingualQuote pt="Anelei, suspirei por pisar a terra da China! […] pus a proa ao Oriente." zh="我渴望着、叹息着，想要踏上中国的土地！……于是船头转向东方。" />
             <p>为了查明狄鑫福后代的下落，我用成把的金币匆忙办妥准备，从里斯本赶到马赛，包下整艘名为“锡兰号”的邮船。第二天清晨，我迎着海鸥与初升的阳光驶离马赛，船头转向东方。</p>
             <div className="route" role="img" aria-label={`旅程进度：${routes[routeIndex][0]}；${routeTransports[Math.min(routeIndex, routeTransports.length - 1)].label}`}>
               <div className="route-line"><span style={{ width: `${(routeIndex / (routes.length - 1)) * 100}%` }} /></div>
@@ -1628,7 +1629,7 @@ export default function Home() {
 
         {stage === "beijing" && (
           <div className="scene-body beijing-arrival-scene">
-            <BilingualQuote pt="Pequim está diante de mim! E uma vasta muralha, monumental e bárbara, de um negro baço..." zh="北京就在我眼前！一道广阔、雄伟而粗犷的城墙呈暗黑色，向视线尽头延伸……" />
+            <BilingualQuote pt="Pequim está diante de mim! É uma vasta muralha, monumental e bárbara, de um negro baço, estendendo-se a perder de vista […]" zh="北京就在我眼前！那是一道辽阔、雄伟而粗犷的城墙，暗沉发黑，一直伸向视线尽头……" />
             <p>城门层叠的飞檐衬在血色紫红的落日上；北面，蒙古群山像悬在淡紫烟霭中。黑墙脚下挤着一片异国集市，摇曳的灯笼把暮色割成血红斑块，白色棚布像停在墙边的一群蝴蝶。</p>
             <div className="hotspot-index">
               {(sceneHotspots.beijing ?? []).map((item) => (
@@ -1677,25 +1678,25 @@ export default function Home() {
           <div className={`scene-body camilloff-departure ${camilloffDeparturePhase}`}>
             {camilloffDeparturePhase === "confession" ? (
               <div className="departure-confession">
-                <div className="departure-time-label">当晚 · 卡米洛夫府邸</div>
-                <BilingualQuote compact pt="Sei duas palavras importantes, general: ‘mandarim’ e ‘chá’." zh="将军，我会两个重要的词：‘满大人’和‘茶’。" />
-                <p>轿游结束后，我回到卡米洛夫府邸，把那柄摇铃、狄鑫福的死与此行的目的告诉了他。卡米洛夫没有追问我的罪，只问这笔补偿应当交到谁手中。</p>
+                <div className="departure-time-label">卡米洛夫府邸</div>
+                <BilingualQuote compact pt="Sei duas palavras importantes, General: «mandarim» e «chá»." zh="将军，我会两个重要的词：‘满大人’和‘茶’。" />
+                <p>回到卡米洛夫府邸，我把那柄摇铃、狄鑫福的死与此行的目的告诉了他。卡米洛夫没有追问我的罪，只问这笔补偿应当交到谁手中。</p>
                 <div className="departure-proposal">
                   <div className="speaker">卡米洛夫</div>
                   <BilingualQuote compact pt="Faça uma coisa. Procure a família de Ti Chin-Fu..." zh="做一件事吧。去寻找狄鑫福的家人……" />
-                  <p>只有找到死者的家人，补偿才可能真正抵达被夺去财富的人。卡米洛夫答应次日清早先去佟亲王的衙门查问。</p>
+                  <p>只有找到死者的家人，补偿才可能真正抵达被夺去财富的人。卡米洛夫答应亲自去佟亲王的衙门查问。</p>
                 </div>
-                <button className="primary-action" onClick={() => setCamilloffDeparturePhase("briefing")}>第二天清早 <span>→</span></button>
+                <button className="primary-action" onClick={() => setCamilloffDeparturePhase("briefing")}>听他安排查访 <span>→</span></button>
               </div>
             ) : camilloffDeparturePhase === "gone" ? (
               <div className="departure-afterglow">
-                <p className="departure-soundline">门扉合拢。马蹄与车轮声沿着清晨的石路渐渐远去。</p>
+                <p className="departure-soundline">门扉合拢。马蹄与车轮声沿着石路渐渐远去。</p>
                 <p>卡米洛夫正为我去寻找那个因我而死的人的家人。府邸内外，从这一刻起流过同一段时间。</p>
                 <button className="primary-action" onClick={() => go("camilloffIntercut")}>留在府邸，等待消息 <span>→</span></button>
               </div>
             ) : (
               <>
-                <BilingualQuote compact pt="Quando o general saiu com a sua escolta cossaca para o Yamen do príncipe Tong, a informar-se da residência da família Ti Chin-Fu..." zh="将军带着哥萨克卫队前往佟亲王的衙门，打听狄鑫福一家的住处……" />
+                <BilingualQuote compact pt="Quando o general saiu com a sua escolta cossaca para o yamen do príncipe Tong, a informar-se da residência da família Ti Chin-Fu — […]" zh="将军带着哥萨克卫队前往佟亲王的衙门，打听狄鑫福一家的住处……" />
                 <div className="departure-dialogue" aria-live="polite">
                   <div className="speaker">{camilloffDepartureLines[camilloffDepartureStep].speaker}</div>
                   <p>{camilloffDepartureLines[camilloffDepartureStep].text}</p>
@@ -1727,9 +1728,9 @@ export default function Home() {
 
         {stage === "mission" && (
           <div className="scene-body">
-            <BilingualQuote pt="um sino tocava a matinas... rolaram-me das pálpebras duas lágrimas mudas." zh="晨祷的钟声响了起来……两滴无声的泪从我的眼睑滚落。" />
+            <BilingualQuote pt="[…] um sino tocava a matinas. […] rolaram-me das pálpebras duas lágrimas mudas." zh="晨祷的钟声响了起来……两滴无声的泪从我的眼睑滚落。" />
             <p>两位遣使会神父清晨在路上发现了昏迷的我，把我用担架抬回修道院。朱利奥神父身穿紫袍，留着长辫和庄严的胡须，手中缓缓摇着一柄巨大的折扇；在回廊里，他看上去几乎像一位沉思经书的老满大人。</p>
-            <BilingualQuote compact pt="O superior lazarista era o excelente padre Giulio... com a sua túnica roxa, o rabicho longo, a barba venerável, agitando devagar um enorme leque..." zh="遣使会的院长是善良的朱利奥神父……他穿着紫袍，留着长辫和庄严的胡须，缓缓摇动一柄巨大的折扇……" />
+            <BilingualQuote compact pt="O superior lazarista era o excelente padre Giulio. […] com a sua túnica roxa, o rabicho longo, a barba venerável, agitando devagar um enorme leque — […]" zh="遣使会的院长是善良的朱利奥神父……他穿着紫袍，留着长辫和庄严的胡须，缓缓摇动一柄巨大的折扇……" />
             <div className="hotspot-index">
               {(sceneHotspots.mission ?? []).map((item) => (
                 <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -1759,7 +1760,7 @@ export default function Home() {
               pt="Eram onze horas quando desci ao meu beliche. As luzes já estavam apagadas: mas a Lua que se erguia ao nível da água, redonda e branca, batia o vidro da cabina com um raio de claridade: e então, a essa meia-tinta pálida, lá vi, estirada sobre a maca, a figura pançuda, vestida de seda amarela, com o seu papagaio nos braços!"
               zh="十一点钟，我回到自己的卧舱。灯已经熄灭；圆而苍白的月亮从水面升起，一道清光照在舷窗上。就在那片惨淡的半明半暗中，我看见吊床上横陈着那肥胖的身躯：身穿黄绸，怀里抱着纸鸢！"
             />
-            <BilingualQuote compact pt="Era ele, outra vez! E foi ele, perpetuamente!" zh="又是他！阴魂不散！" />
+            <BilingualQuote compact pt="Era ele, outra vez! E foi ele, perpetuamente!" zh="又是他！从此，永远是他！" />
             <p>狄鑫福是在返程的船上突然重新出现的。从此，无论船停靠哪里，他都保持着同一个死亡姿态，仿佛距离再也不能把我们分开。</p>
             <div className="return-stamps" aria-label="返航地点">
               {["新加坡", "锡兰", "苏伊士", "马耳他", "直布罗陀", "里斯本"].map((place, index) => (
@@ -1771,7 +1772,7 @@ export default function Home() {
             </div>
             {returnStops.length >= 6 ? (
               <>
-                <BilingualQuote compact pt="Quando desembarquei em Lisboa... a sua figura bojuda enchia todo o arco da Rua Augusta." zh="当我在里斯本下船时……他肥胖的身影塞满了奥古斯塔街的整座拱门。" />
+                <BilingualQuote compact pt="Quando desembarquei em Lisboa, no Cais das Colunas, a sua figura bojuda enchia todo o arco da Rua Augusta; […]" zh="当我在里斯本的柱廊码头下船时，他肥胖的身影塞满了奥古斯塔街的整座拱门。" />
                 <button className="primary-action" onClick={() => go("reckoning")}>回到洛雷托 <span>→</span></button>
               </>
             ) : <p className="discovery-count">已经过 {returnStops.length} / 6</p>}
@@ -1785,14 +1786,14 @@ export default function Home() {
               zh="于是，我确信自己再也无法平息狄鑫福。那一整夜，我待在洛雷托的房间里；枝形烛台上无数蜡烛一如往昔，把锦缎映成鲜血般的颜色。我反复思量，要把这笔超自然的巨款像罪恶的饰物一样从身上甩掉。"
             />
             <p>彻夜不灭的烛火把每一面锦缎都染成血色。狄鑫福仍横陈在宴席与金床之间；我已经走过半个世界，却没有让他的目光离开我。若财富是这具尸体通向我的道路，我只能把它截断。</p>
-            <BilingualQuote compact pt="E assim me libertaria talvez daquela pança e daquele papagaio abominável!" zh="也许这样，我才能摆脱那肥胖的尸身和那只可憎的纸鸢！" />
+            <BilingualQuote compact pt="E assim me libertaria talvez daquela pança e daquele papagaio abominável!" zh="也许这样，我就能摆脱那副大肚子和那只可憎的纸鸢！" />
             <button className="primary-action" onClick={() => go("renounce")}>抛下这笔财产 <span>→</span></button>
           </div>
         )}
 
         {stage === "renounce" && (
           <div className="scene-body">
-            <BilingualQuote pt="Abandonei o palacete ao Loreto, a existência de nababo." zh="我抛下洛雷托的宫殿，也抛下富豪般的生活。" />
+            <BilingualQuote pt="Abandonei o palacete ao Loreto, a existência de nababo." zh="我抛下洛雷托的豪宅，也抛下富豪般的生活。" />
             <p>我重新租下马克斯太太家的旧房间，却再也回不到从前那种安静的贫穷。</p>
             <div className="hotspot-index">
               {(sceneHotspots.renounce ?? []).map((item) => (
@@ -1803,9 +1804,9 @@ export default function Home() {
             </div>
             <div className="ledger-animation" aria-hidden="true"><span>洛雷托宫殿</span><i>— 十万六千孔托</i><b>{currentVisited.length >= 3 ? "仍属于我" : "零？"}</b></div>
             <div className="consequence">
-              <BilingualQuote pt="todos aqueles que a minha opulência humilhara cobriram-me de ofensas, como se alastra de lixo uma estátua derrubada de príncipe decaído." zh="所有曾受我财富羞辱的人都用侮辱覆盖我，如同人们把垃圾铺满一尊倒下的失势王子的雕像。" />
+              <BilingualQuote pt="todos aqueles que a minha opulência humilhara cobriram-me de ofensas, como se alastra de lixo uma estátua derrubada de príncipe decaído." zh="所有曾被我的豪富压过一头的人，如今都把侮辱泼向我，仿佛往一尊倒地的失势王子雕像上堆垃圾。" />
               <p>旧同事、报纸、贵族、教会、街上的人群，甚至马克斯太太，都在惩罚我的贫穷。每一次羞辱，都把我重新推向那座豪宅。</p>
-              <BilingualQuote compact pt="Então, indignado, um dia subitamente reentrei com estrondo no meu palacete e no meu luxo." zh="终于有一天，我愤怒地轰然闯回自己的宫殿和奢华生活。" />
+              <BilingualQuote compact pt="Então, indignado, um dia subitamente reentrei com estrondo no meu palacete e no meu luxo." zh="终于有一天，我怒不可遏，声势浩大地重新住进豪宅，回到奢华生活。" />
               <p>我试着继续忍受，可银行里的财富仍在等我，狄鑫福也没有离开。旧同事、报纸和街上的石块把我逼到尽头；我终于转身，重新走向洛雷托。</p>
               {hasInspectedAll ? (
                 <button className="primary-action" onClick={() => go("prison")}>推开洛雷托豪宅的大门 <span>→</span></button>
@@ -1823,7 +1824,7 @@ export default function Home() {
               zh="里斯本立即毫不迟疑地匍匐在我脚下。马克斯太太哭着称我为‘她心爱的儿子’。报纸把按古老传统属于神明的称号送给我：我是全能者，我是全知者！贵族像面对暴君般亲吻我的手指；教士像供奉偶像般向我献香。"
             />
             <p>长窗重新放出灯火，身穿黑绸制服的仆人又在洛雷托豪宅中穿行。我重新拥有了整个里斯本，却只在它的敬畏里感到厌倦。</p>
-            <BilingualQuote compact pt="Desde então uma saciedade enervante mantém-me semanas inteiras num sofá, mudo e soturno, pensando na felicidade do não-ser..." zh="从那以后，一种令人虚弱的餍足让我一连数周躺在沙发上，沉默而阴郁，想着不存在的幸福……" />
+            <BilingualQuote compact pt="Desde então uma saciedade enervante mantém-me semanas inteiras num sofá, mudo e soturno, pensando na felicidade do não-ser..." zh="从那以后，一种叫人倦怠的满足感使我一连数周躺在沙发上，沉默阴郁，想着不复存在会有多幸福……" />
             <button className="primary-action" onClick={() => go("devilReturn")}>独自走入夜色 <span>→</span></button>
           </div>
         )}
