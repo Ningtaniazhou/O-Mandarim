@@ -543,10 +543,10 @@ function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; 
       <button
         className={`corpse-toggle ${revealed ? "is-dismiss" : "is-question"}`}
         onClick={onInspect}
-        aria-label={revealed ? "还是不看为好" : "显出狄鑫福的尸体"}
+        aria-label={revealed ? "还是不看见为好" : "显出狄鑫福的尸体"}
         aria-pressed={revealed}
       >
-        <span aria-hidden="true">{revealed ? "还是不看为好" : "?"}</span>
+        <span aria-hidden="true">{revealed ? "还是不看见为好" : "?"}</span>
       </button>
     </>
   );
@@ -815,8 +815,7 @@ export default function Home() {
   const [infoOpen, setInfoOpen] = useState(false);
   const [visualFinds, setVisualFinds] = useState<Partial<Record<Stage, string[]>>>({});
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotItem | null>(null);
-  const [ghostRevealed, setGhostRevealed] = useState(false);
-  const [ghostChoiceSeen, setGhostChoiceSeen] = useState(false);
+  const [ghostRevealed, setGhostRevealed] = useState(true);
   const [testamentOpen, setTestamentOpen] = useState(false);
   const [finalBookPhase, setFinalBookPhase] = useState<0 | 1 | 2>(0);
   const [finalArtifactsSeen, setFinalArtifactsSeen] = useState<string[]>([]);
@@ -912,7 +911,7 @@ export default function Home() {
     window.setTimeout(() => {
       setStage(next);
       setSelectedHotspot(null);
-      setGhostRevealed(next === "ghost" && ghostChoiceSeen);
+      setGhostRevealed(true);
       setTransitioning(false);
     }, 280);
   };
@@ -926,7 +925,7 @@ export default function Home() {
     window.setTimeout(() => {
       setStage(previous);
       setSelectedHotspot(null);
-      setGhostRevealed(previous === "ghost" && ghostChoiceSeen);
+      setGhostRevealed(true);
       setTransitioning(false);
     }, 280);
   };
@@ -995,8 +994,7 @@ export default function Home() {
     setInfoOpen(false);
     setVisualFinds({});
     setSelectedHotspot(null);
-    setGhostRevealed(false);
-    setGhostChoiceSeen(false);
+    setGhostRevealed(true);
     setTestamentOpen(false);
     setFinalBookPhase(0);
     setFinalArtifactsSeen([]);
@@ -1096,7 +1094,6 @@ export default function Home() {
   };
 
   const chooseAvoidance = (choice: string) => {
-    setGhostChoiceSeen(true);
     setAvoidance(choice);
   };
 
@@ -1576,8 +1573,6 @@ export default function Home() {
                 <BilingualQuote compact pt="Partiria para Pequim; descobriria a família de Ti Chin-Fu..." zh="我要去北京，找到狄鑫福的家人……" />
                 <button className="primary-action" onClick={() => go("map")}>前往中国 <span>→</span></button>
               </div>
-            ) : !ghostRevealed ? (
-              <p className="discovery-count">尸影尚未显出原貌。</p>
             ) : (
               <>
                 <BilingualQuote compact pt="Tinha eliminado a criatura, de longe, com uma campainha. […] eu assassinara um velho!" zh="我在远方摇响了一柄铃，这就杀了人（……）我谋杀了一个老人！" />

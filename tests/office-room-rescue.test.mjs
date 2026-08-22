@@ -13,7 +13,7 @@ test("rescues the ministry documents, dreams, and room focus into the main story
   assert.match(page, /officeDreamsBursting/);
   assert.match(page, />下班 <span>→<\/span>/);
   assert.match(page, /三份公文均已抄写完毕/);
-  assert.match(page, /还是不看为好/);
+  assert.match(page, /还是不看见为好/);
   assert.doesNotMatch(page, /展开桌上的公文|轻点戳破梦境|读完三份公文，并至少做过一次白日梦|让房间自己说话/);
 
   assert.match(styles, /url\("\/dream-cloud\.png"\)/);
