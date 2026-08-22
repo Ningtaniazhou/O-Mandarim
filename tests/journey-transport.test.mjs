@@ -6,7 +6,7 @@ test("shows the five transport stages from Lisbon to Beijing", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
 
-  assert.match(page, /前往马赛/);
+  assert.match(page, /夜行列车/);
   assert.match(page, /“锡兰号”邮船/);
   assert.match(page, /罗素公司小轮船/);
   assert.match(page, /平底船/);
@@ -16,7 +16,7 @@ test("shows the five transport stages from Lisbon to Beijing", async () => {
   assert.doesNotMatch(page, /下一程.*routeTransports/);
   assert.doesNotMatch(page, /<small>\{transport\.label\}<\/small>/);
 
-  assert.match(styles, /transport-departure/);
+  assert.match(styles, /journey-transport-train-v1\.png/);
   assert.match(styles, /journey-transport-mail-steamer-v1\.png/);
   assert.match(styles, /journey-transport-river-steamer-v1\.png/);
   assert.match(styles, /journey-transport-flatboat-v1\.png/);

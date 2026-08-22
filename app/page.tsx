@@ -65,7 +65,7 @@ const routes = [
 ];
 
 const routeTransports = [
-  { id: "departure", label: "前往马赛", route: "里斯本 → 马赛" },
+  { id: "train", label: "夜行列车", route: "里斯本 → 马赛" },
   { id: "mail-steamer", label: "“锡兰号”邮船", route: "马赛 → 上海" },
   { id: "river-steamer", label: "罗素公司小轮船", route: "上海 → 天津" },
   { id: "flatboat", label: "平底船", route: "天津 → 通州" },
@@ -196,12 +196,6 @@ const officeDocuments = [
       "无主黑伞已存六十日。下月一日仍无人认领，便与断柄鸡毛掸一并移交旧物室。",
     ],
   },
-] as const;
-
-const ghostAttempts = [
-  { label: "加倍享乐", detail: "我先试着用音乐、酒宴和彻夜狂欢淹没罪疚；宾客散去后，狄鑫福仍横陈在门槛。" },
-  { label: "求助教会", detail: "我又出钱做弥撒、修建教堂；祷告仍不能让狄鑫福离开。" },
-  { label: "远行排遣", detail: "最后，我四处旅行，尸影仍然跟着我。" },
 ] as const;
 
 const officeDreams = [
@@ -807,7 +801,7 @@ export default function Home() {
   const [deathAnimationRun, setDeathAnimationRun] = useState(0);
   const [inheritanceOpened, setInheritanceOpened] = useState(false);
   const [chosenLuxuries, setChosenLuxuries] = useState<string[]>([]);
-  const [avoidanceStep, setAvoidanceStep] = useState(0);
+  const [avoidance, setAvoidance] = useState("");
   const [routeIndex, setRouteIndex] = useState(0);
   const [beijingDestination, setBeijingDestination] = useState<BeijingDestination>("");
   const [beijingVisited, setBeijingVisited] = useState<Exclude<BeijingDestination, "">[]>([]);
@@ -889,7 +883,7 @@ export default function Home() {
       setVisualFinds((finds) => ({ ...finds, market: [] }));
     }
     if (next === "bell" && !bellRung) setRefusals(0);
-    if (next === "ghost") setAvoidanceStep(0);
+    if (next === "ghost") setAvoidance("");
     if (next === "beijing") {
       setBeijingDestination("");
       setBeijingVisited([]);
@@ -986,7 +980,7 @@ export default function Home() {
     setDeathAnimationRun(0);
     setInheritanceOpened(false);
     setChosenLuxuries([]);
-    setAvoidanceStep(0);
+    setAvoidance("");
     setRouteIndex(0);
     setBeijingDestination("");
     setBeijingVisited([]);
@@ -1101,9 +1095,9 @@ export default function Home() {
     setDeathAnimationRun((run) => run + 1);
   };
 
-  const chooseAvoidance = () => {
+  const chooseAvoidance = (choice: string) => {
     setGhostChoiceSeen(true);
-    setAvoidanceStep((step) => Math.min(ghostAttempts.length, step + 1));
+    setAvoidance(choice);
   };
 
   const chooseBeijingDestination = (destination: Exclude<BeijingDestination, "">) => {
@@ -1577,17 +1571,11 @@ export default function Home() {
           <div className="scene-body ghost-scene">
             <BilingualQuote pt="ou estirada no limiar da porta, ou atravessada sobre o leito de ouro — lá jazia a figura bojuda, de rabicho negro e túnica amarela, com o seu papagaio nos braços... Era o mandarim Ti Chin-Fu!" zh="他不是横卧在门槛上，就是横陈在金床上——那肥胖的身躯拖着黑辫，穿着黄袍，怀中抱着纸鸢……正是满大人狄鑫福！" />
             <p>他就横陈在那里：肥胖的老文人，白色长髭遮住嘴唇，黑辫拖在身后，黄绸包裹着朝上的肚腹，冰冷的双臂仍抱着纸鸢。</p>
-            {avoidanceStep > 0 ? (
+            {avoidance ? (
               <div className="consequence">
-                <p>{ghostAttempts[avoidanceStep - 1].detail}</p>
-                {avoidanceStep < ghostAttempts.length ? (
-                  <button className="choice-button" onClick={chooseAvoidance}><span>继续尝试：{ghostAttempts[avoidanceStep].label}</span></button>
-                ) : (
-                  <>
-                    <BilingualQuote compact pt="Partiria para Pequim; descobriria a família de Ti Chin-Fu..." zh="我要去北京；找到狄鑫福的家人……" />
-                    <button className="primary-action" onClick={() => go("map")}>前往中国 <span>→</span></button>
-                  </>
-                )}
+                <p>{avoidance === "pleasure" ? "音乐、酒宴和彻夜狂欢只能暂时淹没罪疚；宾客散去后，狄鑫福仍横陈在门槛。" : avoidance === "church" ? "我出钱做弥撒、修建教堂；祷告仍不能让狄鑫福离开。" : "我四处旅行，尸影仍然跟着我。"}</p>
+                <BilingualQuote compact pt="Partiria para Pequim; descobriria a família de Ti Chin-Fu..." zh="我要去北京；找到狄鑫福的家人……" />
+                <button className="primary-action" onClick={() => go("map")}>前往中国 <span>→</span></button>
               </div>
             ) : !ghostRevealed ? (
               <p className="discovery-count">尸影尚未显出原貌。</p>
@@ -1595,7 +1583,9 @@ export default function Home() {
               <>
                 <BilingualQuote compact pt="Tinha eliminado a criatura, de longe, com uma campainha. […] eu assassinara um velho!" zh="我从远方摇响一柄摇铃除掉了这个人……我杀死了一个老人！" />
                 <div className="choice-stack horizontal">
-                  <button className="choice-button" onClick={chooseAvoidance}><span>我先试着加倍享乐</span><small>让音乐盖过铃声</small></button>
+                  <button className="choice-button" onClick={() => chooseAvoidance("pleasure")}><span>加倍享乐</span><small>让音乐盖过铃声</small></button>
+                  <button className="choice-button" onClick={() => chooseAvoidance("church")}><span>求助教会</span><small>为死者做弥撒、修教堂</small></button>
+                  <button className="choice-button" onClick={() => chooseAvoidance("travel")}><span>远行排遣</span><small>试着把尸影留在身后</small></button>
                 </div>
               </>
             )}

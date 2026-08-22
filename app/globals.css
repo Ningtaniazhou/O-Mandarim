@@ -3523,11 +3523,7 @@ blockquote {
   filter: grayscale(0.45) sepia(0.22) contrast(1.04);
 }
 
-.route-transport.transport-departure i {
-  border: 1px solid rgba(232, 211, 166, 0.64);
-  border-radius: 50%;
-  background: radial-gradient(circle, #d6b56e 0 18%, rgba(9, 16, 17, 0.96) 20% 54%, #d6b56e 56% 62%, rgba(9, 16, 17, 0.96) 64%);
-}
+.route-transport.transport-train i { background-image: url("/journey-transport-train-v1.png"); }
 .route-transport.transport-mail-steamer i {
   width: clamp(72px, 7.5vw, 106px);
   background-image: url("/journey-transport-mail-steamer-v1.png");
