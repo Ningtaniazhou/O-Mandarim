@@ -24,7 +24,7 @@ export default function TienhoSequence({ onComplete }: Props) {
       ref={frameRef}
       className="tienho-prototype-frame"
       src="/tienho-prototype/index.html?embedded=1"
-      title="天河村：梦与现实"
+      title="天河村"
       allow="autoplay"
     />
   );

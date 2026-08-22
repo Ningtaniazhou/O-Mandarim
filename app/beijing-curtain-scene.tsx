@@ -323,7 +323,7 @@ export default function BeijingCurtainScene({
         className={`${styles.stage} ${isDragging ? styles.dragging : ""} ${isSettling ? styles.settling : ""} ${progress === 1 ? styles.open : ""}`}
         style={sceneStyle}
       >
-        <img className={styles.interior} src="/curtain-prototype-interior-v1.png" alt="特奥多罗坐在织金轿厢中" draggable={false} />
+        <img className={styles.interior} src="/curtain-prototype-interior-v1.png" alt="特奥多罗坐在轿厢中" draggable={false} />
         <div className={styles.window}>
           <img className={styles.exterior} src={exterior} alt={`${title}的轿帘外景`} draggable={false} />
           <div className={styles.windowHush} aria-hidden="true" />
@@ -335,7 +335,7 @@ export default function BeijingCurtainScene({
           className={styles.handHandle}
           role="slider"
           tabIndex={0}
-          aria-label="拖动手拉开轿帘"
+          aria-label="动手拉开轿帘"
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={percent}
@@ -346,7 +346,7 @@ export default function BeijingCurtainScene({
           <span className={styles.handPulse} />
         </div>
         <div className={styles.gestureCaption} aria-hidden="true">
-          <span>{progress === 1 ? "帘外声息涌入轿中" : "按住手，向左拖动"}</span>
+          <span>{progress === 1 ? "帘外的世界展现在眼前" : "按住手，向左拖动"}</span>
           <strong>{String(percent).padStart(2, "0")}%</strong>
           <i><b style={{ width: `${percent}%` }} /></i>
         </div>

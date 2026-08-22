@@ -81,7 +81,7 @@ const evidenceOutcomes = {
     intent: "我受官府委托而来",
     perception: "无人能读的外国字与红印",
     outcome: "来历不明的外国文书",
-    quote: "信在人群中传了一圈。没人能读。有人指着红印摇头。",
+    quote: "信在人群中传了一圈，没人读得懂，有人指着红印摇头。",
     pressure: 84,
   },
   cross: {
@@ -95,14 +95,14 @@ const evidenceOutcomes = {
     intent: "我确实有能力帮助你们",
     perception: "传闻中的财宝就在眼前",
     outcome: "传闻中的黄金",
-    quote: "金币一露出来，低语停了一瞬，人群随即向前。",
+    quote: "金币一露出来，人群安静了，随即扑向金币。",
     pressure: 100,
   },
   sato: {
     intent: "我们只是来帮助穷人",
     perception: "萨托说：他要把财物给全村",
     outcome: "要分给全村的财物",
-    quote: "萨托说他来帮助穷人。后排却已经开始搬动行李。",
+    quote: "萨托说我们是来帮助穷人的，村民却已经开始搬动我们的行李。",
     pressure: 96,
   },
 };
@@ -416,8 +416,8 @@ function beginDream() {
   resonantTap({ frequency: 920, duration: .18, volume: .012, when: .035 });
   setPhase("coin");
   setDot(0);
-  eyebrow.textContent = "梦境演绎 · 天河村";
-  storyText.textContent = "狄鑫福的遗孀站在晨光里。她没有开口，只把一只空碗捧向我。";
+  eyebrow.textContent = "天河村";
+  storyText.textContent = "狄鑫福的遗孀站在晨光里。她没有开口，只是把一只空碗捧向我。";
   instruction.textContent = "把金币放进她的碗里。";
   startButton.hidden = true;
   setRumor("一位远道而来的陌生人", 12);
@@ -430,7 +430,7 @@ function completeCoin() {
   playCoinClink(2, .9);
   setRumor("慷慨的陌生人", 38);
   addCrowd(4);
-  storyText.textContent = "金币落入碗底。她笑了笑，人群让出粮车前的路。";
+  storyText.textContent = "金币落入碗底，她笑了笑，人群让出路来让粮车通过。";
   instruction.textContent = "点击车上的粮袋，开始分发米粮。";
   setPhase("rice");
   setDot(1);
@@ -442,7 +442,7 @@ function completeRice() {
   riceTarget.classList.add("is-complete");
   setRumor("富有的陌生人", 67);
   addCrowd(5);
-  storyText.textContent = "队伍向前移动。每只装满的碗后面，又多出几张脸。";
+  storyText.textContent = "队伍向前移动。每只装满的碗后面又多出了几张脸。";
   instruction.textContent = "点亮三盏灯笼。";
   setPhase("lantern");
   setDot(2);
@@ -479,8 +479,8 @@ function beginBridge() {
 
 function beginReality() {
   setPhase("reality");
-  eyebrow.textContent = "现实演绎 · 尘世安慰客栈";
-  storyText.textContent = "鼓声没有停，变成了撞门声。门外有人喊，另一只手伸向钱袋。";
+  eyebrow.textContent = "客栈";
+  storyText.textContent = "鼓声没有停，变成了撞门声，门外有很多人在叫喊。我一出门，就有人抓住了我的钱袋。";
   instruction.textContent = "抓住钱袋。";
   setRumor("带着财物的外国人", 100);
   document.querySelector("#narrativeCard").classList.remove("is-quiet");
@@ -570,7 +570,7 @@ function beginEscape() {
   lastCoinAt = 0;
   escapeBag.disabled = false;
   wallGate.hidden = true;
-  escapeInstruction.textContent = "按住钱袋向前；松手，金币会落下。";
+  escapeInstruction.textContent = "";
   updateEscapeHud();
 }
 
@@ -626,11 +626,7 @@ function runEscape(now) {
 
   escapeGold = Math.max(0, escapeGold);
   escapeCrowd = Math.max(8, Math.min(98, escapeCrowd));
-  if (escapeCrowd > 84 && escapeHeld) {
-    escapeInstruction.textContent = "身后的手越来越近。松开钱袋，才能拉开距离。";
-  } else if (!escapeHeld) {
-    escapeInstruction.textContent = "金币落进泥里。脚步声正在远离你。";
-  }
+  escapeInstruction.textContent = "";
   updateEscapeHud();
 
   if (escapeDistance >= 72) {
@@ -688,27 +684,27 @@ const wildernessMoments = [
   {
     action: "向前走",
     heading: "马匹已经跑远，空马镫在风里甩动。",
-    narration: "衣服冻在皮肤上。钱袋留在客栈，马也跑远了。",
+    narration: "潮湿的衣服冻在皮肤上，钱袋被留在了客栈，马也跑远了。",
   },
   {
     action: "站稳",
-    heading: "泥水没过靴底。我每走一步，都要把脚从地里拔出来。",
-    narration: "身后的喊声已经听不见了。荒野并没有因此变得安全。",
+    heading: "泥水没过鞋底，我每走一步，都要把脚从泥地里拔出来。",
+    narration: "身后的喊声已经听不见了，但荒野并没有因此变得安全。",
   },
   {
     action: "抬起脚",
-    heading: "左耳的血一直流到肩上，现在已经冷了。",
-    narration: "远处有一点白光。它没有靠近，也没有消失。",
+    heading: "受伤的左耳在流血，一直淌到肩上。",
+    narration: "远处有一点白光，它没有靠近，也没有消失。",
   },
   {
     action: "呼吸",
     heading: "寒气把呼吸留在眼前，路已经从脚下消失。",
-    narration: "我已经不再决定往哪里走，只求身体还能站着。",
+    narration: "我已经思考不了要往哪里走，只能努力保持身体平衡。",
   },
   {
     action: "保持清醒",
-    heading: "我只剩一件事还能做。",
-    narration: "保持清醒。每一次呼吸都比上一次更难。",
+    heading: "我努力地保持清醒。",
+    narration: "每一次呼吸都比上一次更沉重。",
   },
 ];
 
@@ -867,9 +863,9 @@ function reset() {
   scene.querySelectorAll(".lantern").forEach((lantern) => lantern.classList.remove("is-lit"));
   document.querySelector("#narrativeCard").className = "narrative-card";
   document.querySelector("#narrativeCard").style.opacity = "";
-  eyebrow.textContent = "游戏改编 · 尘世安慰客栈";
-  storyText.textContent = "茶还温着。萨托说起明天：找到遗孀，把钱和米送过去。";
-  instruction.textContent = "困意渐渐压下来。";
+  eyebrow.textContent = "客栈";
+  storyText.textContent = "茶还温着。萨托说起明天的计划：找到狄鑫福的遗孀，把钱和米送过去。";
+  instruction.textContent = "困意渐渐袭来。";
   startButton.hidden = false;
   coinSource.style.opacity = "";
   riceTarget.classList.remove("is-complete");
@@ -935,7 +931,7 @@ coinSource.addEventListener("pointerdown", coinPointerDown);
 coinSource.addEventListener("pointermove", coinPointerMove);
 coinSource.addEventListener("pointerup", coinPointerUp);
 coinSource.addEventListener("click", () => {
-  if (phase === "coin") instruction.textContent = "金币已经拿起——现在点击寡妇的碗，或直接把它拖过去。";
+  if (phase === "coin") instruction.textContent = "点击寡妇的碗，或把金币拖进碗里。";
 });
 widowTarget.addEventListener("click", completeCoin);
 riceTarget.addEventListener("click", completeRice);

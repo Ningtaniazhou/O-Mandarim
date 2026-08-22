@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#17130d" />
-    <title>天河村 · 梦与现实</title>
+    <title>天河村</title>
     <link rel="stylesheet" href="styles.css?v=6" />
   </head>
   <body>
@@ -26,9 +26,9 @@
         <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false">声音：开</button>
 
         <section class="narrative-card" id="narrativeCard">
-          <p class="eyebrow" id="eyebrow">游戏改编 · 尘世安慰客栈</p>
-          <blockquote id="storyText">茶还温着。萨托说起明天：找到遗孀，把钱和米送过去。</blockquote>
-          <p class="instruction" id="instruction">困意渐渐压下来。</p>
+          <p class="eyebrow" id="eyebrow">客栈</p>
+          <blockquote id="storyText">茶还温着。萨托说起明天的计划：找到狄鑫福的遗孀，把钱和米送过去。</blockquote>
+          <p class="instruction" id="instruction">困意渐渐袭来。</p>
           <button class="primary-action" id="startButton" type="button">饮尽茶，合上眼睛 <span>→</span></button>
         </section>
 
@@ -39,13 +39,13 @@
         </aside>
 
         <div class="interaction-layer" id="interactionLayer">
-          <button class="hotspot coin-source" id="coinSource" type="button" aria-label="拿起一枚金币">
+          <button class="hotspot coin-source" id="coinSource" type="button" aria-label="拿起金币">
             <span class="coin">✦</span>
             <em>拖动金币</em>
           </button>
 
           <button class="hotspot widow-target" id="widowTarget" type="button" aria-label="把金币放进寡妇的碗里">
-            <span></span><em>她的碗</em>
+            <span></span><em>碗</em>
           </button>
 
           <button class="hotspot rice-target" id="riceTarget" type="button" aria-label="点击粮袋分发大米">
@@ -56,9 +56,8 @@
           <button class="hotspot lantern lantern-two" data-lantern="1" type="button" aria-label="点亮第二盏灯笼"><span></span></button>
           <button class="hotspot lantern lantern-three" data-lantern="2" type="button" aria-label="点亮第三盏灯笼"><span></span></button>
 
-          <button class="money-bag" id="moneyBag" type="button" aria-label="按住钱袋不放">
+          <button class="money-bag" id="moneyBag" type="button" aria-label="钱袋">
             <span class="grip-progress"></span>
-            <em>按住钱袋</em>
           </button>
         </div>
 
@@ -67,9 +66,9 @@
 
         <section class="identity-panel" id="identityPanel" hidden>
           <div class="identity-heading">
-            <p class="eyebrow">改编场景 · 客栈门外</p>
-            <h2>门外的人要一个解释。</h2>
-            <p>语言不通。我只能从行李中拿出一样东西。</p>
+            <p class="eyebrow">客栈门外</p>
+            <h2>门外的人要我解释身份和来由。</h2>
+            <p>语言不通。我只能从行李中拿出一样东西当做证明。</p>
           </div>
           <div class="evidence-grid" id="evidenceGrid">
             <button class="evidence-card" type="button" data-evidence="letter">
@@ -85,12 +84,12 @@
             <button class="evidence-card" type="button" data-evidence="gold">
               <span class="evidence-icon gold-icon">✦</span>
               <strong>金币</strong>
-              <small>证明自己有能力兑现善举</small>
+              <small>证明自己有能力兑现接济村民。</small>
             </button>
             <button class="evidence-card" type="button" data-evidence="sato">
               <span class="evidence-icon sato-icon">萨</span>
               <strong>让萨托翻译</strong>
-              <small>把来意交给唯一的中间人</small>
+              <small>让懂中文的萨托来解释。</small>
             </button>
           </div>
           <div class="causal-chain" id="causalChain" hidden>
@@ -102,37 +101,36 @@
           </div>
           <blockquote class="translation-line" id="translationLine" hidden></blockquote>
           <div class="motive-strip" id="motiveStrip" hidden aria-label="不同人物推动冲突的原因">
-            <div><span>饥饿的人</span><q>他说会分给全村。</q></div>
+            <div><span>饥饿的人</span><q>他说会分给全村的人。</q></div>
             <div><span>旅店主人</span><q>若有人闯入，损失算谁的？</q></div>
             <div><span>地方差役</span><q>天亮以前，先把东西扣下。</q></div>
           </div>
           <div class="pressure-line">
             <span>门外人群</span><b><i id="pressureFill"></i></b><strong id="pressureValue">68%</strong>
           </div>
-          <button class="primary-action identity-continue" id="identityContinue" type="button" hidden>门外乱了——从后窗走 <span>→</span></button>
+          <button class="primary-action identity-continue" id="identityContinue" type="button" hidden>从后窗逃走 <span>→</span></button>
         </section>
 
         <section class="escape-stage" id="escapeStage" hidden>
           <div class="pursuit-crowd" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
           <img class="runner" src="assets/teodoro-run.png" alt="特奥多罗抱着沉重的钱袋奔逃" />
           <div class="escape-copy">
-            <p class="eyebrow">改编场景 · 逃出客栈</p>
+            <p class="eyebrow">逃出客栈</p>
             <h2 id="escapeHeading">钱袋拖慢了脚步。</h2>
-            <p id="escapeInstruction">按住钱袋向前；松手，金币会落下。</p>
+            <p id="escapeInstruction"></p>
           </div>
           <div class="escape-hud">
             <div><span>离后窗</span><b><i id="distanceFill"></i></b><strong id="distanceValue">0%</strong></div>
             <div><span>钱袋</span><b><i id="goldFill"></i></b><strong id="goldValue">100%</strong></div>
             <div><span>追来的人</span><b><i id="crowdFill"></i></b><strong id="crowdValue">36%</strong></div>
           </div>
-          <button class="escape-bag" id="escapeBag" type="button" aria-label="按住钱袋保住金币，松开钱袋撒落金币">
+          <button class="escape-bag" id="escapeBag" type="button" aria-label="携带的钱袋">
             <span class="escape-bag-art">✦</span>
-            <em>按住：带着钱 / 松开：加快脚步</em>
           </button>
           <div class="escape-coins" id="escapeCoins" aria-hidden="true"></div>
           <section class="wall-gate" id="wallGate" hidden>
-            <p class="eyebrow">改编场景 · 客栈后窗</p>
-            <h2>皮绳挂住了窗栅。</h2>
+            <p class="eyebrow">客栈后窗</p>
+            <h2>皮绳挂在了窗栅上。</h2>
             <p>带着钱袋，翻不过去。</p>
             <button class="cut-action" id="cutBagButton" type="button"><span>割断钱袋</span><i></i></button>
           </section>
@@ -142,9 +140,9 @@
           <img class="wilderness-image" src="assets/wilderness-teodoro-v2.png" alt="月夜荒野中，身穿黑色礼服、浑身湿透的特奥多罗独自走过泥地，马匹已经逃远" />
           <div class="wilderness-cold" aria-hidden="true"></div>
           <div class="wilderness-copy">
-            <p class="eyebrow">改编场景 · 天河村外荒野</p>
+            <p class="eyebrow">天河村外的荒野</p>
             <h2 id="wildernessHeading">马匹已经跑远，空马镫在风里甩动。</h2>
-            <p id="wildernessNarration">衣服冻在皮肤上。钱袋留在客栈，马也跑远了。</p>
+            <p id="wildernessNarration">潮湿的衣服冻在皮肤上，钱袋被留在了客栈，马也跑远了。</p>
           </div>
 
           <div class="body-signals" id="bodySignals" aria-hidden="true">

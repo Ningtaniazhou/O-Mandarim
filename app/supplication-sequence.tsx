@@ -112,11 +112,11 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
             <p>
               <strong>特奥多罗</strong>
               <span lang="pt">“Livra-me das minhas riquezas! Ressuscita o Mandarim! Restitui-me a paz da miséria!”</span>
-              <span>“把我从这笔财富中救出来！让满大人复活！把贫穷的安宁还给我！”</span>
+              <span>“让我从这笔财富里解脱吧！让满大人复活！把贫穷的安宁还给我！”</span>
             </p>
             <p className={styles.narration}>
               <span lang="pt">Ele passou gravemente o seu guarda-chuva para debaixo do outro braço, e respondeu com bondade:</span>
-              <span>他庄重地把雨伞移到另一只胳膊下，和善地回答：</span>
+              <span>他庄重地把雨伞移到另一只胳膊下，和善地回答道：</span>
             </p>
             <p>
               <strong>魔鬼</strong>

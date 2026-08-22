@@ -8,7 +8,6 @@ type MapRoute = {
   label: string;
   pt: string;
   zh: string;
-  response: string;
   path: string;
   point: [number, number];
 };
@@ -17,48 +16,42 @@ const mapRoutes: MapRoute[] = [
   {
     label: "尼古河",
     pt: "O meu hóspede sobe até Ni Ku-Hé, na margem do Pei-Hó...",
-    zh: "我的客人先北上，抵达白河岸边的尼古河……",
-    response: "尼古河。先沿白河北上。",
+    zh: "我的客人，您要先北上，抵达白河岸边的尼古河……",
     path: "M142 506 C178 484 210 458 255 428",
     point: [255, 428],
   },
   {
     label: "密云",
     pt: "Daí, em barcos chatos, vai a My-Yun. Boa cidade, há lá um Buda vivo...",
-    zh: "从那里乘平底船去密云。好城，那里还有一尊活佛……",
-    response: "到密云，再离开水路。",
+    zh: "然后乘平底船去密云。密云是好地方，城里还有一尊活佛……",
     path: "M255 428 C301 408 344 405 390 371",
     point: [390, 371],
   },
   {
     label: "切希亚堡",
     pt: "Daí, a cavalo, segue até à fortaleza de Ché-Hia.",
-    zh: "从那里骑马前往切希亚堡。",
-    response: "然后换马，继续向北。",
+    zh: "然后骑马前往切希亚堡。",
     path: "M390 371 C430 345 478 331 523 295",
     point: [523, 295],
   },
   {
     label: "长城",
     pt: "Passa a Grande Muralha, famoso espetáculo!...",
-    zh: "越过长城——那可是有名的景观！……",
-    response: "越过长城。",
+    zh: "越过长城，那可是著名的奇观！……",
     path: "M523 295 C567 270 606 248 651 231",
     point: [651, 231],
   },
   {
     label: "古北口",
-    pt: "Descansa no forte de Ku Pi-Hó. Pode lá caçar a gazela. Soberbas gazelas...",
-    zh: "在古北口堡歇息。你还可以在那里猎瞪羚。多好的瞪羚……",
-    response: "在古北口歇脚。",
+    pt: "Descansa no forte de Ku Pi-Hó. Pode lá caçar a gazela. […]",
+    zh: "然后在古北口堡垒歇息修整。您还可以在那儿打猎瞪羚（……）",
     path: "M651 231 C697 218 735 211 781 194",
     point: [781, 194],
   },
   {
     label: "天河",
     pt: "E com dois dias de caminhada está em Tien-Hó... Brilhante, hem?... Quando quer partir? Amanhã?...",
-    zh: "再走两天就到天河了……很不错吧？……您想什么时候动身？明天？",
-    response: "明天。",
+    zh: "然后再走两天就到天河村了……怎么样，不错吧？……您想什么时候动身？明天？",
     path: "M781 194 C823 173 858 145 895 116",
     point: [895, 116],
   },
@@ -184,21 +177,21 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
       {gloveFocus && (
         <aside className="glove-memory" aria-live="polite">
           <div aria-hidden="true" />
-          <p>我的视线停了一瞬。手刚伸过去，又收了回来。</p>
+          <p>我的视线停了一瞬，手刚伸过去，又缩了回来。</p>
         </aside>
       )}
 
       {phase === "arrival" && (
         <div className="scene-body camilloff-return-arrival">
-          <ReturnQuote pt="Uma manhã, Camilloff, entrando na Chancelaria, onde eu fumava o cachimbo da amizade de companhia com Meriskoff, atirou o seu enorme sabre para um canapé, e contou-nos radiante as notícias que lhe dera o penetrante príncipe Tong." zh="一天早晨，卡米洛夫走进秘书处；当时我正和梅里斯科夫抽着友谊烟斗作伴。他把硕大的军刀扔到长榻上，兴高采烈地告诉我们佟亲王带来的消息。" />
-          <p>自从来到北京，我再没有看见狄鑫福与纸鸢。门外的车轮声刚刚停住，卡米洛夫便带回成捆的公文、名单和封缄；夫人已经离开，桌角却还留着一件不属于这场会谈的东西。</p>
+          <ReturnQuote pt="Uma manhã, Camilloff, entrando na Chancelaria, onde eu fumava o cachimbo da amizade de companhia com Meriskoff, atirou o seu enorme sabre para um canapé, e contou-nos radiante as notícias que lhe dera o penetrante príncipe Tong." zh="一天早晨，我正和梅里斯科夫抽着烟斗作伴，卡米洛夫走进了秘书处。他把硕大的军刀扔到长榻上，兴高采烈地告诉我们佟亲王带来的消息。" />
+          <p>自从来到北京，我再也没有看到过死去的狄鑫福。此时，门外传来车轮声，是卡米洛夫带着公文回来了；将军夫人已经离开，但桌上却还留着一件属于她的东西。</p>
           <div className="dialogue-result">
             <div className="speaker">卡米洛夫</div>
-            <ReturnQuote pt="Descobrira-se enfim que um opulento mandarim, de nome Ti Chin-Fu, vivera outrora nos confins da Mongólia, na vila de Tien-Hó!" zh="终于查明，一位名叫狄鑫福的富有满大人，过去住在蒙古边境的天河！" />
+            <ReturnQuote pt="Descobrira-se enfim que um opulento mandarim, de nome Ti Chin-Fu, vivera outrora nos confins da Mongólia, na vila de Tien-Hó!" zh="终于查明，一位名叫狄鑫福的富有官员，曾住在蒙古边境的天河村！" />
           </div>
           <p>线索指向北京以北、越过长城后的天河村。</p>
-          <p>他没有看向那里，只把地图推到灯下，削尖了铅笔。</p>
-          <button className="primary-action" type="button" onClick={() => setPhase("map")}>看他把消息画成道路 <span>→</span></button>
+          <p>卡米洛夫将军把地图推到灯下，削尖了铅笔。</p>
+          <button className="primary-action" type="button" onClick={() => setPhase("map")}>看向卡米洛夫 <span>→</span></button>
         </div>
       )}
 
@@ -207,7 +200,7 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
           <header className="map-workbench-heading">
             <span>寻访路线</span>
             <h2 className="section-title">纸上的道路</h2>
-            <p>{mapStep < mapRoutes.length ? "推动铅笔、轻拖纸张，或滚动一次。" : "六段道路已经连在一起。"}</p>
+            <p>{mapStep < mapRoutes.length ? "推动铅笔或轻拖纸张，让道路显现。" : "六段道路已经连在一起。"}</p>
           </header>
           <div
             className={`map-paper ${mapAnimating ? "is-jumping" : ""} shift-${mapStep % 3}`}
@@ -237,12 +230,11 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
               <>
                 <div className="speaker">卡米洛夫 · {String(mapStep).padStart(2, "0")} / 06</div>
                 <ReturnQuote pt={currentRoute.pt} zh={currentRoute.zh} />
-                <p><strong>特奥多罗</strong>{currentRoute.response}</p>
               </>
             ) : (
               <p className="map-waiting-copy">铅笔悬在北京上方。第一段路还没有出现。</p>
             )}
-            {mapStep >= mapRoutes.length && <button className="primary-action" type="button" onClick={() => setPhase("complete")}>从地图上抬起视线 <span>→</span></button>}
+            {mapStep >= mapRoutes.length && <button className="primary-action" type="button" onClick={() => setPhase("complete")}>抬头看向卡米洛夫 <span>→</span></button>}
           </aside>
         </section>
       )}
@@ -250,15 +242,14 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
       {phase === "complete" && (
         <div className="scene-body camilloff-return-complete">
           <div className="completed-route-overlay" aria-hidden="true"><RouteMap step={mapRoutes.length} compact /></div>
-          <ReturnQuote pt="Mas já o zeloso Camilloff, de lápis na mão, ia marcando no mapa o meu itinerário para Tien-Hó!" zh="然而，热心的卡米洛夫已经拿起铅笔，在地图上标出我前往天河的路线！" />
-          <p>道路已经完整地铺在桌面中央。卡米洛夫风尘未洗，仍俯身替我核对每一处转折；那只浅色手套则安静地留在画面边缘。</p>
+          <ReturnQuote pt="Mas já o zeloso Camilloff, de lápis na mão, ia marcando no mapa o meu itinerário para Tien-Hó!" zh="然而，热心的卡米洛夫已经拿起铅笔，在地图上一点点标出我前往天河村的路线！" />
           <div className="dialogue-result">
             <div className="speaker">卡米洛夫</div>
             <p>“什么时候动身？明天？”</p>
             <div className="speaker teodoro">特奥多罗</div>
-            <p>“明天。”我闷闷地回答。</p>
+            <p>“明天……”我闷闷不乐地回答。</p>
           </div>
-          <button className="primary-action" type="button" onClick={onContinue}>告别卡米洛夫，前往天河村 <span>→</span></button>
+          <button className="primary-action" type="button" onClick={onContinue}>与萨托一同前往天河村 <span>→</span></button>
         </div>
       )}
     </>

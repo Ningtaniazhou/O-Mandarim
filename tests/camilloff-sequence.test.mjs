@@ -30,7 +30,7 @@ test("connects departure, abstract intercut, and return map", async () => {
   assert.doesNotMatch(intercut, /第一小章|印章与茶杯|名单与扇子|门槛与门扉|消息与痕迹/);
   assert.match(intercut, /if \(progress >= 1\)/);
   assert.match(intercut, /watchAdvanced\.current = true;[\s\S]*advanceDay\(\);/);
-  assert.match(intercut, /一只浅色手套仍搭在我座椅旁/);
+  assert.match(intercut, /她离开时把一只浅色的手套忘在了我的桌上/);
   assert.match(map, /看向桌角的女士手套/);
   assert.match(map, /mapRoutes\.length/);
   assert.match(map, /const handDockPositions = \[/);

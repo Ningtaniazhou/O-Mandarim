@@ -19,7 +19,7 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(page, /letter: musicCues\.reflection/);
   assert.match(page, /testament: musicCues\.mystery/);
   assert.doesNotMatch(page, /audio\/contemplation\.mp3/);
-  assert.match(page, /我感到自己时日无多，便把自己的经历写成了书，并且立好了遗嘱。/);
+  assert.match(page, /我一日日消沉下去，感到自己时日无多，便把自己的经历写成了书，并且立好了遗嘱。/);
   assert.doesNotMatch(page, /返回故事世界的起点/);
 
   assert.match(finale, /现在，替你自己选一次/);

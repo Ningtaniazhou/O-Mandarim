@@ -21,79 +21,79 @@ type IntercutDay = {
 
 const intercutDays: IntercutDay[] = [
   {
-    theme: "等待、礼节与第一次试探",
+    theme: "繁文缛节/情愫暗生",
     mansion: {
       image: "/camilloff-day1-mansion.png",
-      place: "府邸 · 茶室",
+      place: "府邸",
       speaker: "将军夫人",
       pt: "O sonho de Vladimira era habitar Paris; e fazendo ferver delicadamente as folhas de chá, pedia-me histórias ladinas de cocottes...",
-      zh: "弗拉基米拉梦想住在巴黎；她轻轻煮沸茶叶，请我讲那些风流女子的狡黠故事……",
-      line: "茶杯落到托碟上。她没有移开目光，只问巴黎是否真像我说的那样懂得爱情。",
+      zh: "弗拉基米拉梦想住在巴黎；她动作轻柔地煮沸茶水，请我讲讲聪慧的风流女子的故事……",
+      line: "茶杯被放到托碟上。她没有移开目光，只问巴黎是否真像我说的那样浪漫。",
     },
     yamen: {
       image: "/camilloff-day1-yamen.png",
-      place: "衙门 · 第一重手续",
+      place: "衙门",
       speaker: "书吏",
       pt: "Teve de provar primeiro que o desejo de conhecer a morada de um velho mandarim não encobria uma conspiração contra a segurança do Império...",
-      zh: "他首先必须证明，查问一位老满大人的住处，并不掩藏着危害帝国安全的阴谋……",
-      line: "印章落下。书吏收走第一份陈情，却说还需另一份文书证明这番查问无意冒犯礼制。",
+      zh: "您要查问一位老官员的住处，必须先证明这并非危害国家安全的阴谋……",
+      line: "印章落下。书吏收走第一份文书，却说还需另一份文书证明这番查问无意冒犯礼制。",
     },
   },
   {
-    theme: "展开、遮掩与关系靠近",
+    theme: "繁文缛节/情愫暗生",
     mansion: {
       image: "/camilloff-day2-mansion.png",
-      place: "府邸 · 离扇面更近",
-      speaker: "特奥多罗",
+      place: "府邸",
+      speaker: "",
       pt: "Ao lado um arroio fresco ia cantando docemente […] e junto à janela rendilhada […] pousava aberto ao alto um leque formado de lâminas de cristal separadas, que a aragem entrando fazia vibrar, numa modulação melancólica e terna.",
-      zh: "一旁清凉的溪流轻声歌唱……雕花窗边，一柄水晶薄片制成的扇子高高展开，微风吹入，扇片便发出温柔而忧郁的颤音。",
-      line: "她展开扇子，像是遮住笑意。我越过扇沿继续讲巴黎，声音也随之低了下来。",
+      zh: "一旁，清凉的溪流声如同甜美的歌唱（……）雕花窗边（……）一柄水晶扇片的扇子高举着，展开，微风吹入，扇片便发出温柔而忧郁的颤音。",
+      line: "她展开扇子，像是在遮住迷人的笑容。我的目光越过扇沿，继续和她讲巴黎。",
     },
     yamen: {
       image: "/camilloff-day2-yamen.png",
-      place: "衙门 · 名册与旧档",
-      speaker: "卡米洛夫",
+      place: "衙门",
+      speaker: "",
       pt: "Centenares de escribas empalideceram noite e dia, de pincel na mão, desenhando relatórios sobre papel de arroz...",
-      zh: "数百名书吏日夜面色苍白，手执毛笔，在宣纸上写下一份又一份报告……",
-      line: "卡米洛夫展开刚送来的名单。从天文台到档案院，每个名字都把他推向下一间衙署。",
+      zh: "数百名面色苍白的书吏披星戴月，在宣纸上写下一份又一份报告……",
+      line: "卡米洛夫展开刚送来的报告，从天文台到档案院，每一份报告都将他推向下一间衙署。",
     },
   },
   {
-    theme: "进入的许可",
+    theme: "繁文缛节/情愫暗生",
     mansion: {
       image: "/camilloff-day3-mansion.png",
       place: "府邸 · 静憩亭门前",
       speaker: "将军夫人",
       pt: "Eu então, de leque na mão, pisando subtilmente na ponta das babouches de cetim as ruazinhas areadas do jardim, ia entreabrir a porta do Repouso Discreto: — Mimi? E a voz da generala respondia, suave como um beijo: — All right...",
-      zh: "于是我拿着折扇，踮着缎鞋，轻轻走过花园的沙径，推开静憩亭的门：‘咪咪？’将军夫人的声音像一个吻：‘进来吧……’",
+      zh: "于是我拿着折扇，穿着缎鞋，轻轻走过花园的沙径，推开静憩亭的门：‘咪咪？’将军夫人的声音温柔得像一个吻：‘进来吧……’",
       line: "门从里面打开。她伸出戴着手套的手，把我引进比客厅更私密的静憩亭。",
     },
     yamen: {
       image: "/camilloff-day3-yamen.png",
-      place: "衙门 · 门槛之外",
+      place: "衙门",
       speaker: "门吏",
       pt: "Quando Camilloff perguntava pelo resultado, vinha-lhe a resposta satisfatória que se estavam consultando os Livros Santos de Lao-Tsé...",
-      zh: "卡米洛夫询问结果时，得到的圆满答复总是：他们正在查阅老子的圣书……",
-      line: "门吏的双手自然垂在身侧，语气恭敬而坚定：里面仍在查阅古籍，将军今天不能进去。",
+      zh: "卡米洛夫询问结果时，得到的答复总是：大人们正在查阅老子的圣书……",
+      line: "大人们正在查阅古籍，将军不能进去。",
     },
   },
   {
-    theme: "两条时间线重新靠拢",
+    theme: "繁文缛节/情愫暗生",
     mansion: {
       image: "/camilloff-day4-mansion.png",
-      place: "府邸 · 被留下的手套",
+      place: "府邸",
       speaker: "特奥多罗",
       pt: "Eu arregaçava-lhe a larga manga do casabeque de seda cor de folha morta, e ia fazendo viajar os meus lábios devotos pela pele fresca dos seus belos braços; […]",
-      zh: "我卷起她那枯叶色绸褂的宽袖，让虔诚的吻沿着她美丽手臂上清凉的肌肤缓缓游移……",
-      line: "她离开后，一只浅色手套仍搭在我座椅旁。我的手在它上方停了一瞬，没有把它送回去。",
+      zh: "我卷起她枯叶色绸褂的宽袖，让虔诚的吻沿着她美丽手臂上微凉的肌肤缓缓游移……",
+      line: "她离开时把一只浅色的手套忘在了我的桌上，我犹豫了一下，没有把它送回去。",
     },
     yamen: {
       image: "/camilloff-day4-yamen.png",
-      place: "衙门 · 封缄的消息",
+      place: "衙门",
       speaker: "书吏",
       pt: "Descobrira-se enfim que um opulento mandarim, de nome Ti Chin-Fu, vivera outrora nos confins da Mongólia, na vila de Tien-Hó!",
-      zh: "终于查明，一位名叫狄鑫福的富有满大人，过去住在蒙古边境的天河！",
-      line: "封缄的回报终于递到卡米洛夫手中。漫长的手续被压缩成一个地名：天河。",
+      zh: "终于查明，一位名叫狄鑫福的富有官员，曾住在蒙古边境的天河村！",
+      line: "在漫长的手续后，最终报告被压缩成一个地名：天河村。",
     },
   },
 ];
@@ -210,7 +210,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
           <span lang="pt">“{copy.pt}”</span>
           <span className="quote-translation">“{copy.zh}”</span>
         </blockquote>
-        <p><strong>{copy.speaker}：</strong>{copy.line}</p>
+        <p>{copy.speaker && <strong>{copy.speaker}：</strong>}{copy.line}</p>
       </article>
 
       <div className="intercut-day-track" aria-label={`双线进度 ${day + 1} / ${intercutDays.length}`}>
