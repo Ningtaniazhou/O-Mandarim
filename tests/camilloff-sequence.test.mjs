@@ -31,6 +31,8 @@ test("connects departure, abstract intercut, and return map", async () => {
   assert.match(intercut, /if \(progress >= 1\)/);
   assert.match(intercut, /watchAdvanced\.current = true;[\s\S]*advanceDay\(\);/);
   assert.doesNotMatch(intercut, /watch-turn-hint|watch-turn-arc|watch-turn-arrow/);
+  assert.match(intercut, /day === 0 && <span className="intercut-control-hint"[^>]*><small>左右拖动<\/small>旋转地球仪<\/span>/);
+  assert.match(intercut, /day === 0 && <span className=\{`intercut-control-hint \$\{seenBoth \? "is-ready" : "is-waiting"\}`\}[^>]*><small>顺时针拨动<\/small>怀表指针<\/span>/);
   assert.match(intercut, /她离开时把一只浅色的手套忘在了我的桌上/);
   assert.match(map, /看向桌角的女士手套/);
   assert.match(map, /mapRoutes\.length/);
@@ -41,6 +43,8 @@ test("connects departure, abstract intercut, and return map", async () => {
   assert.match(styles, /\.intercut-card\.is-yamen/);
   assert.match(styles, /watch-hand-invitation/);
   assert.match(styles, /filter: brightness\(1\.55\) drop-shadow/);
+  assert.match(styles, /\.intercut-control-hint/);
+  assert.match(styles, /\.intercut-control-hint\.is-waiting/);
   assert.match(styles, /\.space-globe \{[\s\S]*width: 84px;[\s\S]*height: 84px;/);
   assert.match(styles, /\.time-watch \{[\s\S]*width: 75px;[\s\S]*height: 84px;/);
   assert.match(styles, /repeating-conic-gradient\(from -1deg/);

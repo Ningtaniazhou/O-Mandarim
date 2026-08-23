@@ -218,52 +218,58 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
       </div>
 
       <div className="intercut-controls">
-        <button
-          className="space-globe"
-          type="button"
-          onPointerDown={(event) => {
-            globeStart.current = event.clientX;
-            globeDragged.current = false;
-            event.currentTarget.setPointerCapture(event.pointerId);
-          }}
-          onPointerMove={(event) => {
-            if (globeStart.current === null || globeDragged.current) return;
-            if (Math.abs(event.clientX - globeStart.current) >= 24) {
-              globeDragged.current = true;
-              flipSpace();
-            }
-          }}
-          onPointerUp={(event) => {
-            globeStart.current = null;
-            if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-            timers.current.push(window.setTimeout(() => { globeDragged.current = false; }, 0));
-          }}
-          onClick={() => { if (!globeDragged.current) flipSpace(); }}
-          aria-label={place === "mansion" ? "转动地球仪，切换到衙门" : "转动地球仪，切换到府邸"}
-        >
-          <span className="globe-sphere" aria-hidden="true"><i /><b>‹</b><b>›</b></span>
-        </button>
+        <div className="intercut-control-item">
+          <button
+            className="space-globe"
+            type="button"
+            onPointerDown={(event) => {
+              globeStart.current = event.clientX;
+              globeDragged.current = false;
+              event.currentTarget.setPointerCapture(event.pointerId);
+            }}
+            onPointerMove={(event) => {
+              if (globeStart.current === null || globeDragged.current) return;
+              if (Math.abs(event.clientX - globeStart.current) >= 24) {
+                globeDragged.current = true;
+                flipSpace();
+              }
+            }}
+            onPointerUp={(event) => {
+              globeStart.current = null;
+              if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+              timers.current.push(window.setTimeout(() => { globeDragged.current = false; }, 0));
+            }}
+            onClick={() => { if (!globeDragged.current) flipSpace(); }}
+            aria-label={place === "mansion" ? "转动地球仪，切换到衙门" : "转动地球仪，切换到府邸"}
+          >
+            <span className="globe-sphere" aria-hidden="true"><i /><b>‹</b><b>›</b></span>
+          </button>
+          {day === 0 && <span className="intercut-control-hint" aria-hidden="true"><small>左右拖动</small>旋转地球仪</span>}
+        </div>
 
-        <button
-          className={`time-watch ${seenBoth ? "is-ready" : "is-waiting"}`}
-          type="button"
-          style={watchStyle}
-          onPointerDown={handleWatchDown}
-          onPointerMove={handleWatchMove}
-          onPointerUp={handleWatchUp}
-          onPointerCancel={handleWatchUp}
-          onKeyDown={(event) => {
-            if (seenBoth && (event.key === "Enter" || event.key === " " || event.key === "ArrowRight")) {
-              event.preventDefault();
-              advanceDay();
-            }
-          }}
-          aria-label={seenBoth ? (day === intercutDays.length - 1 ? "顺时针转动怀表，等待卡米洛夫归来" : "顺时针转动怀表，推进到下一段") : "先用地球仪查看另一处"}
-          aria-disabled={!seenBoth}
-        >
-          <span className="watch-crown" aria-hidden="true" />
-          <span className="watch-face" aria-hidden="true"><i /></span>
-        </button>
+        <div className="intercut-control-item">
+          <button
+            className={`time-watch ${seenBoth ? "is-ready" : "is-waiting"}`}
+            type="button"
+            style={watchStyle}
+            onPointerDown={handleWatchDown}
+            onPointerMove={handleWatchMove}
+            onPointerUp={handleWatchUp}
+            onPointerCancel={handleWatchUp}
+            onKeyDown={(event) => {
+              if (seenBoth && (event.key === "Enter" || event.key === " " || event.key === "ArrowRight")) {
+                event.preventDefault();
+                advanceDay();
+              }
+            }}
+            aria-label={seenBoth ? (day === intercutDays.length - 1 ? "顺时针转动怀表，等待卡米洛夫归来" : "顺时针转动怀表，推进到下一段") : "先用地球仪查看另一处"}
+            aria-disabled={!seenBoth}
+          >
+            <span className="watch-crown" aria-hidden="true" />
+            <span className="watch-face" aria-hidden="true"><i /></span>
+          </button>
+          {day === 0 && <span className={`intercut-control-hint ${seenBoth ? "is-ready" : "is-waiting"}`} aria-hidden="true"><small>顺时针拨动</small>怀表指针</span>}
+        </div>
       </div>
 
       <p className="sr-only" aria-live="polite">{seenBoth ? "这一段的宅邸与衙门都已查看，可以转动怀表。" : "转动地球仪，查看另一处。"}</p>

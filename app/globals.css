@@ -2522,6 +2522,42 @@ blockquote {
   gap: 12px;
 }
 
+.intercut-control-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.intercut-control-hint {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  width: 94px;
+  color: rgba(238, 220, 180, 0.86);
+  font: 700 10px/1.45 Arial, "Noto Sans CJK SC", sans-serif;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-shadow: 0 2px 8px #000, 0 0 12px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.intercut-control-hint small {
+  display: block;
+  color: var(--gold);
+  font: inherit;
+}
+
+.intercut-control-hint.is-waiting {
+  opacity: 0.48;
+}
+
+.intercut-control-hint.is-ready {
+  color: #f4e4c0;
+}
+
 .space-globe,
 .time-watch {
   position: relative;
