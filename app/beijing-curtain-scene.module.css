@@ -332,3 +332,52 @@
   .settling .windowHush,
   .settling .exterior { transition-duration: 0.01ms; }
 }
+
+@media (orientation: landscape) and (max-height: 540px) {
+  .overlay {
+    position: absolute;
+    inset: 54px 0 auto;
+    min-height: calc(100svh - 54px);
+    grid-template-columns: minmax(230px, 42vw) minmax(0, 1fr);
+    overflow: visible;
+  }
+
+  .copy {
+    min-height: calc(100svh - 54px);
+    padding: 24px 24px 28px;
+    overflow: visible;
+    border-right: 1px solid rgba(216, 190, 135, 0.14);
+    border-bottom: 0;
+  }
+
+  .copy h1 {
+    margin-bottom: 12px;
+    font-size: clamp(31px, 5.5vw, 46px);
+  }
+
+  .copyScroll { overflow: visible; }
+  .copyScroll p { font-size: 12px; line-height: 1.62; }
+
+  .stage {
+    min-height: calc(100svh - 54px);
+  }
+
+  .window {
+    top: 8%;
+    left: 5%;
+    width: 62%;
+    height: 72%;
+  }
+
+  .dragHand,
+  .handHandle { top: 44%; }
+
+  .dragHand { width: clamp(64px, 8vw, 94px); }
+
+  .gestureCaption {
+    right: 14px;
+    bottom: 14px;
+    width: 42%;
+    padding: 10px 12px;
+  }
+}

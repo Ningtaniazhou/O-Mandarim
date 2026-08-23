@@ -108,10 +108,10 @@ const evidenceOutcomes = {
 };
 
 const scoreCues = {
-  dream: { src: "assets/audio/dream-ball.mp3", volume: .16 },
-  danger: { src: "assets/audio/pursuit.mp3", volume: .18 },
-  wilderness: { src: "assets/audio/wilderness-haunting.ogg", volume: .13 },
-  monastery: { src: "assets/audio/monastery-contemplation.mp3", volume: .2 },
+  dream: { src: "/audio/apparitions-ball.mp3", volume: .16 },
+  danger: { src: "/audio/pursuit.mp3", volume: .18 },
+  wilderness: { src: "/audio/i-swear-i-saw-it.ogg", volume: .13 },
+  monastery: { src: "/audio/contemplation.mp3", volume: .2 },
 };
 
 const phaseScores = {

@@ -16,10 +16,10 @@ test("rescues the ministry documents, dreams, and room focus into the main story
   assert.match(page, /还是不看见为好/);
   assert.doesNotMatch(page, /展开桌上的公文|轻点戳破梦境|读完三份公文，并至少做过一次白日梦|让房间自己说话/);
 
-  assert.match(styles, /url\("\/dream-cloud\.png"\)/);
+  assert.match(styles, /url\("\/dream-cloud\.webp"\)/);
   assert.match(styles, /@keyframes office-dream-burst/);
   assert.match(styles, /\.office-document-hotspots/);
   assert.match(styles, /\.stage-room \.scene-hotspot:nth-child\(2\)/);
 
-  await access(new URL("../public/dream-cloud.png", import.meta.url));
+  await access(new URL("../public/dream-cloud.webp", import.meta.url));
 });

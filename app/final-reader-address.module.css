@@ -25,7 +25,7 @@
 }
 
 .portrait {
-  background: #050605 url("/teodoro-final-address-v1.png") center center / cover no-repeat;
+  background: #050605 url("/teodoro-final-address-v1.webp") center center / cover no-repeat;
   filter: saturate(0.82) brightness(0.82) contrast(1.08);
   transform: scale(1.015);
   transition: filter 2.4s ease, transform 9s ease;

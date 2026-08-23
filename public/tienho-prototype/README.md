@@ -33,11 +33,11 @@ npm run dev
 
 ## 资产说明
 
-- `assets/tienho-reality.png`：天河村的现实夜景。
-- `assets/tienho-dream.png`：使用内置 imagegen 依据夜景同机位生成的梦境对应图。
-- `assets/teodoro-run.png`：逃亡阶段的特奥多罗透明人物资产。
-- `assets/wilderness-teodoro-v2.png`：重绘后的荒野场景，前景人物与前段特奥多罗的面貌和十九世纪黑色礼服保持一致。
-- `assets/mission-cloister.png`：独立预览模式下用于验证修道院衔接；嵌入主线时由主线播放钟声与睁眼序列。
+- `assets/tienho-reality.webp`：天河村的现实夜景。
+- `assets/tienho-dream.webp`：使用内置 imagegen 依据夜景同机位生成的梦境对应图。
+- `assets/teodoro-run.webp`：逃亡阶段的特奥多罗透明人物资产。
+- `assets/wilderness-teodoro-v2.webp`：重绘后的荒野场景，前景人物与前段特奥多罗的面貌和十九世纪黑色礼服保持一致。
+- `assets/mission-cloister.webp`：独立预览模式下用于验证修道院衔接；嵌入主线时由主线播放钟声与睁眼序列。
 
 ## 配乐来源
 

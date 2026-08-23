@@ -57,7 +57,7 @@ test("connects departure, abstract intercut, and return map", async () => {
 
   await Promise.all(
     [1, 2, 3, 4].flatMap((day) => ["mansion", "yamen"].map((place) =>
-      access(new URL(`../public/camilloff-day${day}-${place}.png`, import.meta.url)),
+      access(new URL(`../public/camilloff-day${day}-${place}.webp`, import.meta.url)),
     )),
   );
 });

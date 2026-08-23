@@ -335,7 +335,7 @@ export default function CurtainPrototypePage() {
       >
         <img
           className={styles.interior}
-          src="/curtain-prototype-interior-v1.png"
+          src="/curtain-prototype-interior-v1.webp"
           alt="特奥多罗坐在织金轿厢中"
           draggable={false}
         />
@@ -343,14 +343,14 @@ export default function CurtainPrototypePage() {
         <div className={styles.window} aria-hidden="true">
           <img
             className={styles.exterior}
-            src="/pequim-arrival-v1.png"
+            src="/pequim-arrival-v1.webp"
             alt=""
             draggable={false}
           />
           <div className={styles.windowHush} />
           <img
             className={styles.curtain}
-            src="/curtain-prototype-panel-v1.png"
+            src="/curtain-prototype-panel-v1.webp"
             alt=""
             draggable={false}
           />
@@ -359,7 +359,7 @@ export default function CurtainPrototypePage() {
 
         <img
           className={styles.dragHand}
-          src="/curtain-prototype-hand-v1.png"
+          src="/curtain-prototype-hand-v1.webp"
           alt=""
           draggable={false}
           aria-hidden="true"

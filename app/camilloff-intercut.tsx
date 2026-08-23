@@ -23,7 +23,7 @@ const intercutDays: IntercutDay[] = [
   {
     theme: "繁文缛节/情愫暗生",
     mansion: {
-      image: "/camilloff-day1-mansion.png",
+      image: "/camilloff-day1-mansion.webp",
       place: "府邸",
       speaker: "将军夫人",
       pt: "O sonho de Vladimira era habitar Paris; e fazendo ferver delicadamente as folhas de chá, pedia-me histórias ladinas de cocottes...",
@@ -31,7 +31,7 @@ const intercutDays: IntercutDay[] = [
       line: "茶杯被放到托碟上。她没有移开目光，只问巴黎是否真像我说的那样浪漫。",
     },
     yamen: {
-      image: "/camilloff-day1-yamen.png",
+      image: "/camilloff-day1-yamen.webp",
       place: "衙门",
       speaker: "书吏",
       pt: "Teve de provar primeiro que o desejo de conhecer a morada de um velho mandarim não encobria uma conspiração contra a segurança do Império...",
@@ -42,7 +42,7 @@ const intercutDays: IntercutDay[] = [
   {
     theme: "繁文缛节/情愫暗生",
     mansion: {
-      image: "/camilloff-day2-mansion.png",
+      image: "/camilloff-day2-mansion.webp",
       place: "府邸",
       speaker: "",
       pt: "Ao lado um arroio fresco ia cantando docemente […] e junto à janela rendilhada […] pousava aberto ao alto um leque formado de lâminas de cristal separadas, que a aragem entrando fazia vibrar, numa modulação melancólica e terna.",
@@ -50,7 +50,7 @@ const intercutDays: IntercutDay[] = [
       line: "她展开扇子，像是在遮住迷人的笑容。我的目光越过扇沿，继续和她讲巴黎。",
     },
     yamen: {
-      image: "/camilloff-day2-yamen.png",
+      image: "/camilloff-day2-yamen.webp",
       place: "衙门",
       speaker: "",
       pt: "Centenares de escribas empalideceram noite e dia, de pincel na mão, desenhando relatórios sobre papel de arroz...",
@@ -61,7 +61,7 @@ const intercutDays: IntercutDay[] = [
   {
     theme: "繁文缛节/情愫暗生",
     mansion: {
-      image: "/camilloff-day3-mansion.png",
+      image: "/camilloff-day3-mansion.webp",
       place: "府邸 · 静憩亭门前",
       speaker: "将军夫人",
       pt: "Eu então, de leque na mão, pisando subtilmente na ponta das babouches de cetim as ruazinhas areadas do jardim, ia entreabrir a porta do Repouso Discreto: — Mimi? E a voz da generala respondia, suave como um beijo: — All right...",
@@ -69,7 +69,7 @@ const intercutDays: IntercutDay[] = [
       line: "门从里面打开。她伸出戴着手套的手，把我引进比客厅更私密的静憩亭。",
     },
     yamen: {
-      image: "/camilloff-day3-yamen.png",
+      image: "/camilloff-day3-yamen.webp",
       place: "衙门",
       speaker: "门吏",
       pt: "Quando Camilloff perguntava pelo resultado, vinha-lhe a resposta satisfatória que se estavam consultando os Livros Santos de Lao-Tsé...",
@@ -80,7 +80,7 @@ const intercutDays: IntercutDay[] = [
   {
     theme: "繁文缛节/情愫暗生",
     mansion: {
-      image: "/camilloff-day4-mansion.png",
+      image: "/camilloff-day4-mansion.webp",
       place: "府邸",
       speaker: "特奥多罗",
       pt: "Eu arregaçava-lhe a larga manga do casabeque de seda cor de folha morta, e ia fazendo viajar os meus lábios devotos pela pele fresca dos seus belos braços; […]",
@@ -88,7 +88,7 @@ const intercutDays: IntercutDay[] = [
       line: "她离开时把一只浅色的手套忘在了我的桌上，我犹豫了一下，没有把它送回去。",
     },
     yamen: {
-      image: "/camilloff-day4-yamen.png",
+      image: "/camilloff-day4-yamen.webp",
       place: "衙门",
       speaker: "书吏",
       pt: "Descobrira-se enfim que um opulento mandarim, de nome Ti Chin-Fu, vivera outrora nos confins da Mongólia, na vila de Tien-Hó!",

@@ -222,7 +222,7 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
             />
             <button className={`map-hand-control pose-${mapStep % 3} ${mapAnimating ? "is-moving" : ""}`} type="button" style={mapStyle} onClick={advanceMap} aria-label="推动卡米洛夫的铅笔，绘制下一段路线" disabled={mapStep >= mapRoutes.length}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/camilloff-map-hand-v1.png" alt="卡米洛夫握着铅笔的手" draggable={false} />
+              <img src="/camilloff-map-hand-v1.webp" alt="卡米洛夫握着铅笔的手" draggable={false} />
             </button>
           </div>
           <aside className="map-conversation" aria-live="polite">

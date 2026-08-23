@@ -91,9 +91,9 @@ export default function SupplicationPrototypePage() {
     <main className={styles.page}>
       <section className={`${styles.stage} ${styles[phase]}`} aria-label="特奥多罗乞求魔鬼的独立动画样片">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.street} src="/supplication-street-v1.png" alt="煤气灯照亮的湿石路，远处垃圾堆旁有一条瘦狗" />
+        <img className={styles.street} src="/supplication-street-v1.webp" alt="煤气灯照亮的湿石路，远处垃圾堆旁有一条瘦狗" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.waitingTableau} src="/devil-alone-street-v2.png" alt="魔鬼独自站在煤气灯照亮的湿石路上，雨伞夹在腋下" />
+        <img className={styles.waitingTableau} src="/devil-alone-street-v2.webp" alt="魔鬼独自站在煤气灯照亮的湿石路上，雨伞夹在腋下" />
         <div className={styles.streetShade} aria-hidden="true" />
         <div className={styles.gasGlow} aria-hidden="true" />
         <div className={styles.dogReveal} aria-hidden="true" />
@@ -136,13 +136,13 @@ export default function SupplicationPrototypePage() {
 
         <figure className={styles.devil} aria-label="魔鬼站在煤气灯下">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/devil-standing-v1.png" alt="身穿黑衣、戴高礼帽并夹着雨伞的魔鬼" />
+          <img src="/devil-standing-v1.webp" alt="身穿黑衣、戴高礼帽并夹着雨伞的魔鬼" />
         </figure>
 
         <figure className={`${styles.teodoro} ${styles[`teodoro${visibleTeodoro[0].toUpperCase()}${visibleTeodoro.slice(1)}`]}`} aria-live="off">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={visibleTeodoro === "running" ? "/teodoro-run-v1.png" : visibleTeodoro === "kneeling" || visibleTeodoro === "vanishing" ? "/teodoro-kneel-v1.png" : "/teodoro-fallen-v1.png"}
+            src={visibleTeodoro === "running" ? "/teodoro-run-v1.webp" : visibleTeodoro === "kneeling" || visibleTeodoro === "vanishing" ? "/teodoro-kneel-v1.webp" : "/teodoro-fallen-v1.webp"}
             alt={visibleTeodoro === "running" ? "特奥多罗冲向魔鬼" : visibleTeodoro === "kneeling" || visibleTeodoro === "vanishing" ? "特奥多罗跪地伸手试图抱住魔鬼的小腿" : "特奥多罗失去支撑后扑倒在湿石路上"}
           />
         </figure>

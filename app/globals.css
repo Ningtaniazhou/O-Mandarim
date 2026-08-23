@@ -388,7 +388,7 @@ button:focus-visible {
   z-index: -4;
   inset: 0;
   pointer-events: none;
-  background-image: url("/ministry-office-dozing-v1.png");
+  background-image: url("/ministry-office-dozing-v1.webp");
   background-position: center left;
   background-size: cover;
   filter: saturate(0.76) contrast(1.08) brightness(0.66);
@@ -477,7 +477,7 @@ button:focus-visible {
   aspect-ratio: 3 / 2;
   padding: 7% 8% 9%;
   border: 0;
-  background: url("/dream-cloud.png") center / contain no-repeat;
+  background: url("/dream-cloud.webp") center / contain no-repeat;
   color: #33291d;
   cursor: pointer;
   filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.48));
@@ -2912,7 +2912,7 @@ blockquote {
 
 .glove-memory > div {
   height: 132px;
-  background-image: url("/camilloff-return-map-v1.png");
+  background-image: url("/camilloff-return-map-v1.webp");
   background-position: 94% 88%;
   background-size: 245%;
   filter: saturate(0.68) contrast(1.08) brightness(0.86);
@@ -3585,16 +3585,16 @@ blockquote {
   filter: grayscale(0.45) sepia(0.22) contrast(1.04);
 }
 
-.route-transport.transport-train i { background-image: url("/journey-transport-train-v1.png"); }
+.route-transport.transport-train i { background-image: url("/journey-transport-train-v1.webp"); }
 .route-transport.transport-mail-steamer i {
   width: clamp(72px, 7.5vw, 106px);
-  background-image: url("/journey-transport-mail-steamer-v1.png");
+  background-image: url("/journey-transport-mail-steamer-v1.webp");
 }
-.route-transport.transport-river-steamer i { background-image: url("/journey-transport-river-steamer-v1.png"); }
-.route-transport.transport-flatboat i { background-image: url("/journey-transport-flatboat-v1.png"); }
+.route-transport.transport-river-steamer i { background-image: url("/journey-transport-river-steamer-v1.webp"); }
+.route-transport.transport-flatboat i { background-image: url("/journey-transport-flatboat-v1.webp"); }
 .route-transport.transport-pony i {
   width: clamp(58px, 5.8vw, 82px);
-  background-image: url("/journey-transport-pony-v1.png");
+  background-image: url("/journey-transport-pony-v1.webp");
 }
 
 .route-transport.is-complete {
@@ -4328,7 +4328,7 @@ blockquote {
 .th-identity blockquote { margin: 12px 0; padding: 9px 12px; border-left: 2px solid #c24836; background: rgba(112,24,17,.14); font-size: 14px; }
 .th-primary { display: block; margin-left: auto; }
 
-.th-escape { position: absolute; inset: 0; overflow: hidden; background-image: url("/tienho-reality-v1.png"); background-position: center; background-size: cover; }
+.th-escape { position: absolute; inset: 0; overflow: hidden; background-image: url("/tienho-reality-v1.webp"); background-position: center; background-size: cover; }
 .th-escape-vignette { background: linear-gradient(90deg, rgba(5,6,6,.94), rgba(5,6,6,.55) 32%, transparent 66%), radial-gradient(circle at 60% 58%, transparent, rgba(0,0,0,.36)); }
 .th-escape > img { z-index: 3; right: 19%; bottom: 5%; left: auto; width: min(37vw, 490px); height: auto; object-fit: contain; filter: drop-shadow(0 18px 25px rgba(0,0,0,.68)); animation: th-run .66s ease-in-out infinite; }
 .th-escape-copy { position: absolute; z-index: 5; top: 17%; left: 5.5vw; width: min(440px, 36vw); }
@@ -4970,6 +4970,208 @@ blockquote {
 @keyframes orientation-turn {
   0%, 18% { transform: rotate(0deg); }
   55%, 100% { transform: rotate(90deg); }
+}
+
+/* Final phone-landscape pass. Keep this after the general phone rules: every
+   interactive stage gets its own reserved visual and reading zones. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .game-shell {
+    min-height: 100svh;
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    height: 54px;
+    padding: 0 18px;
+  }
+
+  .progress-track { top: 53px; }
+
+  .scene-card,
+  .scene-card-east,
+  .stage-mission .scene-card,
+  .stage-luxury .scene-card,
+  .stage-ghost .scene-card,
+  .stage-return .scene-card,
+  .stage-reckoning .scene-card,
+  .stage-renounce .scene-card,
+  .stage-humiliation .scene-card,
+  .stage-prison .scene-card,
+  .stage-devilReturn .scene-card,
+  .stage-supplication .scene-card,
+  .stage-testament .scene-card {
+    width: 54vw;
+    min-height: 100svh;
+    margin-left: auto;
+    padding: 70px 4vw 34px 3vw;
+    overflow: visible;
+    justify-content: flex-start;
+  }
+
+  .scene-card-east,
+  .stage-luxury .scene-card,
+  .stage-ghost .scene-card,
+  .stage-return .scene-card,
+  .stage-reckoning .scene-card,
+  .stage-renounce .scene-card,
+  .stage-humiliation .scene-card,
+  .stage-prison .scene-card,
+  .stage-devilReturn .scene-card,
+  .stage-supplication .scene-card,
+  .stage-testament .scene-card {
+    margin-right: auto;
+    margin-left: 0;
+    padding-right: 3vw;
+    padding-left: 4vw;
+  }
+
+  .scene-card h1,
+  .stage-intro .scene-card h1 {
+    font-size: clamp(32px, 6vw, 50px);
+    line-height: 1.02;
+  }
+
+  .scene-body { font-size: 12px; line-height: 1.62; }
+  .bilingual-quote { padding: 13px 15px; }
+  .bilingual-quote span { font-size: 11px; line-height: 1.55; }
+
+  .stage-bell .devil-figure {
+    top: 62px;
+    right: auto;
+    bottom: auto;
+    left: 4vw;
+    width: 30vw;
+    height: calc(100svh - 76px);
+    opacity: 0.78;
+  }
+
+  .stage-luxury .ti-figure,
+  .stage-ghost .ti-figure,
+  .stage-reckoning .ti-figure,
+  .stage-return .ti-figure,
+  .stage-renounce .ti-figure,
+  .stage-prison .ti-figure,
+  .stage-devilReturn .ti-figure,
+  .stage-testament .ti-figure {
+    right: -2vw;
+    bottom: 2vh;
+    width: 46vw;
+    height: auto;
+    opacity: 0.82;
+  }
+
+  .stage-luxury .corpse-toggle,
+  .stage-ghost .corpse-toggle,
+  .stage-reckoning .corpse-toggle,
+  .stage-return .corpse-toggle,
+  .stage-renounce .corpse-toggle,
+  .stage-prison .corpse-toggle,
+  .stage-devilReturn .corpse-toggle,
+  .stage-testament .corpse-toggle {
+    right: 8vw;
+    bottom: 14vh;
+  }
+
+  .intercut-stage {
+    inset: 54px 0 auto;
+    min-height: calc(100svh - 54px);
+    overflow-y: auto;
+  }
+
+  .intercut-heading {
+    top: 18px;
+    left: 22px;
+    width: 44vw;
+  }
+
+  .intercut-heading h2 {
+    margin-top: 4px;
+    font-size: clamp(31px, 6vw, 46px);
+  }
+
+  .intercut-heading p { margin-top: 3px; }
+
+  .intercut-copy {
+    top: 132px;
+    bottom: auto;
+    left: 22px;
+    width: 50vw;
+    max-height: none;
+    padding: 13px 14px;
+  }
+
+  .intercut-copy .bilingual-quote { margin: 7px 0; }
+
+  .intercut-controls {
+    top: 38px;
+    right: 4vw;
+    bottom: auto;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .intercut-control-item {
+    min-width: 180px;
+    justify-content: flex-end;
+  }
+
+  .intercut-control-hint {
+    position: static;
+    width: 88px;
+    text-align: right;
+  }
+
+  .space-globe { width: 68px; height: 68px; }
+  .time-watch { width: 60px; height: 68px; }
+
+  .intercut-day-track {
+    right: 4vw;
+    bottom: 16px;
+    left: auto;
+    transform: none;
+  }
+
+  .map-workbench {
+    top: 54px;
+    display: grid;
+    min-height: calc(100svh - 54px);
+    padding: 18px 20px 28px;
+    grid-template-columns: minmax(150px, 26vw) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 14px 18px;
+    overflow-y: auto;
+  }
+
+  .map-workbench-heading,
+  .map-paper,
+  .map-conversation {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: 0;
+  }
+
+  .map-workbench-heading { grid-row: 1; grid-column: 1; }
+  .map-workbench-heading h2 { margin-top: 6px; font-size: clamp(29px, 5vw, 42px); }
+  .map-workbench-heading p { margin-top: 7px; }
+
+  .map-paper {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    width: 100%;
+    max-width: 720px;
+    align-self: start;
+  }
+
+  .map-conversation {
+    grid-row: 2;
+    grid-column: 1;
+    max-height: none;
+    padding: 11px 12px;
+  }
+
+  .map-conversation .bilingual-quote { padding: 9px 10px; }
+  .map-hand-control { width: 34%; }
 }
 
 @media (max-width: 640px) {
@@ -5758,7 +5960,7 @@ blockquote {
 .mission-awakening-scene,
 .mission-awakening-darkness,
 .mission-awakening::after { position: fixed; inset: 0; pointer-events: none; }
-.mission-awakening-scene { z-index: 0; background-image: url("/mission-cloister-v7.png"); background-position: center; background-size: cover; filter: saturate(0.62) contrast(1.07) brightness(0.65); transform: scale(1.025); }
+.mission-awakening-scene { z-index: 0; background-image: url("/mission-cloister-v7.webp"); background-position: center; background-size: cover; filter: saturate(0.62) contrast(1.07) brightness(0.65); transform: scale(1.025); }
 .mission-awakening-darkness { z-index: 1; background: #000; opacity: 1; transition: opacity 1.25s cubic-bezier(0.32, 0.02, 0.2, 1); }
 .mission-awakening.phase-opening.attempt-1 .mission-awakening-darkness { opacity: 0.58; }
 .mission-awakening.phase-opening.attempt-2 .mission-awakening-darkness { opacity: 0.28; transition-duration: 1.4s; }
@@ -5829,4 +6031,106 @@ blockquote {
     transform: scale(1);
     animation: none !important;
   }
+}
+
+/* Phone rules above are intentionally broad. This last cascade restores the
+   compact landscape composition after those portrait-oriented defaults. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .topbar { height: 54px; padding: 0 18px; }
+  .progress-track { top: 53px; }
+
+  .scene-card,
+  .scene-card-east,
+  .stage-mission .scene-card,
+  .stage-luxury .scene-card,
+  .stage-ghost .scene-card,
+  .stage-return .scene-card,
+  .stage-reckoning .scene-card,
+  .stage-renounce .scene-card,
+  .stage-humiliation .scene-card,
+  .stage-prison .scene-card,
+  .stage-devilReturn .scene-card,
+  .stage-supplication .scene-card,
+  .stage-testament .scene-card {
+    width: 54vw;
+    min-height: 100svh;
+    padding: 70px 4vw 34px 3vw;
+  }
+
+  .scene-card-east,
+  .stage-luxury .scene-card,
+  .stage-ghost .scene-card,
+  .stage-return .scene-card,
+  .stage-reckoning .scene-card,
+  .stage-renounce .scene-card,
+  .stage-humiliation .scene-card,
+  .stage-prison .scene-card,
+  .stage-devilReturn .scene-card,
+  .stage-supplication .scene-card,
+  .stage-testament .scene-card {
+    padding-right: 3vw;
+    padding-left: 4vw;
+  }
+
+  .scene-card h1,
+  .stage-intro .scene-card h1 { font-size: clamp(32px, 6vw, 50px); }
+
+  .stage-bell .devil-figure {
+    top: 62px;
+    right: auto;
+    left: 4vw;
+    width: 30vw;
+    height: calc(100svh - 76px);
+    opacity: 0.78;
+  }
+
+  .stage-luxury .ti-figure,
+  .stage-ghost .ti-figure,
+  .stage-reckoning .ti-figure,
+  .stage-return .ti-figure,
+  .stage-renounce .ti-figure,
+  .stage-prison .ti-figure,
+  .stage-devilReturn .ti-figure,
+  .stage-testament .ti-figure {
+    right: -2vw;
+    bottom: 2vh;
+    width: 46vw;
+  }
+
+  .stage-luxury .corpse-toggle,
+  .stage-ghost .corpse-toggle,
+  .stage-reckoning .corpse-toggle,
+  .stage-return .corpse-toggle,
+  .stage-renounce .corpse-toggle,
+  .stage-prison .corpse-toggle,
+  .stage-devilReturn .corpse-toggle,
+  .stage-testament .corpse-toggle { right: 8vw; bottom: 14vh; }
+
+  .intercut-stage { inset: 54px 0 auto; min-height: calc(100svh - 54px); }
+  .intercut-heading { top: 18px; left: 22px; width: 44vw; }
+  .intercut-heading h2 { font-size: clamp(31px, 6vw, 46px); }
+  .intercut-copy { top: 132px; bottom: 14px; left: 22px; width: 50vw; max-height: none; overflow: auto; }
+  .intercut-copy { scrollbar-color: rgba(184, 149, 82, 0.55) transparent; scrollbar-width: thin; }
+  .intercut-copy::-webkit-scrollbar { width: 4px; }
+  .intercut-copy::-webkit-scrollbar-track { background: transparent; }
+  .intercut-copy::-webkit-scrollbar-thumb { background: rgba(184, 149, 82, 0.55); }
+  .intercut-controls { top: 38px; right: 4vw; bottom: auto; flex-direction: column; gap: 12px; }
+  .intercut-control-item { min-width: 180px; }
+  .intercut-control-hint { position: static; width: 88px; }
+  .space-globe { width: 68px; height: 68px; }
+  .time-watch { width: 60px; height: 68px; }
+  .intercut-day-track { right: 4vw; bottom: 16px; left: auto; transform: none; }
+
+  .map-workbench { top: 54px; padding: 18px 20px 28px; }
+  .stage-camilloffReturn:has(.map-workbench) .scene-card {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+  .stage-camilloffReturn:has(.map-workbench) .scene-card > .scene-kicker,
+  .stage-camilloffReturn:has(.map-workbench) .scene-card > h1,
+  .stage-camilloffReturn:has(.map-workbench) .scene-card > .scene-pt { visibility: hidden; }
+  .map-workbench-heading h2 { font-size: clamp(29px, 5vw, 42px); }
+  .map-paper { width: 100%; margin: 0; }
+  .map-hand-control { width: 34%; }
 }

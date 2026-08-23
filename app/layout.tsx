@@ -18,13 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
       description: shareDescription,
       type: "website",
       locale: "zh_CN",
-      images: [{ url: `${origin}/og.png`, width: 1728, height: 906, alt: "《满大人》交互叙事游戏封面" }],
+      images: [{ url: `${origin}/og.webp`, width: 1728, height: 906, alt: "《满大人》交互叙事游戏封面" }],
     },
     twitter: {
       card: "summary_large_image",
       title: "《满大人》· 交互叙事",
       description: shareDescription,
-      images: [`${origin}/og.png`],
+      images: [`${origin}/og.webp`],
     },
     icons: {
       icon: "/favicon.svg",

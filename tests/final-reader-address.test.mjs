@@ -47,7 +47,7 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(styles, /bellMoment 3\.6s/);
   assert.match(styles, /slowBlackout 3\.6s/);
   assert.doesNotMatch(styles, /\.address p:last-child \{[^}]*font-size/s);
-  assert.match(styles, /teodoro-final-address-v1\.png/);
+  assert.match(styles, /teodoro-final-address-v1\.webp/);
   assert.match(versionCopy, /“满大人”和“狄鑫福”两个译名使用周汉军译本《满大人》中的译法/);
   assert.match(versionCopy, /游戏内的原作引文均由游戏制作者翻译/);
   assert.match(page, /ABOUT_COPY\.map\(\(paragraph\) => <p key=\{paragraph\}>/);
@@ -59,5 +59,5 @@ test("turns the final artifacts into an automatic address to the reader", async 
     assert.match(versionCopy, new RegExp(`src: ["']${source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`));
   }
 
-  await access(new URL("../public/teodoro-final-address-v1.png", import.meta.url));
+  await access(new URL("../public/teodoro-final-address-v1.webp", import.meta.url));
 });

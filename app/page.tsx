@@ -540,7 +540,7 @@ function TiChinFu({ intensity = 1, revealed, onInspect }: { intensity?: number; 
       >
         {/* A raw img keeps the transparent corpse cutout portable in the edge build. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福身穿黄绸、仰卧而死，冷臂抱着纸鸢" />
+        <img src="/ti-chin-fu-corpse-v3.webp" alt="狄鑫福身穿黄绸、仰卧而死，冷臂抱着纸鸢" />
       </button>
       <button
         className={`corpse-toggle ${revealed ? "is-dismiss" : "is-question"}`}
@@ -558,7 +558,7 @@ function DevilFigure() {
   return (
     <figure className="devil-figure" aria-label="魔鬼：黑衣、高礼帽、黑手套，双手按在雨伞柄上">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/devil-seated-cutout-v2.png" alt="身穿黑衣、戴高礼帽、双手戴黑手套并按着雨伞柄的魔鬼" />
+      <img src="/devil-seated-cutout-v2.webp" alt="身穿黑衣、戴高礼帽、双手戴黑手套并按着雨伞柄的魔鬼" />
     </figure>
   );
 }
@@ -830,37 +830,37 @@ export default function Home() {
   const nextReturnStop = returnPlaces.find((place) => !returnStops.includes(place));
   const isEast = ["map", "beijing", "repose", "camilloffDeparture", "camilloffIntercut", "camilloffReturn", "tienho", "mission", "letter"].includes(stage);
   const backgrounds: Record<Stage, string> = {
-    intro: "/intro-cover-v1.png",
-    office: "/ministry-office-awake-v1.png",
-    market: "/feira-da-ladra-v1.png",
-    room: "/lisbon-room-v3.png",
-    book: "/lisbon-room-v3.png",
-    bell: "/lisbon-room-v3.png",
-    tiDeath: "/ti-chin-fu-death-garden-v1.png",
-    refusalEnding: "/lisbon-room-v3.png",
-    inheritance: "/inheritance-messenger-v1.png",
-    luxury: "/palace-ghost.png",
-    ghost: "/palace-ghost.png",
-    map: "/east-journey.png",
-    beijing: "/pequim-arrival-v1.png",
-    repose: "/pequim-litter-interior-v1.png",
-    camilloffDeparture: "/camilloff-departure-v1.png",
-    camilloffIntercut: "/camilloff-day1-mansion.png",
-    camilloffReturn: "/camilloff-return-map-v1.png",
-    tienho: "/tienho-reality-v1.png",
-    mission: "/mission-cloister-v7.png",
-    letter: "/mission-room-v1.png",
-    return: "/lisbon-room-v3.png",
-    reckoning: "/palace-ghost.png",
-    renounce: "/renounce-room-v1.png",
-    prison: "/loreto-restored-v1.png",
-    devilReturn: "/devil-alone-street-v2.png",
-    supplication: "/devil-alone-street-v2.png",
-    testament: "/testament-study-v2.png",
+    intro: "/intro-cover-v1.webp",
+    office: "/ministry-office-awake-v1.webp",
+    market: "/feira-da-ladra-v1.webp",
+    room: "/lisbon-room-v3.webp",
+    book: "/lisbon-room-v3.webp",
+    bell: "/lisbon-room-v3.webp",
+    tiDeath: "/ti-chin-fu-death-garden-v1.webp",
+    refusalEnding: "/lisbon-room-v3.webp",
+    inheritance: "/inheritance-messenger-v1.webp",
+    luxury: "/palace-ghost.webp",
+    ghost: "/palace-ghost.webp",
+    map: "/east-journey.webp",
+    beijing: "/pequim-arrival-v1.webp",
+    repose: "/pequim-litter-interior-v1.webp",
+    camilloffDeparture: "/camilloff-departure-v1.webp",
+    camilloffIntercut: "/camilloff-day1-mansion.webp",
+    camilloffReturn: "/camilloff-return-map-v1.webp",
+    tienho: "/tienho-reality-v1.webp",
+    mission: "/mission-cloister-v7.webp",
+    letter: "/mission-room-v1.webp",
+    return: "/lisbon-room-v3.webp",
+    reckoning: "/palace-ghost.webp",
+    renounce: "/renounce-room-v1.webp",
+    prison: "/loreto-restored-v1.webp",
+    devilReturn: "/devil-alone-street-v2.webp",
+    supplication: "/devil-alone-street-v2.webp",
+    testament: "/testament-study-v2.webp",
   };
   const beijingStreetBackgrounds: Record<Exclude<BeijingDestination, "">, string> = {
-    tartar: "/pequim-tartar-city-v1.png",
-    chinese: "/pequim-chinese-quarter-v1.png",
+    tartar: "/pequim-tartar-city-v1.webp",
+    chinese: "/pequim-chinese-quarter-v1.webp",
   };
   const background = backgrounds[stage];
   const ghostIntensity = stage === "luxury" ? chosenLuxuries.length : corpsePresenceStages.includes(stage) ? 3 : 0;
@@ -1479,7 +1479,7 @@ export default function Home() {
               <div className="bell-choice">
                 <button className={`bell-object ${ringing ? "is-ringing" : ""}`} onClick={ringBell} disabled={ringing} aria-label="摇铃">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/bell-v1.png" alt="一柄精致的十九世纪欧洲黄铜手摇铃" />
+                  <img src="/bell-v1.webp" alt="一柄精致的十九世纪欧洲黄铜手摇铃" />
                 </button>
                 <div className="choice-stack">
                   <button className="choice-button dangerous" onClick={ringBell} disabled={ringing}><span>摇铃</span></button>
@@ -1495,9 +1495,9 @@ export default function Home() {
             <div className="death-mist death-mist-back" aria-hidden="true" />
             <div className="death-character-stage" aria-label="狄鑫福在花园溪流旁的草岸上听见铃声后倒地身亡的剪纸动画">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="ti-alive-cutout" src="/ti-chin-fu-alive-v3.png" alt="肥胖、白胡子的狄鑫福身穿黄绸，怀抱纸鸢，站在溪流旁的草岸上" />
+              <img className="ti-alive-cutout" src="/ti-chin-fu-alive-v3.webp" alt="肥胖、白胡子的狄鑫福身穿黄绸，怀抱纸鸢，站在溪流旁的草岸上" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="ti-corpse-cutout" src="/ti-chin-fu-corpse-v3.png" alt="狄鑫福仰面倒在溪边草地上，冰冷的双臂仍抱着纸鸢" />
+              <img className="ti-corpse-cutout" src="/ti-chin-fu-corpse-v3.webp" alt="狄鑫福仰面倒在溪边草地上，冰冷的双臂仍抱着纸鸢" />
               <div className="death-ground-shadow" aria-hidden="true" />
             </div>
             <div className="death-mist death-mist-front" aria-hidden="true" />
@@ -1922,7 +1922,7 @@ export default function Home() {
           {ringing && (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/bell-v1.png" alt="" />
+              <img src="/bell-v1.webp" alt="" />
             </>
           )}
         </div>

@@ -323,14 +323,14 @@ export default function BeijingCurtainScene({
         className={`${styles.stage} ${isDragging ? styles.dragging : ""} ${isSettling ? styles.settling : ""} ${progress === 1 ? styles.open : ""}`}
         style={sceneStyle}
       >
-        <img className={styles.interior} src="/curtain-prototype-interior-v1.png" alt="特奥多罗坐在轿厢中" draggable={false} />
+        <img className={styles.interior} src="/curtain-prototype-interior-v1.webp" alt="特奥多罗坐在轿厢中" draggable={false} />
         <div className={styles.window}>
           <img className={styles.exterior} src={exterior} alt={`${title}的轿帘外景`} draggable={false} />
           <div className={styles.windowHush} aria-hidden="true" />
-          <img className={styles.curtain} src="/curtain-prototype-panel-v1.png" alt="" draggable={false} aria-hidden="true" />
+          <img className={styles.curtain} src="/curtain-prototype-panel-v1.webp" alt="" draggable={false} aria-hidden="true" />
           <div className={styles.windowGrain} aria-hidden="true" />
         </div>
-        <img className={styles.dragHand} src="/curtain-prototype-hand-v1.png" alt="" draggable={false} aria-hidden="true" />
+        <img className={styles.dragHand} src="/curtain-prototype-hand-v1.webp" alt="" draggable={false} aria-hidden="true" />
         <div
           className={styles.handHandle}
           role="slider"

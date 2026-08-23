@@ -25,7 +25,7 @@ test("server-renders the Chinese O Mandarim experience", async () => {
   assert.match(html, /葡萄牙作家埃萨·德·凯罗斯同名小说改编的交互叙事游戏/);
   assert.match(html, /如果你能让一个遥远国度的陌生人立刻死去/);
   assert.match(html, /建议开启声音，并使用横屏或电脑游玩/);
-  assert.match(html, /og\.png/);
+  assert.match(html, /og\.webp/);
   assert.doesNotMatch(html, /序章/);
   assert.doesNotMatch(html, /Your site is taking shape|react-loading-skeleton/);
 });
@@ -79,7 +79,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /留在府邸等待消息/);
   assert.match(page, /onComplete=\{\(\) => go\("camilloffReturn"\)\}/);
   assert.match(camilloffIntercut, /等待卡米洛夫归来/);
-  assert.match(page, /camilloff-return-map-v1\.png/);
+  assert.match(page, /camilloff-return-map-v1\.webp/);
   assert.match(page, /前往卡米洛夫府邸/);
   assert.match(page, /回到卡米洛夫府邸，我把那柄摇铃/);
   assert.match(page, /Faça uma coisa\. Procure a família de Ti Chin-Fu/);
@@ -111,7 +111,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(camilloffReturn, /抬头看向卡米洛夫/);
   assert.match(camilloffReturn, /与萨托一同前往天河村/);
   assert.doesNotMatch(page, /beijingDismounted/);
-  assert.match(page, /pequim-litter-interior-v1\.png/);
+  assert.match(page, /pequim-litter-interior-v1\.webp/);
   assert.doesNotMatch(page, /beijingDrift|reposeInterrupted|文人服饰|隐逸之亭/);
   assert.match(tienho, /tienho-prototype\/index\.html\?embedded=1/);
   assert.match(tienhoPrototype, /天河村外的荒野/);
@@ -122,7 +122,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /好吧，狄鑫福已经满意了/);
   assert.match(page, /特奥多罗的小房间/);
   assert.match(page, /狄鑫福是在返程的船上突然重新出现的/);
-  assert.match(page, /return: "\/lisbon-room-v3\.png"/);
+  assert.match(page, /return: "\/lisbon-room-v3\.webp"/);
   assert.doesNotMatch(page, /狄鑫福 · \{place\}/);
   assert.match(page, /来吧，特奥多罗，我的朋友/);
   assert.match(page, /No fundo da China existe um mandarim/);
@@ -167,15 +167,15 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(supplication, />\s*乞求 <span>→<\/span>/);
   assert.match(supplication, />\s*再看一次\s*<\/button>/);
   assert.doesNotMatch(supplication, /重播/);
-  assert.match(supplication, /devil-alone-street-v2\.png/);
+  assert.match(supplication, /devil-alone-street-v2\.webp/);
   assert.doesNotMatch(supplication, /phaseCopy|特奥多罗冲向那个黑衣人|跪倒在湿冷的石路上|手指几乎触到衣料时|支撑骤然落空/);
   assert.match(page, /preview === "devil-return"/);
   assert.match(page, /preview === "supplication"/);
   assert.match(page, /preview === "bell"/);
   assert.match(page, /preview === "tienho"/);
-  assert.match(page, /ti-chin-fu-corpse-v3\.png/);
-  assert.match(page, /devil-seated-cutout-v2\.png/);
-  assert.match(page, /bell-v1\.png/);
+  assert.match(page, /ti-chin-fu-corpse-v3\.webp/);
+  assert.match(page, /devil-seated-cutout-v2\.webp/);
+  assert.match(page, /bell-v1\.webp/);
   assert.match(page, /返回上一页/);
   assert.match(page, /<span>物件<\/span>/);
   assert.match(page, /进入故事世界/);
@@ -252,8 +252,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /setInheritanceOpened\(true\); setGhostRevealed\(true\)/);
   assert.doesNotMatch(page, /stage === "inheritance" && inheritanceOpened/);
   assert.match(page, /回到房间/);
-  assert.match(page, /mission-cloister-v7\.png/);
-  assert.match(page, /mission-room-v1\.png/);
+  assert.match(page, /mission-cloister-v7\.webp/);
+  assert.match(page, /mission-room-v1\.webp/);
   assert.doesNotMatch(page, /id: "letter", label: "卡米洛夫的信"/);
   assert.match(page, /拿起桌上的来信/);
   assert.match(page, /拆开卡米洛夫的来信/);
@@ -292,7 +292,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(styles, /hold-to-fold|fold-hold-progress|reply-letter\.is-folding|folded-letter-settles/);
   assert.match(page, /回到洛雷托 <span>→<\/span>/);
   assert.doesNotMatch(page, /回到洛雷托写下遗嘱/);
-  assert.match(page, /testament-study-v2\.png/);
+  assert.match(page, /testament-study-v2\.webp/);
   assert.match(page, /特奥多罗的遗嘱/);
   assert.match(page, /我把我的百万家财遗赠给魔鬼/);
   assert.match(page, /<button type="button" className=\{finalArtifactsSeen\.includes\("testament"\)[^>]+onClick=\{openFinalTestament\} aria-label="查看遗嘱">遗嘱<\/button>/);
@@ -310,52 +310,44 @@ test("ships the complete narrative and its visual assets", async () => {
     access(new URL("../public/tienho-prototype/index.html", import.meta.url)),
     access(new URL("../public/tienho-prototype/script.js", import.meta.url)),
     access(new URL("../public/tienho-prototype/styles.css", import.meta.url)),
-    access(new URL("../public/tienho-prototype/assets/tienho-dream.png", import.meta.url)),
-    access(new URL("../public/tienho-prototype/assets/tienho-reality.png", import.meta.url)),
-    access(new URL("../public/tienho-prototype/assets/wilderness-teodoro-v2.png", import.meta.url)),
-    access(new URL("../public/lisbon-room-v3.png", import.meta.url)),
-    access(new URL("../public/palace-ghost.png", import.meta.url)),
-    access(new URL("../public/east-journey.png", import.meta.url)),
-    access(new URL("../public/pequim-embassy-v2.png", import.meta.url)),
-    access(new URL("../public/pequim-repose-v1.png", import.meta.url)),
-    access(new URL("../public/pequim-arrival-v1.png", import.meta.url)),
-    access(new URL("../public/pequim-tartar-city-v1.png", import.meta.url)),
-    access(new URL("../public/pequim-chinese-quarter-v1.png", import.meta.url)),
-    access(new URL("../public/pequim-litter-interior-v1.png", import.meta.url)),
-    access(new URL("../public/ministry-office-awake-v1.png", import.meta.url)),
-    access(new URL("../public/ministry-office-dozing-v1.png", import.meta.url)),
-    access(new URL("../public/dream-cloud.png", import.meta.url)),
-    access(new URL("../public/feira-da-ladra-v1.png", import.meta.url)),
-    access(new URL("../public/camilloff-meeting-v1.png", import.meta.url)),
-    access(new URL("../public/camilloff-departure-v1.png", import.meta.url)),
-    access(new URL("../public/camilloff-return-map-v1.png", import.meta.url)),
-    access(new URL("../public/camilloff-map-hand-v1.png", import.meta.url)),
-    access(new URL("../public/camilloff-day1-mansion.png", import.meta.url)),
-    access(new URL("../public/camilloff-day1-yamen.png", import.meta.url)),
-    access(new URL("../public/camilloff-day2-mansion.png", import.meta.url)),
-    access(new URL("../public/camilloff-day2-yamen.png", import.meta.url)),
-    access(new URL("../public/camilloff-day3-mansion.png", import.meta.url)),
-    access(new URL("../public/camilloff-day3-yamen.png", import.meta.url)),
-    access(new URL("../public/camilloff-day4-mansion.png", import.meta.url)),
-    access(new URL("../public/camilloff-day4-yamen.png", import.meta.url)),
-    access(new URL("../public/intro-cover-v1.png", import.meta.url)),
-    access(new URL("../public/inheritance-messenger-v1.png", import.meta.url)),
-    access(new URL("../public/tienho-dream-v1.png", import.meta.url)),
-    access(new URL("../public/tienho-reality-v1.png", import.meta.url)),
-    access(new URL("../public/mission-cloister-v7.png", import.meta.url)),
-    access(new URL("../public/mission-room-v1.png", import.meta.url)),
-    access(new URL("../public/wilderness-teodoro-v2.png", import.meta.url)),
-    access(new URL("../public/renounce-room-v1.png", import.meta.url)),
-    access(new URL("../public/teodoro-desk-v1.png", import.meta.url)),
-    access(new URL("../public/loreto-restored-v1.png", import.meta.url)),
-    access(new URL("../public/devil-street-v1.png", import.meta.url)),
-    access(new URL("../public/devil-alone-street-v2.png", import.meta.url)),
-    access(new URL("../public/devil-vanished-v1.png", import.meta.url)),
-    access(new URL("../public/testament-ending-v1.png", import.meta.url)),
-    access(new URL("../public/testament-study-v2.png", import.meta.url)),
-    access(new URL("../public/ti-chin-fu-corpse-v3.png", import.meta.url)),
-    access(new URL("../public/devil-seated-cutout-v2.png", import.meta.url)),
-    access(new URL("../public/bell-v1.png", import.meta.url)),
+    access(new URL("../public/tienho-prototype/assets/tienho-dream.webp", import.meta.url)),
+    access(new URL("../public/tienho-prototype/assets/tienho-reality.webp", import.meta.url)),
+    access(new URL("../public/tienho-prototype/assets/wilderness-teodoro-v2.webp", import.meta.url)),
+    access(new URL("../public/lisbon-room-v3.webp", import.meta.url)),
+    access(new URL("../public/palace-ghost.webp", import.meta.url)),
+    access(new URL("../public/east-journey.webp", import.meta.url)),
+    access(new URL("../public/pequim-arrival-v1.webp", import.meta.url)),
+    access(new URL("../public/pequim-tartar-city-v1.webp", import.meta.url)),
+    access(new URL("../public/pequim-chinese-quarter-v1.webp", import.meta.url)),
+    access(new URL("../public/pequim-litter-interior-v1.webp", import.meta.url)),
+    access(new URL("../public/ministry-office-awake-v1.webp", import.meta.url)),
+    access(new URL("../public/ministry-office-dozing-v1.webp", import.meta.url)),
+    access(new URL("../public/dream-cloud.webp", import.meta.url)),
+    access(new URL("../public/feira-da-ladra-v1.webp", import.meta.url)),
+    access(new URL("../public/camilloff-departure-v1.webp", import.meta.url)),
+    access(new URL("../public/camilloff-return-map-v1.webp", import.meta.url)),
+    access(new URL("../public/camilloff-map-hand-v1.webp", import.meta.url)),
+    access(new URL("../public/camilloff-day1-mansion.webp", import.meta.url)),
+    access(new URL("../public/camilloff-day1-yamen.webp", import.meta.url)),
+    access(new URL("../public/camilloff-day2-mansion.webp", import.meta.url)),
+    access(new URL("../public/camilloff-day2-yamen.webp", import.meta.url)),
+    access(new URL("../public/camilloff-day3-mansion.webp", import.meta.url)),
+    access(new URL("../public/camilloff-day3-yamen.webp", import.meta.url)),
+    access(new URL("../public/camilloff-day4-mansion.webp", import.meta.url)),
+    access(new URL("../public/camilloff-day4-yamen.webp", import.meta.url)),
+    access(new URL("../public/intro-cover-v1.webp", import.meta.url)),
+    access(new URL("../public/inheritance-messenger-v1.webp", import.meta.url)),
+    access(new URL("../public/tienho-reality-v1.webp", import.meta.url)),
+    access(new URL("../public/mission-cloister-v7.webp", import.meta.url)),
+    access(new URL("../public/mission-room-v1.webp", import.meta.url)),
+    access(new URL("../public/wilderness-teodoro-v2.webp", import.meta.url)),
+    access(new URL("../public/renounce-room-v1.webp", import.meta.url)),
+    access(new URL("../public/loreto-restored-v1.webp", import.meta.url)),
+    access(new URL("../public/devil-alone-street-v2.webp", import.meta.url)),
+    access(new URL("../public/testament-study-v2.webp", import.meta.url)),
+    access(new URL("../public/ti-chin-fu-corpse-v3.webp", import.meta.url)),
+    access(new URL("../public/devil-seated-cutout-v2.webp", import.meta.url)),
+    access(new URL("../public/bell-v1.webp", import.meta.url)),
     access(new URL("../public/audio/unsolved-investigation-v1.ogg", import.meta.url)),
     access(new URL("../public/audio/apparitions-ball.mp3", import.meta.url)),
     access(new URL("../public/audio/i-swear-i-saw-it.ogg", import.meta.url)),

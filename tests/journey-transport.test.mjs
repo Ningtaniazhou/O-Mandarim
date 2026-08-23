@@ -16,11 +16,11 @@ test("shows the five transport stages from Lisbon to Beijing", async () => {
   assert.doesNotMatch(page, /下一程.*routeTransports/);
   assert.doesNotMatch(page, /<small>\{transport\.label\}<\/small>/);
 
-  assert.match(styles, /journey-transport-train-v1\.png/);
-  assert.match(styles, /journey-transport-mail-steamer-v1\.png/);
-  assert.match(styles, /journey-transport-river-steamer-v1\.png/);
-  assert.match(styles, /journey-transport-flatboat-v1\.png/);
-  assert.match(styles, /journey-transport-pony-v1\.png/);
+  assert.match(styles, /journey-transport-train-v1\.webp/);
+  assert.match(styles, /journey-transport-mail-steamer-v1\.webp/);
+  assert.match(styles, /journey-transport-river-steamer-v1\.webp/);
+  assert.match(styles, /journey-transport-flatboat-v1\.webp/);
+  assert.match(styles, /journey-transport-pony-v1\.webp/);
   assert.match(styles, /transport-mail-steamer/);
   assert.match(styles, /transport-river-steamer/);
   assert.match(styles, /transport-flatboat/);
@@ -32,5 +32,5 @@ test("shows the five transport stages from Lisbon to Beijing", async () => {
     "river-steamer",
     "flatboat",
     "pony",
-  ].map((name) => access(new URL(`../public/journey-transport-${name}-v1.png`, import.meta.url))));
+  ].map((name) => access(new URL(`../public/journey-transport-${name}-v1.webp`, import.meta.url))));
 });
