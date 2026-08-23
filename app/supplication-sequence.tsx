@@ -132,7 +132,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
           {phase === "aftermath" && (
             <div className={styles.sequenceActions}>
               <button className={styles.begButton} type="button" onClick={replaySequence}>
-                重播
+                再看一次
               </button>
               <button className={styles.begButton} type="button" onClick={onContinue}>
                 回到洛雷托 <span>→</span>

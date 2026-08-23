@@ -129,7 +129,7 @@ export default function SupplicationPrototypePage() {
             </p>
           </div>
           <button className={styles.begButton} type="button" onClick={beginSupplication} disabled={busy}>
-            {phase === "aftermath" ? "重播" : busy ? "……" : "乞求"}
+            {phase === "aftermath" ? "再看一次" : busy ? "……" : "乞求"}
             {!busy && <span>→</span>}
           </button>
         </aside>

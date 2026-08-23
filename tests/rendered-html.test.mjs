@@ -161,6 +161,8 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /devilDialogue|无法撤销的交易|supplicated/);
   assert.match(supplication, /phase === "waiting"/);
   assert.match(supplication, />\s*乞求 <span>→<\/span>/);
+  assert.match(supplication, />\s*再看一次\s*<\/button>/);
+  assert.doesNotMatch(supplication, /重播/);
   assert.match(supplication, /devil-alone-street-v2\.png/);
   assert.doesNotMatch(supplication, /phaseCopy|特奥多罗冲向那个黑衣人|跪倒在湿冷的石路上|手指几乎触到衣料时|支撑骤然落空/);
   assert.match(page, /preview === "devil-return"/);
