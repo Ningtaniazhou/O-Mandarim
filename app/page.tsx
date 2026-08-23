@@ -1252,6 +1252,11 @@ export default function Home() {
 
   return (
     <main className={`game-shell stage-${stage} ${stage === "camilloffDeparture" ? `departure-${camilloffDeparturePhase}` : ""} ${currentHotspots.length > 0 ? "has-hotspots" : ""} ${showBeijingCurtain ? "has-beijing-curtain" : ""} ${transitioning ? "is-transitioning" : ""} ${ringing ? "is-ringing-bell" : ""} ${finaleStarted ? "is-final-reader-address" : ""}`}>
+      <div className="orientation-gate" role="status" aria-live="polite">
+        <span className="orientation-phone" aria-hidden="true">▯</span>
+        <strong>请将手机横过来</strong>
+        <p>《满大人》的场景与物件交互需要横屏显示。</p>
+      </div>
       <div className="scene-image" style={{ backgroundImage: `url(${background})` }} aria-hidden="true" />
       {stage === "office" && <div className={`office-doze-image ${officeDozing ? "is-visible" : ""}`} aria-hidden="true" />}
       <div className="scene-vignette" aria-hidden="true" />

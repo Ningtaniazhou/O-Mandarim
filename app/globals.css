@@ -36,6 +36,11 @@ body {
 button {
   color: inherit;
   font: inherit;
+  touch-action: manipulation;
+}
+
+.orientation-gate {
+  display: none;
 }
 
 button:focus-visible {
@@ -4743,6 +4748,226 @@ blockquote {
     width: auto;
     padding: 16px 18px;
   }
+}
+
+/* Phones use the game as a landscape stage. Portrait mode is paused with a
+   clear rotation cue; short landscape viewports keep the scenery and controls
+   in the same frame instead of turning every scene into a long text column. */
+@media (max-width: 700px) and (orientation: portrait) {
+  .orientation-gate {
+    position: fixed;
+    z-index: 300;
+    inset: 0;
+    display: grid;
+    padding: 28px;
+    align-content: center;
+    justify-items: center;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(184, 149, 82, 0.16), transparent 28%),
+      rgba(4, 9, 9, 0.97);
+    color: var(--ink);
+    text-align: center;
+  }
+
+  .orientation-phone {
+    display: block;
+    color: var(--gold);
+    font: 78px/1 Arial, sans-serif;
+    transform: rotate(90deg);
+    animation: orientation-turn 2.4s ease-in-out infinite;
+  }
+
+  .orientation-gate strong {
+    margin-top: 26px;
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+  .orientation-gate p {
+    max-width: 280px;
+    margin: 14px 0 0;
+    color: var(--ink-dim);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 540px) {
+  .game-shell {
+    height: 100svh;
+    min-height: 0;
+    overflow-y: hidden;
+  }
+
+  .topbar {
+    height: 54px;
+    padding: 0 20px;
+  }
+
+  .progress-track {
+    top: 53px;
+  }
+
+  .scene-vignette,
+  .stage-intro .scene-vignette,
+  .stage-office .scene-vignette,
+  .stage-market .scene-vignette,
+  .stage-room .scene-vignette,
+  .stage-book .scene-vignette,
+  .stage-bell .scene-vignette,
+  .stage-tiDeath .scene-vignette,
+  .stage-refusalEnding .scene-vignette,
+  .stage-inheritance .scene-vignette {
+    background:
+      linear-gradient(90deg, rgba(4, 9, 9, 0.82) 0%, rgba(4, 9, 9, 0.5) 42%, rgba(4, 9, 9, 0.06) 74%, rgba(4, 9, 9, 0.28) 100%),
+      linear-gradient(0deg, rgba(4, 9, 9, 0.62) 0%, transparent 48%, rgba(4, 9, 9, 0.38) 100%);
+  }
+
+  .stage-intro .scene-vignette,
+  .stage-office .scene-vignette,
+  .stage-market .scene-vignette,
+  .stage-room .scene-vignette,
+  .stage-book .scene-vignette,
+  .stage-bell .scene-vignette,
+  .stage-tiDeath .scene-vignette,
+  .stage-refusalEnding .scene-vignette,
+  .stage-inheritance .scene-vignette {
+    background:
+      linear-gradient(270deg, rgba(4, 9, 9, 0.84) 0%, rgba(4, 9, 9, 0.52) 42%, rgba(4, 9, 9, 0.05) 75%, rgba(4, 9, 9, 0.3) 100%),
+      linear-gradient(0deg, rgba(4, 9, 9, 0.6) 0%, transparent 48%, rgba(4, 9, 9, 0.36) 100%);
+  }
+
+  .scene-card,
+  .stage-mission .scene-card,
+  .stage-luxury .scene-card,
+  .stage-ghost .scene-card,
+  .stage-return .scene-card,
+  .stage-reckoning .scene-card,
+  .stage-renounce .scene-card,
+  .stage-humiliation .scene-card,
+  .stage-prison .scene-card,
+  .stage-devilReturn .scene-card,
+  .stage-supplication .scene-card,
+  .stage-testament .scene-card {
+    width: min(56vw, 520px);
+    min-height: 100svh;
+    max-height: 100svh;
+    margin-right: 0;
+    margin-left: auto;
+    padding: 70px 4vw 28px 3vw;
+    overflow-y: auto;
+    justify-content: center;
+    scrollbar-width: thin;
+  }
+
+  .scene-card-east,
+  .stage-luxury .scene-card,
+  .stage-ghost .scene-card,
+  .stage-return .scene-card,
+  .stage-reckoning .scene-card,
+  .stage-renounce .scene-card,
+  .stage-humiliation .scene-card,
+  .stage-prison .scene-card,
+  .stage-devilReturn .scene-card,
+  .stage-supplication .scene-card,
+  .stage-testament .scene-card {
+    margin-right: auto;
+    margin-left: 0;
+    padding-right: 3vw;
+    padding-left: 4vw;
+  }
+
+  .scene-card h1,
+  .stage-intro .scene-card h1 {
+    font-size: clamp(32px, 6vw, 52px);
+  }
+
+  .stage-intro .scene-card h1 {
+    font-size: clamp(38px, 7vw, 58px);
+  }
+
+  .scene-kicker,
+  .chapter-kicker {
+    margin-bottom: 7px;
+    font-size: 9px;
+  }
+
+  .scene-pt {
+    margin-top: 7px;
+    font-size: 11px;
+  }
+
+  .intro-content,
+  .scene-body {
+    margin-top: 14px;
+  }
+
+  .office-mobile-documents {
+    margin: 8px 0 6px;
+    gap: 4px;
+  }
+
+  .office-mobile-documents button {
+    min-height: 36px;
+    padding: 7px 10px;
+  }
+
+  .office-actions {
+    margin-top: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .office-document-progress,
+  .object-action {
+    min-height: 64px;
+    padding: 9px 11px;
+  }
+
+  .scene-body {
+    font-size: 12px;
+    line-height: 1.58;
+  }
+
+  .scene-body > p,
+  .intro-content > p {
+    margin-bottom: 10px;
+  }
+
+  .lede {
+    font-size: clamp(13px, 2vw, 17px);
+    line-height: 1.55;
+  }
+
+  .primary-action {
+    min-width: 210px;
+    min-height: 46px;
+    padding: 12px 16px;
+  }
+
+  .game-footer {
+    right: 18px;
+    bottom: 8px;
+    left: 18px;
+    font-size: 8px;
+  }
+
+  .tienho-prototype-frame,
+  .intercut-stage,
+  .ti-death-scene {
+    top: 54px;
+  }
+
+  .tienho-prototype-frame {
+    inset: 54px 0 0;
+    height: calc(100svh - 54px);
+  }
+}
+
+@keyframes orientation-turn {
+  0%, 18% { transform: rotate(0deg); }
+  55%, 100% { transform: rotate(90deg); }
 }
 
 @media (max-width: 640px) {
