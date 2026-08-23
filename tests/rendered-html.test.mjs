@@ -38,7 +38,7 @@ test("ships the complete narrative and its visual assets", async () => {
   const tienhoStyles = await readFile(new URL("../public/tienho-prototype/styles.css", import.meta.url), "utf8");
   const tienhoPrototype = `${tienhoMarkup}\n${tienhoScript}\n${tienhoStyles}`;
   const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
-  assert.match(page, /title: "我拒绝", subtitle: ""/);
+  assert.match(page, /title: "坚定的拒绝", subtitle: ""/);
   assert.match(page, /谄媚与奉承/);
   assert.match(page, /与魔鬼的重逢/);
   assert.match(page, /title: "乞求", subtitle: ""/);

@@ -93,7 +93,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   book: { act: "第一幕 · 旧书", title: "发亮的字句", subtitle: "" },
   bell: { act: "第一幕 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
   tiDeath: { act: "第一幕 · 远方", title: "狄鑫福之死", subtitle: "遥远的中国" },
-  refusalEnding: { act: "特别结局", title: "我拒绝", subtitle: "" },
+  refusalEnding: { act: "特别结局", title: "坚定的拒绝", subtitle: "" },
   inheritance: { act: "第二幕 · 财富", title: "陌生人的遗产", subtitle: "" },
   luxury: { act: "第三幕 · 黄金", title: "百万富翁", subtitle: "洛雷托宫殿" },
   ghost: { act: "第三幕 · 亡者", title: "宴席上的客人", subtitle: "狄鑫福" },
