@@ -9,6 +9,7 @@ test("connects departure, abstract intercut, and return map", async () => {
   const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
 
   assert.match(page, /go\("camilloffIntercut"\)/);
+  assert.match(page, /preview === "camilloff-intercut"[\s\S]*setStage\("camilloffIntercut"\)/);
   assert.match(page, /onComplete=\{\(\) => go\("camilloffReturn"\)\}/);
   assert.match(page, /allBeijingStopsVisited[\s\S]*go\("camilloffDeparture"\)/);
   assert.match(page, /"confession" \| "briefing" \| "leaving" \| "gone"/);

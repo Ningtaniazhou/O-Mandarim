@@ -1221,6 +1221,10 @@ export default function Home() {
       setStage("camilloffDeparture");
       setStageHistory([]);
     }
+    if (preview === "camilloff-intercut") {
+      setStage("camilloffIntercut");
+      setStageHistory([]);
+    }
     if (preview === "devil-return") {
       setStage("devilReturn");
       setStageHistory([]);
