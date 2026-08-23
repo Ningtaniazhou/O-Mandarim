@@ -75,7 +75,7 @@ export default function FinalReaderAddress({ onSilence, onRing, onEndingMusic, o
           <button className={styles.restart} onClick={onRestart}>返回故事的开始</button>
           <div className={styles.creditsRoll} aria-label="版本说明与制作人员">
             <p className={styles.creditsKicker}>《满大人》· 交互叙事</p>
-            <p className={styles.about}>{ABOUT_COPY}</p>
+            {ABOUT_COPY.map((paragraph) => <p className={styles.about} key={paragraph}>{paragraph}</p>)}
             <p className={styles.creator}>{CREATOR_COPY}</p>
             <div className={styles.divider} />
             <h3>分幕配乐</h3>

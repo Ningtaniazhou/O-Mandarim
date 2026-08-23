@@ -44,8 +44,10 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(styles, /slowBlackout 3\.6s/);
   assert.doesNotMatch(styles, /\.address p:last-child \{[^}]*font-size/s);
   assert.match(styles, /teodoro-final-address-v1\.png/);
-  assert.match(versionCopy, /“满大人”和“狄鑫福”两个译名沿用周汉军译《满大人》中的译法/);
+  assert.match(versionCopy, /“满大人”和“狄鑫福”两个译名使用周汉军译本《满大人》中的译法/);
   assert.match(versionCopy, /游戏内的原作引文均由游戏制作者翻译/);
+  assert.match(page, /ABOUT_COPY\.map\(\(paragraph\) => <p key=\{paragraph\}>/);
+  assert.match(finale, /ABOUT_COPY\.map\(\(paragraph\) => <p className=\{styles\.about\} key=\{paragraph\}>/);
 
   const audioSources = [...new Set([...page.matchAll(/["'](\/audio\/[^"']+\.(?:mp3|ogg|wav))["']/g)].map((match) => match[1]))];
   assert.equal(audioSources.length, 7);

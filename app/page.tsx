@@ -1967,7 +1967,7 @@ export default function Home() {
           <section className="info-modal" role="dialog" aria-modal="true" aria-label="版本说明">
             <button className="modal-close" onClick={() => setInfoOpen(false)} aria-label="关闭">×</button>
             <div className="scene-kicker">版本说明</div>
-            <p>{ABOUT_COPY}</p>
+            {ABOUT_COPY.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             <p className="credits">{CREATOR_COPY}</p>
             <div className="music-credits">
               <span>分幕配乐</span>
