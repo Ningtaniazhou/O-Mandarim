@@ -285,6 +285,10 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /testament-study-v2\.png/);
   assert.match(page, /特奥多罗的遗嘱/);
   assert.match(page, /我把我的百万家财遗赠给魔鬼/);
+  assert.match(page, /<button type="button" className=\{finalArtifactsSeen\.includes\("testament"\)[^>]+onClick=\{openFinalTestament\} aria-label="查看遗嘱">遗嘱<\/button>/);
+  assert.match(page, /<button type="button" className=\{finalArtifactsSeen\.includes\("book"\)[^>]+onClick=\{openFinalBook\} aria-label="查看《满大人》">《满大人》<\/button>/);
+  assert.match(styles, /\.final-artifact-progress button:hover/);
+  assert.match(styles, /\.final-artifact-progress button:focus-visible/);
   assert.doesNotMatch(page, /《满大人》· 扉页/);
   assert.match(page, /只有我们每日用双手挣来的面包才真正香甜：千万别杀害满大人/);
   assert.match(styles, /will-unfold/);

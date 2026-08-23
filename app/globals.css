@@ -3732,27 +3732,43 @@ blockquote {
   gap: 9px;
 }
 
-.final-artifact-progress span {
+.final-artifact-progress button {
   padding: 8px 11px;
   border: 1px solid rgba(184, 149, 82, 0.32);
+  background: transparent;
   color: rgba(229, 213, 180, 0.58);
   font: 700 10px Arial, "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
 }
 
-.final-artifact-progress span::before {
+.final-artifact-progress button::before {
   margin-right: 6px;
   content: "○";
   color: var(--gold);
 }
 
-.final-artifact-progress span.is-read {
+.final-artifact-progress button:hover,
+.final-artifact-progress button:focus-visible {
+  border-color: rgba(184, 149, 82, 0.78);
+  background: rgba(184, 149, 82, 0.08);
+  color: #f0e1c0;
+  transform: translateY(-1px);
+}
+
+.final-artifact-progress button:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.final-artifact-progress button.is-read {
   border-color: var(--gold);
   background: rgba(184, 149, 82, 0.12);
   color: #f0e1c0;
 }
 
-.final-artifact-progress span.is-read::before {
+.final-artifact-progress button.is-read::before {
   content: "✓";
 }
 

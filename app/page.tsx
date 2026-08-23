@@ -1846,8 +1846,8 @@ export default function Home() {
               <p>我回到洛雷托豪宅，痛苦地坐在办公桌前。魔鬼不肯撤销交易，狄鑫福的尸体也没有离我而去。</p>
               <p>我一日日消沉下去，感到自己时日无多，便把自己的经历写成了书，并且立好了遗嘱。</p>
               <div className="final-artifact-progress" aria-live="polite">
-                <span className={finalArtifactsSeen.includes("testament") ? "is-read" : ""}>遗嘱</span>
-                <span className={finalArtifactsSeen.includes("book") ? "is-read" : ""}>《满大人》</span>
+                <button type="button" className={finalArtifactsSeen.includes("testament") ? "is-read" : ""} onClick={openFinalTestament} aria-label="查看遗嘱">遗嘱</button>
+                <button type="button" className={finalArtifactsSeen.includes("book") ? "is-read" : ""} onClick={openFinalBook} aria-label="查看《满大人》">《满大人》</button>
               </div>
               {finalArtifactsRead && <p className="ending-transition-note">合上最后一页。</p>}
             </div>
