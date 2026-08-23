@@ -30,8 +30,7 @@ test("connects departure, abstract intercut, and return map", async () => {
   assert.doesNotMatch(intercut, /第一小章|印章与茶杯|名单与扇子|门槛与门扉|消息与痕迹/);
   assert.match(intercut, /if \(progress >= 1\)/);
   assert.match(intercut, /watchAdvanced\.current = true;[\s\S]*advanceDay\(\);/);
-  assert.match(intercut, /className="watch-turn-hint"/);
-  assert.match(intercut, /M 17 69 A 38 38 0 1 1 76 78/);
+  assert.doesNotMatch(intercut, /watch-turn-hint|watch-turn-arc|watch-turn-arrow/);
   assert.match(intercut, /她离开时把一只浅色的手套忘在了我的桌上/);
   assert.match(map, /看向桌角的女士手套/);
   assert.match(map, /mapRoutes\.length/);
@@ -41,7 +40,7 @@ test("connects departure, abstract intercut, and return map", async () => {
   assert.match(map, /handDockPositions\[mapStep\]/);
   assert.match(styles, /\.intercut-card\.is-yamen/);
   assert.match(styles, /watch-hand-invitation/);
-  assert.match(styles, /watch-turn-hint-pulse/);
+  assert.match(styles, /filter: brightness\(1\.55\) drop-shadow/);
   assert.match(styles, /\.space-globe \{[\s\S]*width: 84px;[\s\S]*height: 84px;/);
   assert.match(styles, /\.time-watch \{[\s\S]*width: 75px;[\s\S]*height: 84px;/);
   assert.match(styles, /repeating-conic-gradient\(from -1deg/);

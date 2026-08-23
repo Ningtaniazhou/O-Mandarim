@@ -140,7 +140,10 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(camilloffReturn, /与萨托一同前往天河村/);
   assert.match(tienhoPrototype, /官员介绍信/);
   assert.match(tienhoPrototype, /让萨托翻译/);
-  assert.doesNotMatch(tienhoPrototype, /按住钱袋|松开钱袋/);
+  assert.match(tienhoPrototype, /<em>按住钱袋<\/em>/);
+  assert.match(tienhoPrototype, /按住<\/b>带着金币，但脚步更慢/);
+  assert.match(tienhoPrototype, /松开<\/b>金币会洒落，逃跑更快/);
+  assert.doesNotMatch(tienhoPrototype, /cutBagButton[^>]*><span>割断钱袋<\/span><i><\/i><\/button>/);
   assert.match(page, /无法平息的亡灵/);
   assert.match(page, /像罪恶的饰物一样从身上甩掉/);
   assert.match(page, />抛下财产 <span>→<\/span>/);
@@ -179,7 +182,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.doesNotMatch(page, /这是什么？|revealed \? "×"/);
   assert.match(page, /const \[ghostRevealed, setGhostRevealed\] = useState\(true\)/);
   assert.doesNotMatch(page, /尸影尚未显出原貌/);
-  assert.match(page, /const corpsePresenceStages: Stage\[\] = \["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"\]/);
+  assert.match(page, /const corpsePresenceStages: Stage\[\] = \["ghost", "map", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"\]/);
+  assert.match(page, /点击沿途地名，查看狄鑫福如何一路相随/);
+  assert.match(page, /place === nextReturnStop \? "is-next"/);
   assert.doesNotMatch(page, /LateCorpsePresence|late-ti-corpse/);
   assert.match(page, /stageMusic/);
   assert.match(page, /handbell/);
@@ -268,6 +273,9 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(styles, /phase-opening\.attempt-3/);
   assert.match(styles, /phase-closing/);
   assert.match(styles, /room-letter-hotspot/);
+  assert.match(styles, /\.room-letter-hotspot span \{[\s\S]*opacity: 0\.82/);
+  assert.match(styles, /@keyframes return-stop-invitation/);
+  assert.match(styles, /\.stage-map \.ti-figure/);
   assert.match(styles, /incoming-letter-closed/);
   assert.match(styles, /reason-fold-slot/);
   assert.match(styles, /seal-letter-action/);

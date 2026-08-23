@@ -349,8 +349,12 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
 .pursuit-crowd i:nth-child(4) { left: 53%; height: 88%; }
 .pursuit-crowd i:nth-child(5) { left: 72%; height: 72%; }
 
-.escape-bag { position: absolute; z-index: 9; right: 5vw; bottom: 8vh; width: 210px; min-height: 118px; padding: 13px 14px; border: 1px solid rgba(226,177,76,.52); color: #f8dfaa; background: rgba(35,23,10,.84); cursor: pointer; touch-action: none; }
-.escape-bag-art { display: grid; place-items: center; width: 54px; height: 54px; margin: 0 auto 10px; border: 2px solid #dfb354; border-radius: 50%; background: #704515; font-size: 28px; }
+.escape-bag-control { position: absolute; z-index: 9; right: 5vw; bottom: 8vh; display: flex; align-items: center; gap: 12px; }
+.escape-bag-help { display: grid; width: 238px; padding: 11px 13px; border: 1px solid rgba(226,177,76,.28); background: rgba(9,9,8,.76); color: rgba(248,223,170,.72); font: 11px/1.6 system-ui, sans-serif; backdrop-filter: blur(7px); gap: 4px; }
+.escape-bag-help span { display: grid; grid-template-columns: 42px 1fr; align-items: baseline; }
+.escape-bag-help b { color: #f0c875; font-weight: 600; letter-spacing: .12em; }
+.escape-bag { position: relative; width: 104px; min-height: 88px; padding: 10px; border: 1px solid rgba(226,177,76,.52); color: #f8dfaa; background: rgba(35,23,10,.84); cursor: pointer; touch-action: none; }
+.escape-bag-art { display: grid; place-items: center; width: 42px; height: 42px; margin: 0 auto; border: 2px solid #dfb354; border-radius: 50%; background: #704515; font-size: 22px; }
 .escape-bag em { font: normal 11px/1.5 system-ui, sans-serif; }
 .escape-bag.is-held { border-color: #ffe1a0; box-shadow: 0 0 24px rgba(220,159,43,.25); transform: translateY(3px); }
 .escape-bag.is-held .escape-bag-art { animation: bagStrain .38s ease-in-out infinite alternate; }
@@ -361,9 +365,7 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
 .wall-gate h2 { margin: 0; font-weight: 400; }
 .wall-gate > p:not(.eyebrow) { color: rgba(245,236,215,.64); }
 .cut-action { position: relative; min-width: 180px; margin-top: 15px; padding: 13px 18px; overflow: hidden; border: 1px solid #c34b37; color: #ffe7d8; background: rgba(129,28,18,.35); cursor: pointer; }
-.cut-action i { position: absolute; left: -20%; top: 50%; width: 140%; height: 1px; background: #f0bc92; transform: rotate(-4deg); transition: transform .25s ease; }
-.cut-action span { position: relative; z-index: 1; padding: 0 8px; background: #35100c; }
-.cut-action:hover i { transform: rotate(-4deg) scaleX(.25); }
+.cut-action span { position: relative; z-index: 1; padding: 0 8px; }
 
 .wilderness-stage { position: absolute; inset: 0; z-index: 20; overflow: hidden; background: #070b13; }
 .wilderness-image { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(.66) brightness(.74) contrast(1.08); transition: filter 2.2s ease, transform 3s ease; }
@@ -441,7 +443,9 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
   .motive-strip { grid-template-columns: 1fr; }
   .escape-copy { left: 24px; top: 15vh; width: calc(100% - 48px); }
   .escape-hud { left: 20px; bottom: 22px; width: calc(100% - 260px); min-width: 220px; }
-  .escape-bag { right: 18px; bottom: 22px; width: 210px; }
+  .escape-bag-control { right: 18px; bottom: 22px; gap: 8px; }
+  .escape-bag-help { width: 176px; padding: 9px 10px; font-size: 10px; }
+  .escape-bag { width: 84px; min-height: 76px; }
   .runner { right: 8%; width: min(58vw, 420px); }
   .wilderness-copy { left: 24px; top: 13vh; width: calc(100% - 48px); }
   .wilderness-action { left: 50%; bottom: 7vh; transform: translateX(-50%); }

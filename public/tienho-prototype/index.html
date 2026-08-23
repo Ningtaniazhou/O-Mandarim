@@ -58,6 +58,7 @@
 
           <button class="money-bag" id="moneyBag" type="button" aria-label="钱袋">
             <span class="grip-progress"></span>
+            <em>按住钱袋</em>
           </button>
         </div>
 
@@ -124,15 +125,21 @@
             <div><span>钱袋</span><b><i id="goldFill"></i></b><strong id="goldValue">100%</strong></div>
             <div><span>追来的人</span><b><i id="crowdFill"></i></b><strong id="crowdValue">36%</strong></div>
           </div>
-          <button class="escape-bag" id="escapeBag" type="button" aria-label="携带的钱袋">
-            <span class="escape-bag-art">✦</span>
-          </button>
+          <div class="escape-bag-control">
+            <div class="escape-bag-help">
+              <span><b>按住</b>带着金币，但脚步更慢</span>
+              <span><b>松开</b>金币会洒落，逃跑更快</span>
+            </div>
+            <button class="escape-bag" id="escapeBag" type="button" aria-label="按住带着金币，松开金币洒落并加快逃跑">
+              <span class="escape-bag-art">✦</span>
+            </button>
+          </div>
           <div class="escape-coins" id="escapeCoins" aria-hidden="true"></div>
           <section class="wall-gate" id="wallGate" hidden>
             <p class="eyebrow">客栈后窗</p>
             <h2>皮绳挂在了窗栅上。</h2>
             <p>带着钱袋，翻不过去。</p>
-            <button class="cut-action" id="cutBagButton" type="button"><span>割断钱袋</span><i></i></button>
+            <button class="cut-action" id="cutBagButton" type="button"><span>割断钱袋</span></button>
           </section>
         </section>
 

@@ -72,6 +72,8 @@ const routeTransports = [
   { id: "pony", label: "满洲小马", route: "通州 → 北京" },
 ] as const;
 
+const returnPlaces = ["新加坡", "锡兰", "苏伊士", "马耳他", "直布罗陀", "里斯本"] as const;
+
 const letterReasons = [
   { id: "distance", text: "我已经走过半个世界。", mark: "漫长的路已经足以证明诚意。" },
   { id: "tienho", text: "我险些死在天河村。", mark: "干涸的血迹停在这一行旁边。" },
@@ -113,7 +115,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   testament: { act: "正篇结局", title: "弥留之际", subtitle: "洛雷托宫殿" },
 };
 
-const corpsePresenceStages: Stage[] = ["ghost", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"];
+const corpsePresenceStages: Stage[] = ["ghost", "map", "return", "reckoning", "renounce", "prison", "devilReturn", "supplication", "testament"];
 
 const musicCues = {
   mystery: { src: "/audio/unsolved-investigation-v1.ogg", volume: 0.74 },
@@ -825,6 +827,7 @@ export default function Home() {
   const ringing = bellSequence === "ringing";
 
   const info = stageInfo[stage];
+  const nextReturnStop = returnPlaces.find((place) => !returnStops.includes(place));
   const isEast = ["map", "beijing", "repose", "camilloffDeparture", "camilloffIntercut", "camilloffReturn", "tienho", "mission", "letter"].includes(stage);
   const backgrounds: Record<Stage, string> = {
     intro: "/intro-cover-v1.png",
@@ -1756,20 +1759,24 @@ export default function Home() {
             />
             <BilingualQuote compact pt="Era ele, outra vez! E foi ele, perpetuamente!" zh="又是他！阴魂不散！" />
             <p>狄鑫福是在返程的船上突然重新出现的，在随后的旅程中，他再也不愿还我清净。</p>
-            <div className="return-stamps" aria-label="返航地点">
-              {["新加坡", "锡兰", "苏伊士", "马耳他", "直布罗陀", "里斯本"].map((place, index) => (
-                <button key={place} className={returnStops.includes(place) ? "is-read" : ""} style={{ animationDelay: `${index * 0.16}s` }} onClick={() => {
+            <div className="return-route-guide" id="return-route-guide">
+              <span>点击沿途地名，查看狄鑫福如何一路相随。</span>
+              <b>已查看 {returnStops.length} / {returnPlaces.length}</b>
+            </div>
+            <div className="return-stamps" aria-label="返航地点" aria-describedby="return-route-guide">
+              {returnPlaces.map((place, index) => (
+                <button key={place} className={returnStops.includes(place) ? "is-read" : place === nextReturnStop ? "is-next" : ""} style={{ animationDelay: `${index * 0.16}s` }} onClick={() => {
                   setReturnStops((stops) => stops.includes(place) ? stops : [...stops, place]);
                   sound.tone(110 + index * 14, 0.7, 0.11, 0, "triangle");
                 }}>{place}</button>
               ))}
             </div>
-            {returnStops.length >= 6 ? (
+            {returnStops.length >= returnPlaces.length ? (
               <>
                 <BilingualQuote compact pt="Quando desembarquei em Lisboa, no Cais das Colunas, a sua figura bojuda enchia todo o arco da Rua Augusta; […]" zh="当我在里斯本的柱廊码头下船时，他肥胖的身躯填满了奥古斯塔街的整座拱门。" />
                 <button className="primary-action" onClick={() => go("reckoning")}>回到洛雷托 <span>→</span></button>
               </>
-            ) : <p className="discovery-count">已经过 {returnStops.length} / 6</p>}
+            ) : null}
           </div>
         )}
 
