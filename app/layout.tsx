@@ -1,25 +1,37 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "《满大人》· 交互叙事",
-  description: "根据埃萨·德·凯罗斯《满大人》改编：一只铃、一笔巨款与一场无法完成的赎罪之旅。",
-  openGraph: {
+const shareDescription = "《满大人》是一部根据葡萄牙作家埃萨·德·凯罗斯同名小说改编的交互叙事游戏。如果你能让一个遥远国度的陌生人立刻死去，并继承他的千万遗产，你会毫不犹豫地杀掉这个素未谋面的人吗？那么，代价又会是什么呢？建议开启声音，并使用横屏或电脑游玩。";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") || host.includes("[::1]") ? "http" : "https");
+  const origin = `${protocol}://${host}`;
+
+  return {
     title: "《满大人》· 交互叙事",
-    description: "一只铃、一笔巨款与一场无法完成的赎罪之旅。",
-    type: "website",
-    locale: "zh_CN",
-  },
-  twitter: {
-    card: "summary",
-    title: "《满大人》· 交互叙事",
-    description: "根据埃萨·德·凯罗斯小说改编的交互叙事。",
-  },
-  icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-  },
-};
+    description: shareDescription,
+    openGraph: {
+      title: "《满大人》· 交互叙事",
+      description: shareDescription,
+      type: "website",
+      locale: "zh_CN",
+      images: [{ url: `${origin}/og.png`, width: 1728, height: 906, alt: "《满大人》交互叙事游戏封面" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "《满大人》· 交互叙事",
+      description: shareDescription,
+      images: [`${origin}/og.png`],
+    },
+    icons: {
+      icon: "/favicon.svg",
+      shortcut: "/favicon.svg",
+    },
+  };
+}
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

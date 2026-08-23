@@ -22,6 +22,10 @@ test("server-renders the Chinese O Mandarim experience", async () => {
   const html = await response.text();
   assert.match(html, /<title>《满大人》· 交互叙事<\/title>/i);
   assert.match(html, /《满大人》/);
+  assert.match(html, /葡萄牙作家埃萨·德·凯罗斯同名小说改编的交互叙事游戏/);
+  assert.match(html, /如果你能让一个遥远国度的陌生人立刻死去/);
+  assert.match(html, /建议开启声音，并使用横屏或电脑游玩/);
+  assert.match(html, /og\.png/);
   assert.doesNotMatch(html, /序章/);
   assert.doesNotMatch(html, /Your site is taking shape|react-loading-skeleton/);
 });
