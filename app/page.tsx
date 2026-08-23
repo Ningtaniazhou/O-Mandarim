@@ -1519,7 +1519,7 @@ export default function Home() {
             <p className="ending-label">特别结局 · 坚定的拒绝</p>
             <blockquote className="ending-quote">“好极了，我亲爱的朋友。你保住了良心——也保住了贫困。但这只是今天，但愿你未来不会后悔。”</blockquote>
             <p className="original-note">魔鬼消失了。今晚，他的蛊惑没有对你奏效。<br />（以上为游戏原创台词，并非艾萨原文。）</p>
-            <button className="primary-action" onClick={reset}>返回故事世界</button>
+            <button className="primary-action" onClick={() => setFinaleStarted(true)}>播放片尾字幕 <span>→</span></button>
           </div>
         )}
 
@@ -1911,6 +1911,7 @@ export default function Home() {
 
       {finaleStarted && (
         <FinalReaderAddress
+          creditsOnly={stage === "refusalEnding"}
           onSilence={sound.fadeTrack}
           onRing={sound.handbell}
           onEndingMusic={() => sound.restartTrack(musicCues.mystery.src, 0.58)}

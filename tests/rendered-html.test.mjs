@@ -175,7 +175,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /返回上一页/);
   assert.match(page, /<span>物件<\/span>/);
   assert.match(page, /进入故事世界/);
-  assert.match(page, /返回故事世界/);
+  assert.match(page, /播放片尾字幕/);
   assert.match(page, /一柄摇铃/);
   assert.match(page, /className=\{`corpse-toggle \$\{revealed \? "is-dismiss" : "is-question"\}`\}/);
   assert.match(page, /\{revealed \? "还是不看见为好" : "\?"\}/);

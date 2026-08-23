@@ -12,6 +12,8 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(page, /preview === "testament"/);
   assert.match(page, /onRing=\{sound\.handbell\}/);
   assert.match(page, /onEndingMusic=\{\(\) => sound\.restartTrack\(musicCues\.mystery\.src, 0\.58\)\}/);
+  assert.match(page, /creditsOnly=\{stage === "refusalEnding"\}/);
+  assert.match(page, /onClick=\{\(\) => setFinaleStarted\(true\)\}>播放片尾字幕/);
   assert.match(page, /reflection: \{ src: "\/audio\/unsolved-investigation-v1\.ogg", volume: 0\.74 \}/);
   assert.match(page, /const restartTrack = \(src: string, volume: number\)/);
   assert.match(page, /stage === "testament"\) sound\.restartTrack\(cue\.src, cue\.volume\)/);
@@ -27,6 +29,8 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(finale, /读者——我的同类，我的兄弟/);
   assert.match(finale, /ABOUT_COPY/);
   assert.match(finale, /MUSIC_CREDITS/);
+  assert.match(finale, /creditsOnly \? "credits" : "address"/);
+  assert.match(finale, /if \(creditsOnly\) \{[\s\S]*callbacks\.current\.onEndingMusic\(\);[\s\S]*return;/);
   assert.match(finale, /onSilence\(320\)/);
   assert.match(finale, /thirdLine: 4700/);
   assert.match(finale, /ring: 9800/);
@@ -40,6 +44,8 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(styles, /slowBlackout 3\.6s/);
   assert.doesNotMatch(styles, /\.address p:last-child \{[^}]*font-size/s);
   assert.match(styles, /teodoro-final-address-v1\.png/);
+  assert.match(versionCopy, /“满大人”和“狄鑫福”两个译名沿用周汉军译《满大人》中的译法/);
+  assert.match(versionCopy, /游戏内的原作引文均由游戏制作者翻译/);
 
   const audioSources = [...new Set([...page.matchAll(/["'](\/audio\/[^"']+\.(?:mp3|ogg|wav))["']/g)].map((match) => match[1]))];
   assert.equal(audioSources.length, 7);

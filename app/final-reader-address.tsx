@@ -9,6 +9,7 @@ type Props = {
   onRing: () => void;
   onEndingMusic: () => void;
   onRestart: () => void;
+  creditsOnly?: boolean;
 };
 
 type Phase = "address" | "ring" | "credits";
@@ -27,12 +28,16 @@ const timing = {
   credits: 13600,
 } as const;
 
-export default function FinalReaderAddress({ onSilence, onRing, onEndingMusic, onRestart }: Props) {
-  const [lineCount, setLineCount] = useState(0);
-  const [phase, setPhase] = useState<Phase>("address");
+export default function FinalReaderAddress({ onSilence, onRing, onEndingMusic, onRestart, creditsOnly = false }: Props) {
+  const [lineCount, setLineCount] = useState(creditsOnly ? addressLines.length : 0);
+  const [phase, setPhase] = useState<Phase>(creditsOnly ? "credits" : "address");
   const callbacks = useRef({ onSilence, onRing, onEndingMusic });
 
   useEffect(() => {
+    if (creditsOnly) {
+      callbacks.current.onEndingMusic();
+      return;
+    }
     callbacks.current.onSilence(320);
     const timers = [
       window.setTimeout(() => setLineCount(1), timing.firstLine),
@@ -48,12 +53,12 @@ export default function FinalReaderAddress({ onSilence, onRing, onEndingMusic, o
       }, timing.credits),
     ];
     return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, []);
+  }, [creditsOnly]);
 
   const phaseClass = phase === "ring" ? styles.phaseRing : phase === "credits" ? styles.phaseCredits : "";
 
   return (
-    <section className={`${styles.finale} ${phaseClass}`} aria-label="特奥多罗向读者发问">
+    <section className={`${styles.finale} ${phaseClass}`} aria-label={creditsOnly ? "版本说明与片尾字幕" : "特奥多罗向读者发问"}>
       <div className={styles.portrait} aria-hidden="true" />
       <div className={styles.vignette} aria-hidden="true" />
 
