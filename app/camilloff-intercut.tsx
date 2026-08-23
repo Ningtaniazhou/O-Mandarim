@@ -263,6 +263,12 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
         >
           <span className="watch-crown" aria-hidden="true" />
           <span className="watch-face" aria-hidden="true"><i /></span>
+          <span className="watch-turn-hint" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <path className="watch-turn-arc" d="M 17 69 A 38 38 0 1 1 76 78" />
+              <path className="watch-turn-arrow" d="M 76 78 L 65 77 M 76 78 L 72 67" />
+            </svg>
+          </span>
         </button>
       </div>
 
