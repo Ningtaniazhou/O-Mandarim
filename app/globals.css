@@ -4795,9 +4795,12 @@ blockquote {
 
 @media (orientation: landscape) and (max-height: 540px) {
   .game-shell {
-    height: 100svh;
-    min-height: 0;
-    overflow-y: hidden;
+    height: auto;
+    min-height: 100svh;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 
   .topbar {
@@ -4852,13 +4855,12 @@ blockquote {
   .stage-testament .scene-card {
     width: min(56vw, 520px);
     min-height: 100svh;
-    max-height: 100svh;
+    max-height: none;
     margin-right: 0;
     margin-left: auto;
     padding: 70px 4vw 28px 3vw;
-    overflow-y: auto;
-    justify-content: center;
-    scrollbar-width: thin;
+    overflow: visible;
+    justify-content: flex-start;
   }
 
   .scene-card-east,

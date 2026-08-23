@@ -214,6 +214,10 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(styles, /\.intercut-card\.is-yamen/);
   assert.match(styles, /@keyframes globe-equator-glint/);
   assert.match(styles, /@keyframes watch-hand-invitation/);
+  assert.match(styles, /@media \(orientation: landscape\) and \(max-height: 540px\)/);
+  assert.match(styles, /touch-action: pan-y/);
+  assert.match(styles, /-webkit-overflow-scrolling: touch/);
+  assert.doesNotMatch(styles, /@media \(orientation: landscape\) and \(max-height: 540px\)[\s\S]*?\.game-shell \{[\s\S]*?overflow-y: hidden/);
   assert.match(styles, /@keyframes map-route-draw/);
   assert.match(styles, /@keyframes map-paper-jump/);
   assert.match(styles, /@keyframes map-hand-jump/);
