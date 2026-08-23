@@ -147,11 +147,17 @@
   text-align: left;
 }
 
+.about + .about {
+  margin-top: 2em;
+}
+
 .creator {
-  margin: 34px 0 0;
-  color: rgba(223, 209, 181, 0.76);
-  font: 600 15px/1.7 Arial, "Noto Sans CJK SC", sans-serif;
-  letter-spacing: 0.08em;
+  margin: 2em 0 0;
+  color: rgba(239, 228, 205, 0.82);
+  font: inherit;
+  font-size: clamp(17px, 1.45vw, 23px);
+  line-height: 2;
+  text-align: left;
 }
 
 .divider {

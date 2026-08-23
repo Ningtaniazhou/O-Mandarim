@@ -38,7 +38,7 @@ test("ships the complete narrative and its visual assets", async () => {
   const tienhoStyles = await readFile(new URL("../public/tienho-prototype/styles.css", import.meta.url), "utf8");
   const tienhoPrototype = `${tienhoMarkup}\n${tienhoScript}\n${tienhoStyles}`;
   const styles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
-  assert.match(page, /合上的书页/);
+  assert.match(page, /title: "我拒绝", subtitle: ""/);
   assert.match(page, /谄媚与奉承/);
   assert.match(page, /与魔鬼的重逢/);
   assert.match(page, /title: "乞求", subtitle: ""/);
@@ -175,7 +175,7 @@ test("ships the complete narrative and its visual assets", async () => {
   assert.match(page, /返回上一页/);
   assert.match(page, /<span>物件<\/span>/);
   assert.match(page, /进入故事世界/);
-  assert.match(page, /播放片尾字幕/);
+  assert.match(page, /合上旧书/);
   assert.match(page, /一柄摇铃/);
   assert.match(page, /className=\{`corpse-toggle \$\{revealed \? "is-dismiss" : "is-question"\}`\}/);
   assert.match(page, /\{revealed \? "还是不看见为好" : "\?"\}/);

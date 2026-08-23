@@ -93,7 +93,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   book: { act: "第一幕 · 旧书", title: "发亮的字句", subtitle: "" },
   bell: { act: "第一幕 · 诱惑", title: "魔鬼的提议", subtitle: "桌上的铃" },
   tiDeath: { act: "第一幕 · 远方", title: "狄鑫福之死", subtitle: "遥远的中国" },
-  refusalEnding: { act: "特别结局", title: "合上的书页", subtitle: "拒绝诱惑" },
+  refusalEnding: { act: "特别结局", title: "我拒绝", subtitle: "" },
   inheritance: { act: "第二幕 · 财富", title: "陌生人的遗产", subtitle: "" },
   luxury: { act: "第三幕 · 黄金", title: "百万富翁", subtitle: "洛雷托宫殿" },
   ghost: { act: "第三幕 · 亡者", title: "宴席上的客人", subtitle: "狄鑫福" },
@@ -1070,7 +1070,6 @@ export default function Home() {
   const refuse = () => {
     sound.tone(122 - refusals * 12, 0.8, 0.08);
     if (refusals >= 2) {
-      setRefusals(3);
       go("refusalEnding");
     } else {
       setRefusals(refusals + 1);
@@ -1471,11 +1470,6 @@ export default function Home() {
                 <p>摇铃发出的金属余音不绝于耳，远方的那声叹息再也无法被撤回。</p>
                 <button className="primary-action" onClick={() => go("tiDeath")}>铃声抵达远方 <span>→</span></button>
               </div>
-            ) : refusals >= 3 ? (
-              <div className="consequence locked-choice">
-                <p>魔鬼消失了。</p>
-                <button className="primary-action" onClick={() => go("refusalEnding")}>回到故事的开头 <span>→</span></button>
-              </div>
             ) : (
               <div className="bell-choice">
                 <button className={`bell-object ${ringing ? "is-ringing" : ""}`} onClick={ringBell} disabled={ringing} aria-label="摇铃">
@@ -1516,10 +1510,9 @@ export default function Home() {
         {stage === "refusalEnding" && (
           <div className="scene-body ending-body refusal-body">
             <div className="ending-mark">I</div>
-            <p className="ending-label">特别结局 · 坚定的拒绝</p>
             <blockquote className="ending-quote">“好极了，我亲爱的朋友。你保住了良心——也保住了贫困。但这只是今天，但愿你未来不会后悔。”</blockquote>
-            <p className="original-note">魔鬼消失了。今晚，他的蛊惑没有对你奏效。<br />（以上为游戏原创台词，并非艾萨原文。）</p>
-            <button className="primary-action" onClick={() => setFinaleStarted(true)}>播放片尾字幕 <span>→</span></button>
+            <p className="original-note">魔鬼消失了。今晚，他的蛊惑没有对你奏效。<br />（以上为游戏原创台词，并非埃萨原文。）</p>
+            <button className="primary-action" onClick={() => setFinaleStarted(true)}>合上旧书 <span>→</span></button>
           </div>
         )}
 

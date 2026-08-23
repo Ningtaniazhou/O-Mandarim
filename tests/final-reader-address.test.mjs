@@ -13,7 +13,11 @@ test("turns the final artifacts into an automatic address to the reader", async 
   assert.match(page, /onRing=\{sound\.handbell\}/);
   assert.match(page, /onEndingMusic=\{\(\) => sound\.restartTrack\(musicCues\.mystery\.src, 0\.58\)\}/);
   assert.match(page, /creditsOnly=\{stage === "refusalEnding"\}/);
-  assert.match(page, /onClick=\{\(\) => setFinaleStarted\(true\)\}>播放片尾字幕/);
+  assert.match(page, /onClick=\{\(\) => setFinaleStarted\(true\)\}>合上旧书/);
+  assert.match(page, /refusalEnding: \{ act: "特别结局", title: "我拒绝", subtitle: "" \}/);
+  assert.doesNotMatch(page, /特别结局 · 坚定的拒绝|并非艾萨原文|回到故事的开头/);
+  assert.match(page, /并非埃萨原文/);
+  assert.doesNotMatch(page, /setRefusals\(3\)/);
   assert.match(page, /reflection: \{ src: "\/audio\/unsolved-investigation-v1\.ogg", volume: 0\.74 \}/);
   assert.match(page, /const restartTrack = \(src: string, volume: number\)/);
   assert.match(page, /stage === "testament"\) sound\.restartTrack\(cue\.src, cue\.volume\)/);
