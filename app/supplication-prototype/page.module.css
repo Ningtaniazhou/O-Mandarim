@@ -582,17 +582,23 @@
     font-size: 13px;
   }
 
-  .devil { right: 4%; height: 66%; }
+  .devil { right: 1%; height: 64%; }
 
   .teodoroRunning {
-    left: 36%;
-    height: 64%;
+    left: 48%;
+    height: 60%;
   }
 
   .teodoroKneeling,
   .teodoroVanishing {
-    left: 49%;
-    height: 45%;
+    left: 60%;
+    height: 42%;
+  }
+
+  .teodoroFalling,
+  .teodoroAftermath {
+    left: 59%;
+    height: 18%;
   }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type WheelEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 type ReturnPhase = "arrival" | "map" | "complete";
 
@@ -119,9 +119,6 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
   const [gloveFocus, setGloveFocus] = useState(false);
   const [mapStep, setMapStep] = useState(0);
   const [mapAnimating, setMapAnimating] = useState(false);
-  const dragStart = useRef<{ x: number; y: number } | null>(null);
-  const mapSurfaceDragged = useRef(false);
-  const mapGestureAdvanced = useRef(false);
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
@@ -139,49 +136,6 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
     setMapStep((step) => step + 1);
     onTone(246.94 + mapStep * 18, 0.46, 0.055);
     timers.current.push(window.setTimeout(() => setMapAnimating(false), 720));
-  };
-
-  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    dragStart.current = { x: event.clientX, y: event.clientY };
-    mapSurfaceDragged.current = false;
-    mapGestureAdvanced.current = false;
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (!dragStart.current || mapGestureAdvanced.current) return;
-    const distance = Math.hypot(event.clientX - dragStart.current.x, event.clientY - dragStart.current.y);
-    if (distance < 7) return;
-    mapSurfaceDragged.current = true;
-    mapGestureAdvanced.current = true;
-    advanceMap();
-  };
-
-  const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
-    if (!dragStart.current) return;
-    const distance = Math.hypot(event.clientX - dragStart.current.x, event.clientY - dragStart.current.y);
-    dragStart.current = null;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    if (distance >= 7 && !mapGestureAdvanced.current) {
-      mapSurfaceDragged.current = true;
-      mapGestureAdvanced.current = true;
-      advanceMap();
-    }
-    window.setTimeout(() => { mapSurfaceDragged.current = false; }, 0);
-  };
-
-  const handlePointerCancel = (event: PointerEvent<HTMLDivElement>) => {
-    dragStart.current = null;
-    mapSurfaceDragged.current = false;
-    mapGestureAdvanced.current = false;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-  };
-
-  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
-    if (Math.abs(event.deltaY) < 10) return;
-    event.preventDefault();
-    advanceMap();
   };
 
   const currentRoute = mapStep > 0 ? mapRoutes[mapStep - 1] : null;
@@ -226,32 +180,13 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
           <header className="map-workbench-heading">
             <span>寻访路线</span>
             <h2 className="section-title">纸上的道路</h2>
-            <p>{mapStep < mapRoutes.length ? "推动铅笔或轻拖纸张，让道路显现。" : "六段道路已经连在一起。"}</p>
+            <p>{mapStep < mapRoutes.length ? "点击持笔的手" : "六段道路已经连在一起。"}</p>
           </header>
           <div
             className={`map-paper ${mapAnimating ? "is-jumping" : ""} shift-${mapStep % 3}`}
           >
             <RouteMap step={mapStep} />
-            <button
-              className="map-paper-drag-surface"
-              type="button"
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerCancel}
-              onClick={() => {
-                if (!mapSurfaceDragged.current) advanceMap();
-              }}
-              onWheel={handleWheel}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " " || event.key === "ArrowRight") {
-                  event.preventDefault();
-                  advanceMap();
-                }
-              }}
-              aria-label="地图纸张：拖动、滚动或按回车绘制下一段路线"
-            />
-            <button className={`map-hand-control pose-${mapStep % 3} ${mapAnimating ? "is-moving" : ""}`} type="button" style={mapStyle} onClick={advanceMap} aria-label="推动卡米洛夫的铅笔，绘制下一段路线" disabled={mapStep >= mapRoutes.length}>
+            <button className={`map-hand-control pose-${mapStep % 3} ${mapAnimating ? "is-moving" : ""}`} type="button" style={mapStyle} onClick={advanceMap} aria-label="点击卡米洛夫持笔的手，绘制下一段路线" disabled={mapStep >= mapRoutes.length}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/camilloff-map-hand-v1.webp" alt="卡米洛夫握着铅笔的手" draggable={false} />
             </button>

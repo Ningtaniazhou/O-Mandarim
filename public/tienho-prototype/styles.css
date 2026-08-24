@@ -173,7 +173,7 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
   letter-spacing: .08em;
 }
 
-.coin-source { left: 65%; top: 76%; width: 62px; height: 62px; }
+.coin-source { left: 71%; top: 76%; width: 62px; height: 62px; }
 .coin-source .coin {
   display: grid;
   width: 38px;
@@ -390,6 +390,17 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
 .wilderness-action.is-holding { box-shadow: 0 0 32px rgba(174,198,225,.13); }
 .wilderness-action.is-holding strong { animation: breathText 1.2s ease-in-out infinite; }
 
+.money-bag,
+.escape-bag,
+.wilderness-action,
+.money-bag *,
+.escape-bag *,
+.wilderness-action * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 .blackout { position: absolute; inset: 0; z-index: 30; display: grid; place-items: center; opacity: 0; pointer-events: none; background: #000; transition: opacity 1.8s ease; }
 .wilderness.blinking .blackout { animation: consciousnessBlink .88s ease-in-out both; }
 .wilderness.collapsed .blackout { opacity: 1; pointer-events: auto; }
@@ -531,7 +542,7 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
     transform: translate(-50%, -50%);
   }
 
-  .coin-source { top: 76%; right: auto; bottom: auto; left: 65%; }
+  .coin-source { top: 76%; right: auto; bottom: auto; left: 71%; }
   .widow-target { top: 68%; right: auto; bottom: auto; left: 63%; }
   .rice-target { top: 39%; right: auto; left: 53%; }
   .lantern-one { top: 16%; left: 37.4%; }

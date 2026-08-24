@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 type Place = "mansion" | "yamen";
 
@@ -104,13 +104,6 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
   const [day, setDay] = useState(0);
   const [place, setPlace] = useState<Place>("mansion");
   const [seen, setSeen] = useState<string[]>(["0-mansion"]);
-  const [watchProgress, setWatchProgress] = useState(0);
-  const globeStart = useRef<number | null>(null);
-  const globeDragged = useRef(false);
-  const watchLastAngle = useRef<number | null>(null);
-  const watchDegrees = useRef(0);
-  const watchAdvanced = useRef(false);
-  const watchDragged = useRef(false);
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
@@ -143,57 +136,11 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
     setDay(nextDay);
     setPlace("mansion");
     setSeen((items) => items.includes(`${nextDay}-mansion`) ? items : [...items, `${nextDay}-mansion`]);
-    setWatchProgress(0);
-    watchDegrees.current = 0;
-    watchAdvanced.current = false;
-  };
-
-  const pointerAngle = (event: PointerEvent<HTMLButtonElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    return Math.atan2(event.clientY - rect.top - rect.height / 2, event.clientX - rect.left - rect.width / 2) * 180 / Math.PI;
-  };
-
-  const handleWatchDown = (event: PointerEvent<HTMLButtonElement>) => {
-    if (!seenBoth) return;
-    watchLastAngle.current = pointerAngle(event);
-    watchDegrees.current = 0;
-    watchAdvanced.current = false;
-    watchDragged.current = false;
-    setWatchProgress(0);
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const handleWatchMove = (event: PointerEvent<HTMLButtonElement>) => {
-    if (watchLastAngle.current === null || watchAdvanced.current || !seenBoth) return;
-    const angle = pointerAngle(event);
-    let delta = angle - watchLastAngle.current;
-    if (delta < -180) delta += 360;
-    if (delta > 180) delta -= 360;
-    watchLastAngle.current = angle;
-    if (Math.abs(delta) > 2) watchDragged.current = true;
-    watchDegrees.current = Math.max(0, watchDegrees.current + delta);
-    const progress = Math.min(1, watchDegrees.current / 320);
-    setWatchProgress(progress);
-    if (progress >= 1) {
-      watchAdvanced.current = true;
-      watchLastAngle.current = null;
-      advanceDay();
-    }
-  };
-
-  const handleWatchUp = (event: PointerEvent<HTMLButtonElement>) => {
-    watchLastAngle.current = null;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    if (!watchAdvanced.current) {
-      watchDegrees.current = 0;
-      setWatchProgress(0);
-    }
-    timers.current.push(window.setTimeout(() => { watchDragged.current = false; }, 0));
   };
 
   const watchStyle: WatchStyle = {
-    "--watch-progress": `${watchProgress * 360}deg`,
-    "--watch-day": `${day * 82 + watchProgress * 360}deg`,
+    "--watch-progress": "0deg",
+    "--watch-day": `${day * 82}deg`,
   };
 
   const nextDay = intercutDays[day + 1];
@@ -230,29 +177,12 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
           <button
             className="space-globe"
             type="button"
-            onPointerDown={(event) => {
-              globeStart.current = event.clientX;
-              globeDragged.current = false;
-              event.currentTarget.setPointerCapture(event.pointerId);
-            }}
-            onPointerMove={(event) => {
-              if (globeStart.current === null || globeDragged.current) return;
-              if (Math.abs(event.clientX - globeStart.current) >= 24) {
-                globeDragged.current = true;
-                flipSpace();
-              }
-            }}
-            onPointerUp={(event) => {
-              globeStart.current = null;
-              if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-              timers.current.push(window.setTimeout(() => { globeDragged.current = false; }, 0));
-            }}
-            onClick={() => { if (!globeDragged.current) flipSpace(); }}
-            aria-label={place === "mansion" ? "转动地球仪，切换到衙门" : "转动地球仪，切换到府邸"}
+            onClick={flipSpace}
+            aria-label={place === "mansion" ? "点击地球仪，切换到衙门" : "点击地球仪，切换到府邸"}
           >
             <span className="globe-sphere" aria-hidden="true"><i /><b>‹</b><b>›</b></span>
           </button>
-          {day === 0 && <span className="intercut-control-hint" aria-hidden="true"><small>左右拖动</small>旋转地球仪</span>}
+          {day === 0 && <span className="intercut-control-hint" aria-hidden="true"><small>点击地球仪</small>穿梭于府邸内外</span>}
         </div>
 
         <div className="intercut-control-item">
@@ -260,30 +190,18 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
             className={`time-watch ${seenBoth ? "is-ready" : "is-waiting"}`}
             type="button"
             style={watchStyle}
-            onPointerDown={handleWatchDown}
-            onPointerMove={handleWatchMove}
-            onPointerUp={handleWatchUp}
-            onPointerCancel={handleWatchUp}
-            onClick={() => {
-              if (seenBoth && !watchDragged.current && !watchAdvanced.current) advanceDay();
-            }}
-            onKeyDown={(event) => {
-              if (seenBoth && (event.key === "Enter" || event.key === " " || event.key === "ArrowRight")) {
-                event.preventDefault();
-                advanceDay();
-              }
-            }}
-            aria-label={seenBoth ? (day === intercutDays.length - 1 ? "顺时针转动怀表，等待卡米洛夫归来" : "顺时针转动怀表，推进到下一段") : "先用地球仪查看另一处"}
+            onClick={() => { if (seenBoth) advanceDay(); }}
+            aria-label={seenBoth ? (day === intercutDays.length - 1 ? "点击怀表，等待卡米洛夫归来" : "点击怀表，让时间推移") : "先点击地球仪查看另一处"}
             aria-disabled={!seenBoth}
           >
             <span className="watch-crown" aria-hidden="true" />
             <span className="watch-face" aria-hidden="true"><i /></span>
           </button>
-          {day === 0 && <span className={`intercut-control-hint ${seenBoth ? "is-ready" : "is-waiting"}`} aria-hidden="true"><small>顺时针拨动</small>怀表指针</span>}
+          {day === 0 && <span className={`intercut-control-hint ${seenBoth ? "is-ready" : "is-waiting"}`} aria-hidden="true"><small>点击怀表</small>让时间推移</span>}
         </div>
       </div>
 
-      <p className="sr-only" aria-live="polite">{seenBoth ? "这一段的宅邸与衙门都已查看，可以转动怀表。" : "转动地球仪，查看另一处。"}</p>
+      <p className="sr-only" aria-live="polite">{seenBoth ? "这一段的宅邸与衙门都已查看，可以点击怀表。" : "点击地球仪，查看另一处。"}</p>
       {nextDay && <div className="intercut-preload" aria-hidden="true"><span style={{ backgroundImage: `url(${nextDay.mansion.image})` }} /><span style={{ backgroundImage: `url(${nextDay.yamen.image})` }} /></div>}
     </section>
   );
