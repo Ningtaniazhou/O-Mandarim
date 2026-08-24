@@ -473,7 +473,7 @@ button:focus-visible {
   position: absolute;
   top: 11%;
   left: 20%;
-  width: min(34vw, 500px);
+  width: min(28vw, 410px);
   aspect-ratio: 3 / 2;
   padding: 7% 8% 9%;
   border: 0;
@@ -490,7 +490,7 @@ button:focus-visible {
 .office-dream-bubble:nth-child(2) {
   top: 1%;
   left: 39%;
-  width: min(29vw, 430px);
+  width: min(24vw, 350px);
   animation-delay: 0.45s, 1.3s;
 }
 
@@ -2866,10 +2866,10 @@ blockquote {
 .return-glove-hotspot {
   position: fixed;
   z-index: 9;
-  right: 9.5vw;
-  bottom: 13vh;
-  width: 74px;
-  height: 48px;
+  right: 20vw;
+  bottom: 12vh;
+  width: 104px;
+  height: 62px;
   border: 0;
   border-radius: 50%;
   background: transparent;
@@ -3491,13 +3491,13 @@ blockquote {
 
 .route {
   position: relative;
-  height: 204px;
-  margin: 40px 24px 26px 8px;
+  height: 154px;
+  margin: 30px 24px 10px 8px;
 }
 
 .route-line {
   position: absolute;
-  top: 116px;
+  top: 102px;
   right: 0;
   left: 0;
   height: 1px;
@@ -3513,7 +3513,7 @@ blockquote {
 
 .route-stop {
   position: absolute;
-  top: 107px;
+  top: 93px;
   width: 52px;
   padding: 0;
   border: 0;
@@ -3564,7 +3564,7 @@ blockquote {
 
 .route-transport {
   position: absolute;
-  top: 20px;
+  top: 6px;
   display: grid;
   width: 20%;
   grid-template-rows: 82px;
@@ -6300,13 +6300,27 @@ blockquote {
   .intercut-copy::-webkit-scrollbar-track { background: transparent; }
   .intercut-copy::-webkit-scrollbar-thumb { background: rgba(184, 149, 82, 0.55); }
   .intercut-controls { top: 38px; right: 4vw; bottom: auto; flex-direction: column; gap: 12px; }
-  .intercut-control-item { min-width: 180px; }
+  .intercut-control-item {
+    display: grid;
+    min-width: 180px;
+    grid-template-columns: 92px 72px;
+    align-items: center;
+    justify-items: center;
+  }
   .intercut-control-hint { position: static; width: 88px; }
   .space-globe { width: 68px; height: 68px; }
-  .time-watch { width: 60px; height: 68px; }
+  .time-watch { width: 68px; height: 76px; }
+  .watch-crown { top: 0; }
+  .watch-face { right: 4px; bottom: 0; left: 4px; }
   .intercut-day-track { right: 4vw; bottom: 16px; left: auto; transform: none; }
 
-  .map-workbench { top: 54px; padding: 18px 20px 28px; }
+  .map-workbench {
+    top: 54px;
+    padding: 14px 18px 18px;
+    grid-template-columns: minmax(250px, 31vw) minmax(0, 1fr);
+    grid-template-rows: minmax(94px, auto) minmax(0, 1fr);
+    gap: 10px 16px;
+  }
   .stage-camilloffReturn:has(.map-workbench) .scene-card {
     width: 100vw;
     margin: 0;
@@ -6315,7 +6329,108 @@ blockquote {
   .stage-camilloffReturn:has(.map-workbench) .scene-card > .scene-kicker,
   .stage-camilloffReturn:has(.map-workbench) .scene-card > h1,
   .stage-camilloffReturn:has(.map-workbench) .scene-card > .scene-pt { visibility: hidden; }
-  .map-workbench-heading h2 { font-size: clamp(29px, 5vw, 42px); }
+  .map-workbench-heading h2 { font-size: clamp(28px, 4.4vw, 40px); }
+  .map-workbench-heading p { max-width: 30ch; }
   .map-paper { width: 100%; margin: 0; }
   .map-hand-control { width: 34%; }
+  .map-conversation {
+    min-height: 0;
+    max-height: none;
+    padding: 13px 14px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .map-conversation .bilingual-quote {
+    margin: 7px 0;
+    padding: 9px 10px;
+  }
+
+  .map-conversation .bilingual-quote > span {
+    font-size: 11px;
+    line-height: 1.48;
+  }
+
+  .office-dream-bubble {
+    top: 9%;
+    left: 10%;
+    width: min(24vw, 300px);
+    padding: 6% 6% 7%;
+  }
+
+  .office-dream-bubble:nth-child(2) {
+    top: 2%;
+    left: 31%;
+    width: min(21vw, 260px);
+  }
+
+  .office-dream-bubble span {
+    font-size: clamp(9px, 1.2vw, 13px);
+    line-height: 1.45;
+  }
+
+  .stage-map .route {
+    height: 118px;
+    margin: 12px 12px 5px 4px;
+  }
+
+  .stage-map .route-line { top: 82px; }
+  .stage-map .route-stop { top: 73px; }
+  .stage-map .route-transport { top: 0; grid-template-rows: 58px; }
+  .stage-map .route-transport i { height: 54px; }
+
+  .return-glove-hotspot {
+    right: 19vw;
+    bottom: 10vh;
+    width: 118px;
+    height: 70px;
+  }
+}
+
+/* Touchscreens should react on the first tap. Persistent emulated hover on
+   mobile Safari must not move or recolour a control before its click fires. */
+@media (hover: none), (pointer: coarse) {
+  button,
+  [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .primary-action:hover {
+    animation: action-breathe 3.2s ease-in-out infinite;
+    background: rgba(6, 13, 13, 0.64);
+    color: #f1e6ce;
+    transform: none;
+  }
+
+  .dangerous-action:hover,
+  .supplication-action:hover {
+    background: rgba(62, 13, 11, 0.7);
+    color: #f1e6ce;
+  }
+
+  .choice-button:hover,
+  .choice-stack.horizontal .choice-button:hover {
+    border-color: var(--line);
+    background: rgba(6, 13, 13, 0.54);
+    transform: none;
+  }
+
+  .object-action:hover:not(.is-read) {
+    border-color: rgba(184, 149, 82, 0.34);
+    background: rgba(5, 12, 12, 0.78);
+    transform: none;
+  }
+
+  .object-button:hover:not(.is-found),
+  .hotspot-index button:hover:not(.is-found) {
+    background: rgba(6, 13, 13, 0.38);
+    transform: none;
+  }
+
+  .map-scene .primary-action:hover {
+    border-color: rgba(25, 34, 33, 0.72);
+    background: rgba(13, 22, 21, 0.86);
+    color: #f1e6ce;
+  }
 }

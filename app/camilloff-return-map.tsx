@@ -121,6 +121,7 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
   const [mapAnimating, setMapAnimating] = useState(false);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
   const mapSurfaceDragged = useRef(false);
+  const mapGestureAdvanced = useRef(false);
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
@@ -141,9 +142,20 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
   };
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
     dragStart.current = { x: event.clientX, y: event.clientY };
     mapSurfaceDragged.current = false;
+    mapGestureAdvanced.current = false;
     event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (!dragStart.current || mapGestureAdvanced.current) return;
+    const distance = Math.hypot(event.clientX - dragStart.current.x, event.clientY - dragStart.current.y);
+    if (distance < 7) return;
+    mapSurfaceDragged.current = true;
+    mapGestureAdvanced.current = true;
+    advanceMap();
   };
 
   const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
@@ -151,8 +163,9 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
     const distance = Math.hypot(event.clientX - dragStart.current.x, event.clientY - dragStart.current.y);
     dragStart.current = null;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    if (distance >= 18) {
+    if (distance >= 7 && !mapGestureAdvanced.current) {
       mapSurfaceDragged.current = true;
+      mapGestureAdvanced.current = true;
       advanceMap();
     }
     window.setTimeout(() => { mapSurfaceDragged.current = false; }, 0);
@@ -161,6 +174,7 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
   const handlePointerCancel = (event: PointerEvent<HTMLDivElement>) => {
     dragStart.current = null;
     mapSurfaceDragged.current = false;
+    mapGestureAdvanced.current = false;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   };
 
@@ -222,6 +236,7 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
               className="map-paper-drag-surface"
               type="button"
               onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
               onPointerCancel={handlePointerCancel}
               onClick={() => {

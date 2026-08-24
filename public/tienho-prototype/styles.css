@@ -173,7 +173,7 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
   letter-spacing: .08em;
 }
 
-.coin-source { left: 65%; top: 81%; width: 54px; height: 54px; }
+.coin-source { left: 65%; top: 76%; width: 62px; height: 62px; }
 .coin-source .coin {
   display: grid;
   width: 38px;
@@ -189,7 +189,7 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
 }
 .coin-source em { top: 46px; left: -18px; }
 
-.widow-target { left: 70.5%; top: 70%; width: 92px; height: 78px; }
+.widow-target { left: 63%; top: 68%; width: 92px; height: 78px; }
 .widow-target span, .rice-target span, .lantern span {
   position: absolute;
   inset: 0;
@@ -522,12 +522,21 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
     -webkit-touch-callout: none;
   }
 
-  .coin-source { top: auto; right: 18px; bottom: 18px; left: auto; }
-  .widow-target { top: auto; right: 92px; bottom: 18px; left: auto; }
-  .rice-target { top: 47%; right: 22px; left: auto; }
-  .lantern-one { top: 29%; left: 52%; }
-  .lantern-two { top: 31%; left: 66%; }
-  .lantern-three { top: 25%; left: 82%; width: 64px; height: 82px; }
+  .dreaming .interaction-layer {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: max(100%, calc(100vh * 16 / 9));
+    height: max(100%, calc(100vw * 9 / 16));
+    transform: translate(-50%, -50%);
+  }
+
+  .coin-source { top: 76%; right: auto; bottom: auto; left: 65%; }
+  .widow-target { top: 68%; right: auto; bottom: auto; left: 63%; }
+  .rice-target { top: 39%; right: auto; left: 53%; }
+  .lantern-one { top: 16%; left: 37.4%; }
+  .lantern-two { top: 18.5%; left: 48%; }
+  .lantern-three { top: 8.5%; left: 68%; width: 80px; height: 105px; }
   .money-bag { top: auto; right: 7vw; bottom: 16px; left: auto; width: 142px; height: 118px; }
   .money-bag em { top: 101px; left: 30px; }
 
@@ -593,6 +602,24 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
   .mission-entry-copy h2 { font-size: 25px; }
   .mission-entry-copy > p:last-child { font-size: 13px; }
   .phase-dots { bottom: 10px; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .primary-action:hover {
+    background: var(--paper);
+    transform: none;
+  }
+
+  .evidence-card:hover,
+  .evidence-card:focus-visible,
+  .wilderness-action:hover {
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

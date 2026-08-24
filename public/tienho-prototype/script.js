@@ -926,10 +926,19 @@ function coinPointerUp(event) {
   if (inside) completeCoin();
 }
 
+function cancelCoinDrag(event) {
+  if (!drag || event.pointerId !== drag.id) return;
+  drag = null;
+  coinSource.classList.remove("is-dragging");
+  coinSource.style.left = "";
+  coinSource.style.top = "";
+}
+
 startButton.addEventListener("click", beginDream);
 coinSource.addEventListener("pointerdown", coinPointerDown);
 coinSource.addEventListener("pointermove", coinPointerMove);
 coinSource.addEventListener("pointerup", coinPointerUp);
+coinSource.addEventListener("pointercancel", cancelCoinDrag);
 coinSource.addEventListener("click", () => {
   if (phase === "coin") instruction.textContent = "点击寡妇的碗，或把金币拖进碗里。";
 });

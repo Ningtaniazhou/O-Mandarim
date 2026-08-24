@@ -506,6 +506,84 @@
   }
 }
 
+@media (hover: none), (pointer: coarse) {
+  .begButton {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .begButton:hover:not(:disabled) {
+    border-color: rgba(188, 145, 73, 0.72);
+    background: rgba(5, 10, 10, 0.72);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 540px) {
+  .integratedPage {
+    inset: 54px 0 0;
+    display: block;
+  }
+
+  .integratedStage {
+    width: 100vw;
+    height: calc(100svh - 54px);
+    max-height: none;
+    aspect-ratio: auto;
+  }
+
+  .street,
+  .waitingTableau {
+    object-position: 62% center;
+  }
+
+  .storyPanel,
+  .integratedPanel {
+    top: 12px;
+    bottom: 12px;
+    left: 18px;
+    display: flex;
+    width: 45vw;
+    max-height: none;
+    padding: 13px 15px;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .storyPanel h1 {
+    margin-bottom: 9px;
+    font-size: clamp(34px, 6vw, 48px);
+  }
+
+  .eyebrow { margin-bottom: 5px; }
+
+  .dialogueExcerpt {
+    gap: 7px;
+    max-height: none;
+    overflow: visible;
+    padding-right: 2px;
+  }
+
+  .dialogueExcerpt p { gap: 4px; padding: 7px 0 7px 10px; }
+  .dialogueExcerpt span[lang="pt"] { font-size: 12px; line-height: 1.42; }
+  .dialogueExcerpt span:not([lang="pt"]) { font-size: 11px; line-height: 1.48; }
+
+  .sequenceActions {
+    padding-bottom: 2px;
+    flex-wrap: nowrap;
+  }
+
+  .begButton {
+    min-height: 42px;
+    margin-top: 9px;
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .devil { right: 7%; height: 72%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gasGlow,
   .running .teodoroRunning,
