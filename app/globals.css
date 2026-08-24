@@ -5172,6 +5172,191 @@ blockquote {
 
   .map-conversation .bilingual-quote { padding: 9px 10px; }
   .map-hand-control { width: 34%; }
+
+  /* On a phone the artwork and the text column share a very shallow viewport.
+     Keep picture hotspots from becoming invisible click blockers and expose the
+     same interactions as large, scrollable touch targets in the copy column. */
+  .hotspot-layer,
+  .office-document-hotspots {
+    display: none;
+  }
+
+  .office-mobile-documents,
+  .hotspot-index {
+    position: relative;
+    z-index: 24;
+    pointer-events: auto;
+  }
+
+  .office-mobile-documents button,
+  .hotspot-index button {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .map-paper-drag-surface,
+  .map-hand-control {
+    touch-action: none;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+}
+
+/* Short landscape screens need fixed reading and interaction zones. These
+   overrides deliberately come last so stage changes never leave controls or
+   captions behind an earlier phone rule. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .stage-tiDeath {
+    overflow: hidden;
+  }
+
+  .stage-tiDeath .scene-card > .scene-kicker {
+    top: 70px;
+    left: 3vw;
+  }
+
+  .stage-tiDeath .scene-card > h1 {
+    top: 91px;
+    left: 3vw;
+    max-width: 50vw;
+    font-size: clamp(30px, 5.4vw, 45px);
+    line-height: 1;
+  }
+
+  .stage-tiDeath .scene-card > .scene-pt {
+    top: 139px;
+    left: 3vw;
+  }
+
+  .stage-tiDeath .death-character-stage {
+    --ti-body-length: min(48vh, 39vw, 410px);
+  }
+
+  .stage-tiDeath .ti-alive-cutout {
+    bottom: 25%;
+    left: 82%;
+  }
+
+  .stage-tiDeath .ti-corpse-cutout {
+    right: 7%;
+    bottom: 25%;
+  }
+
+  .stage-tiDeath .death-ground-shadow {
+    right: 7%;
+    bottom: 24.5%;
+  }
+
+  .stage-tiDeath .death-caption {
+    top: 168px;
+    right: auto;
+    bottom: 12px;
+    left: 3vw;
+    width: 52vw;
+    padding: 11px 13px;
+    overflow-y: auto;
+  }
+
+  .stage-tiDeath .death-caption blockquote {
+    display: none;
+  }
+
+  .stage-tiDeath .death-caption p {
+    margin-top: 0;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .stage-tiDeath .death-actions {
+    margin-top: 8px;
+    gap: 7px;
+  }
+
+  .stage-tiDeath .death-actions > button,
+  .stage-tiDeath .death-actions > .primary-action {
+    min-width: 0;
+    min-height: 38px;
+    padding: 8px 10px;
+    flex: 1;
+  }
+
+  .stage-camilloffIntercut {
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .stage-camilloffIntercut .scene-card {
+    z-index: 6;
+    width: 100vw;
+    height: 100svh;
+    min-height: 100svh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .stage-camilloffIntercut .intercut-stage {
+    z-index: 30;
+    inset: 54px 0 0;
+    width: 100vw;
+    height: calc(100svh - 54px);
+    min-height: 0;
+    overflow: hidden;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .stage-camilloffIntercut .intercut-heading {
+    z-index: 35;
+    top: 13px;
+    left: 18px;
+    width: 46vw;
+  }
+
+  .stage-camilloffIntercut .intercut-heading h2 {
+    margin-top: 3px;
+    font-size: clamp(28px, 5.2vw, 42px);
+  }
+
+  .stage-camilloffIntercut .intercut-copy {
+    z-index: 35;
+    top: 112px;
+    bottom: 12px;
+    left: 18px;
+    width: 50vw;
+    max-height: none;
+    padding: 11px 13px;
+    overflow-y: auto;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .stage-camilloffIntercut .intercut-copy > p {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .stage-camilloffIntercut .intercut-controls {
+    z-index: 40;
+    top: 18px;
+    right: 3vw;
+    bottom: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .stage-camilloffIntercut .intercut-control-item {
+    min-width: 174px;
+  }
+
+  .stage-camilloffIntercut .intercut-day-track {
+    z-index: 41;
+    right: 3vw;
+    bottom: 10px;
+  }
 }
 
 @media (max-width: 640px) {

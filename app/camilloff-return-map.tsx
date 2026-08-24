@@ -120,6 +120,7 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
   const [mapStep, setMapStep] = useState(0);
   const [mapAnimating, setMapAnimating] = useState(false);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
+  const mapSurfaceDragged = useRef(false);
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
@@ -141,6 +142,7 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
     dragStart.current = { x: event.clientX, y: event.clientY };
+    mapSurfaceDragged.current = false;
     event.currentTarget.setPointerCapture(event.pointerId);
   };
 
@@ -149,7 +151,17 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
     const distance = Math.hypot(event.clientX - dragStart.current.x, event.clientY - dragStart.current.y);
     dragStart.current = null;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    if (distance >= 18) advanceMap();
+    if (distance >= 18) {
+      mapSurfaceDragged.current = true;
+      advanceMap();
+    }
+    window.setTimeout(() => { mapSurfaceDragged.current = false; }, 0);
+  };
+
+  const handlePointerCancel = (event: PointerEvent<HTMLDivElement>) => {
+    dragStart.current = null;
+    mapSurfaceDragged.current = false;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   };
 
   const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
@@ -211,6 +223,10 @@ export default function CamilloffReturnMap({ onContinue, onTone }: { onContinue:
               type="button"
               onPointerDown={handlePointerDown}
               onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerCancel}
+              onClick={() => {
+                if (!mapSurfaceDragged.current) advanceMap();
+              }}
               onWheel={handleWheel}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " " || event.key === "ArrowRight") {

@@ -453,6 +453,148 @@ blockquote { margin: 0; font-size: clamp(18px, 1.55vw, 27px); line-height: 1.8; 
   .mission-entry-copy { left: 24px; top: 34%; width: calc(100% - 48px); }
 }
 
+/* The embedded story is usually wider than 760px when a phone is held
+   horizontally, but its usable height is very small. Treat that as a distinct
+   touch layout so every required object remains visible and tappable. */
+@media (orientation: landscape) and (max-height: 540px) {
+  html,
+  body,
+  .prototype,
+  .scene {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .scene {
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  .chapter-mark {
+    top: 15px;
+    left: 18px;
+  }
+
+  .chapter-mark p { margin-bottom: 5px; }
+  .chapter-mark h1 { font-size: clamp(30px, 6.2vw, 48px); }
+  .sound-toggle { display: none; }
+
+  .narrative-card {
+    top: 86px;
+    bottom: 12px;
+    left: 18px;
+    width: 44vw;
+    max-height: calc(100% - 98px);
+    padding: 0 12px 8px 15px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .narrative-card blockquote {
+    font-size: clamp(14px, 2.25vw, 19px);
+    line-height: 1.55;
+  }
+
+  .instruction { margin-top: 8px; font-size: 11px; }
+  .primary-action { margin-top: 10px; padding: 10px 13px; }
+
+  .rumor-card {
+    top: 14px;
+    right: 14px;
+    width: 37vw;
+    padding: 9px 12px 10px;
+  }
+
+  .rumor-card strong { margin: 5px 0 7px; font-size: 13px; }
+
+  .interaction-layer {
+    z-index: 12;
+  }
+
+  .hotspot,
+  .money-bag,
+  .escape-bag,
+  .wilderness-action {
+    touch-action: none;
+    -webkit-touch-callout: none;
+  }
+
+  .coin-source { top: auto; right: 18px; bottom: 18px; left: auto; }
+  .widow-target { top: auto; right: 92px; bottom: 18px; left: auto; }
+  .rice-target { top: 47%; right: 22px; left: auto; }
+  .lantern-one { top: 29%; left: 52%; }
+  .lantern-two { top: 31%; left: 66%; }
+  .lantern-three { top: 25%; left: 82%; width: 64px; height: 82px; }
+  .money-bag { top: auto; right: 7vw; bottom: 16px; left: auto; width: 142px; height: 118px; }
+  .money-bag em { top: 101px; left: 30px; }
+
+  .identity-panel {
+    top: 10px;
+    left: 18px;
+    width: calc(100% - 36px);
+    max-height: calc(100% - 20px);
+    padding: 14px 16px;
+    overflow-y: auto;
+  }
+
+  .identity-heading { display: grid; }
+  .identity-heading h2 { font-size: 18px; }
+  .identity-heading > p:last-child { margin: 0; font-size: 11px; }
+  .evidence-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 10px; }
+  .evidence-card { min-height: 84px; padding: 8px; }
+  .evidence-icon { width: 28px; height: 28px; margin-bottom: 6px; font-size: 18px; }
+  .evidence-card small { display: none; }
+  .causal-chain { grid-template-columns: 1fr auto 1fr auto 1fr; margin-top: 8px; }
+  .causal-chain > i { transform: none; }
+  .translation-line { margin-top: 7px; padding: 6px 9px; font-size: 11px; }
+  .motive-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 6px; }
+  .motive-strip > div { padding: 5px 7px; }
+  .motive-strip q { font-size: 9px; line-height: 1.35; }
+  .pressure-line { margin-top: 8px; }
+  .identity-continue { margin-top: 8px; }
+
+  .escape-copy {
+    top: 18px;
+    left: 18px;
+    width: 43vw;
+  }
+
+  .escape-copy h2 { font-size: 21px; }
+  .escape-hud { bottom: 14px; left: 18px; width: 39vw; padding: 8px 10px; }
+  .escape-bag-control { right: 14px; bottom: 14px; }
+  .escape-bag-help { width: 176px; padding: 8px 9px; font-size: 9px; }
+  .escape-bag { width: 78px; min-height: 70px; }
+  .runner { right: 18%; bottom: 3%; width: min(31vw, 300px); }
+  .wall-gate { width: min(420px, 72vw); padding: 16px 20px; }
+
+  .wilderness-copy {
+    top: 20px;
+    left: 18px;
+    width: 48vw;
+  }
+
+  .wilderness-copy h2 { font-size: 21px; }
+  .wilderness-copy > p:last-child { font-size: 11px; line-height: 1.55; }
+  .wilderness-action {
+    right: 8vw;
+    bottom: 20px;
+    left: auto;
+    width: 118px;
+    height: 118px;
+    transform: none;
+  }
+  .wilderness-action:hover { transform: scale(1.025); }
+  .wilderness-action strong { max-width: 92px; font-size: 19px; }
+  .body-signals { display: none; }
+  .mission-entry-copy { top: 45%; left: 24px; width: 52vw; }
+  .mission-entry-copy h2 { font-size: 25px; }
+  .mission-entry-copy > p:last-child { font-size: 13px; }
+  .phase-dots { bottom: 10px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
 }

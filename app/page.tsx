@@ -1012,6 +1012,21 @@ export default function Home() {
   }, [stage]);
 
   useEffect(() => {
+    const resetScrollPosition = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.scrollingElement?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.querySelectorAll<HTMLElement>(".game-shell, .scene-card, .intercut-stage, .intercut-copy, .map-workbench").forEach((element) => {
+        element.scrollTop = 0;
+        element.scrollLeft = 0;
+      });
+    };
+
+    resetScrollPosition();
+    const frame = window.requestAnimationFrame(resetScrollPosition);
+    return () => window.cancelAnimationFrame(frame);
+  }, [stage]);
+
+  useEffect(() => {
     if (stage === "tienho") {
       sound.fadeTrack(500);
       return;

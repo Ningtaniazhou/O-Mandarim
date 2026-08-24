@@ -110,9 +110,14 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
   const watchLastAngle = useRef<number | null>(null);
   const watchDegrees = useRef(0);
   const watchAdvanced = useRef(false);
+  const watchDragged = useRef(false);
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
+
+  useEffect(() => {
+    document.querySelector<HTMLElement>(".intercut-copy")?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [day, place]);
 
   const current = intercutDays[day];
   const copy = current[place];
@@ -153,6 +158,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
     watchLastAngle.current = pointerAngle(event);
     watchDegrees.current = 0;
     watchAdvanced.current = false;
+    watchDragged.current = false;
     setWatchProgress(0);
     event.currentTarget.setPointerCapture(event.pointerId);
   };
@@ -164,6 +170,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
     if (delta < -180) delta += 360;
     if (delta > 180) delta -= 360;
     watchLastAngle.current = angle;
+    if (Math.abs(delta) > 2) watchDragged.current = true;
     watchDegrees.current = Math.max(0, watchDegrees.current + delta);
     const progress = Math.min(1, watchDegrees.current / 320);
     setWatchProgress(progress);
@@ -181,6 +188,7 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
       watchDegrees.current = 0;
       setWatchProgress(0);
     }
+    timers.current.push(window.setTimeout(() => { watchDragged.current = false; }, 0));
   };
 
   const watchStyle: WatchStyle = {
@@ -256,6 +264,9 @@ export default function CamilloffIntercut({ onComplete, onTone }: { onComplete: 
             onPointerMove={handleWatchMove}
             onPointerUp={handleWatchUp}
             onPointerCancel={handleWatchUp}
+            onClick={() => {
+              if (seenBoth && !watchDragged.current && !watchAdvanced.current) advanceDay();
+            }}
             onKeyDown={(event) => {
               if (seenBoth && (event.key === "Enter" || event.key === " " || event.key === "ArrowRight")) {
                 event.preventDefault();
