@@ -310,6 +310,7 @@
 }
 
 .devil {
+  z-index: 13;
   right: 11.5%;
   bottom: 4.8%;
   height: 74%;
@@ -581,7 +582,18 @@
     font-size: 13px;
   }
 
-  .devil { right: 7%; height: 72%; }
+  .devil { right: 4%; height: 66%; }
+
+  .teodoroRunning {
+    left: 36%;
+    height: 64%;
+  }
+
+  .teodoroKneeling,
+  .teodoroVanishing {
+    left: 49%;
+    height: 45%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

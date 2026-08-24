@@ -123,6 +123,55 @@ button:focus-visible {
   filter: saturate(0.82) contrast(1.04) brightness(0.77);
 }
 
+/* Indoor scenes keep their nocturnal palette, but the room, figures and props
+   should remain legible on dim phone displays. */
+.game-shell:is(
+  .stage-office,
+  .stage-market,
+  .stage-room,
+  .stage-book,
+  .stage-bell,
+  .stage-inheritance,
+  .stage-luxury,
+  .stage-ghost,
+  .stage-reckoning,
+  .stage-renounce,
+  .stage-prison,
+  .stage-mission,
+  .stage-letter,
+  .stage-testament
+) .scene-image {
+  filter: saturate(0.84) contrast(1.035) brightness(0.82);
+}
+
+.game-shell:is(
+  .stage-office,
+  .stage-market,
+  .stage-room,
+  .stage-book,
+  .stage-bell,
+  .stage-inheritance
+) .scene-vignette {
+  background:
+    linear-gradient(270deg, rgba(4, 9, 9, 0.9) 0%, rgba(4, 9, 9, 0.68) 43%, rgba(4, 9, 9, 0.06) 78%, rgba(4, 9, 9, 0.3) 100%),
+    linear-gradient(0deg, rgba(4, 9, 9, 0.68) 0%, transparent 42%, rgba(4, 9, 9, 0.36) 100%);
+}
+
+.game-shell:is(
+  .stage-luxury,
+  .stage-ghost,
+  .stage-reckoning,
+  .stage-renounce,
+  .stage-prison,
+  .stage-mission,
+  .stage-letter,
+  .stage-testament
+) .scene-vignette {
+  background:
+    linear-gradient(90deg, rgba(4, 9, 9, 0.88) 0%, rgba(4, 9, 9, 0.62) 42%, rgba(4, 9, 9, 0.08) 78%, rgba(4, 9, 9, 0.35) 100%),
+    linear-gradient(0deg, rgba(4, 9, 9, 0.68) 0%, transparent 42%, rgba(4, 9, 9, 0.36) 100%);
+}
+
 .stage-supplication .scene-card,
 .stage-supplication .game-footer,
 .stage-supplication .progress-track {
@@ -373,6 +422,10 @@ button:focus-visible {
 /* Padre Giulio and every mission object live in the right half of the new plate. */
 .stage-mission .scene-card {
   width: min(760px, 43.5vw);
+  margin-right: auto;
+  margin-left: 0;
+  padding-right: 2.5vw;
+  padding-left: 6vw;
 }
 
 /* The new Beijing plates reserve their left half for prose and keep all scenic focal points on the right. */
@@ -5879,6 +5932,26 @@ blockquote {
   transform: translate(-50%, -50%) rotate(-3deg);
 }
 
+.room-letter-direct-action {
+  position: fixed;
+  z-index: 9;
+  top: 50%;
+  left: 5vw;
+  display: flex;
+  width: min(260px, 28vw);
+  min-height: 64px;
+  padding: 15px 18px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(184, 149, 82, 0.55);
+  background: rgba(5, 12, 12, 0.82);
+  color: #f1dfb8;
+  cursor: pointer;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  pointer-events: auto;
+}
+
 .room-letter-hotspot span {
   position: absolute;
   bottom: -25px;
@@ -6260,6 +6333,84 @@ blockquote {
   .scene-card h1,
   .stage-intro .scene-card h1 { font-size: clamp(32px, 6vw, 50px); }
 
+  .stage-mission .scene-card {
+    width: 54vw;
+    margin-right: auto;
+    margin-left: 0;
+    padding-right: 3vw;
+    padding-left: 4vw;
+  }
+
+  .stage-letter .scene-card {
+    width: 100vw;
+    min-height: 100svh;
+    padding: 62px 12px 10px;
+  }
+
+  .stage-letter .scene-card > .scene-kicker,
+  .stage-letter .scene-card > h1,
+  .stage-letter .scene-card > .scene-pt {
+    display: none;
+  }
+
+  .letter-experience {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .letter-experience.phase-room { min-height: calc(100svh - 72px); }
+  .room-letter-direct-action {
+    top: 42%;
+    left: 22px;
+    width: 230px;
+    min-height: 52px;
+    padding: 11px 15px;
+    font-size: 13px;
+  }
+
+  .camilloff-letter {
+    height: calc(100svh - 74px);
+    min-height: 0;
+    padding: 8px 10px 34px;
+    overflow: hidden;
+  }
+
+  .camilloff-letter-panels {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .letter-fact-panel {
+    min-height: 0;
+    padding: 8px 12px;
+  }
+
+  .letter-fact-panel p {
+    margin: 7px 0 0;
+    font-size: 10px;
+    line-height: 1.38;
+  }
+
+  .letter-unfold-control { right: 18px; bottom: 7px; padding: 6px 0; }
+
+  .stage-devilReturn .ti-figure {
+    right: 19vw;
+    bottom: 10vh;
+    width: 32vw;
+  }
+
+  .stage-devilReturn .corpse-toggle { right: 21vw; bottom: 19vh; }
+
+  .artifact-overlay { padding: 62px 14px 12px; }
+  .final-book-dialog { gap: 10px; }
+  .final-book-cover {
+    width: auto;
+    height: min(238px, calc(100svh - 132px));
+    padding: 24px 20px;
+  }
+  .final-book-cover span { font-size: clamp(26px, 5vw, 38px); }
+  .final-book-action { min-width: 150px; padding: 10px 24px; }
+
   .stage-bell .devil-figure {
     top: 62px;
     right: auto;
@@ -6384,6 +6535,17 @@ blockquote {
     bottom: 10vh;
     width: 118px;
     height: 70px;
+  }
+
+  .stage-devilReturn .ti-figure {
+    right: 16vw;
+    bottom: 8vh;
+    width: 29vw;
+  }
+
+  .stage-devilReturn .corpse-toggle {
+    right: 19vw;
+    bottom: 17vh;
   }
 }
 

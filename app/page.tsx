@@ -105,7 +105,7 @@ const stageInfo: Record<Stage, { act: string; title: string; subtitle: string }>
   camilloffReturn: { act: "第五幕 · 北京", title: "与卡米洛夫的会谈", subtitle: "纸上的道路" },
   tienho: { act: "第六幕 · 远东", title: "天河村", subtitle: "客栈外的人群" },
   mission: { act: "第七幕 · 修道院", title: "修道院的清晨", subtitle: "晨祷钟声" },
-  letter: { act: "第七幕 · 修道院", title: "特奥多罗的小房间", subtitle: "桌上的来信" },
+  letter: { act: "第七幕 · 修道院", title: "卡米洛夫的信", subtitle: "特奥多罗的小房间" },
   return: { act: "第七幕 · 返航", title: "死者同行", subtitle: "从中国返回欧洲" },
   reckoning: { act: "第八幕 · 里斯本", title: "无法平息的亡灵", subtitle: "洛雷托宫殿" },
   renounce: { act: "第八幕 · 里斯本", title: "重返贫穷", subtitle: "特奥多罗的房间" },
@@ -646,6 +646,10 @@ function LetterOfExcuses({ onTone, onReturn }: { onTone: (frequency: number, dur
   };
 
   const reasonById = (reasonId: LetterReasonId | null) => letterReasons.find((reason) => reason.id === reasonId);
+  const openRoomLetter = () => {
+    setLetterPhase("envelope");
+    onTone(196, 0.55, 0.045);
+  };
 
   if (letterFolded) {
     return (
@@ -665,14 +669,19 @@ function LetterOfExcuses({ onTone, onReturn }: { onTone: (frequency: number, dur
   return (
     <div className={`letter-experience phase-${letterPhase}`}>
       {letterPhase === "room" && (
-        <button
-          className="room-letter-hotspot"
-          type="button"
-          onClick={() => { setLetterPhase("envelope"); onTone(196, 0.55, 0.045); }}
-          aria-label="拿起桌上的来信"
-        >
-          <span>桌上的来信</span><i aria-hidden="true" />
-        </button>
+        <>
+          <button className="room-letter-direct-action" type="button" onClick={openRoomLetter}>
+            桌上的来信 <span>→</span>
+          </button>
+          <button
+            className="room-letter-hotspot"
+            type="button"
+            onClick={openRoomLetter}
+            aria-label="拿起桌上的来信"
+          >
+            <span>桌上的来信</span><i aria-hidden="true" />
+          </button>
+        </>
       )}
 
       {letterPhase === "envelope" && (
@@ -1253,6 +1262,10 @@ export default function Home() {
     }
     if (preview === "mission-awakening") {
       setStage("tienho");
+      setStageHistory([]);
+    }
+    if (preview === "mission") {
+      setStage("mission");
       setStageHistory([]);
     }
     if (preview === "letter-excuses") {
@@ -1885,7 +1898,6 @@ export default function Home() {
                   <p className="will-kicker">遗嘱</p>
                   <h2>特奥多罗的遗嘱</h2>
                   <p>我把我的百万家财遗赠给魔鬼，那笔钱本就该属于他。</p>
-                  <p className="will-signature">Teodoro</p>
                 </article>
               </div>
             )}
