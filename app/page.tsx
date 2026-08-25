@@ -863,7 +863,7 @@ export default function Home() {
     reckoning: "/palace-ghost.webp",
     renounce: "/renounce-room-v1.webp",
     prison: "/loreto-restored-v1.webp",
-    devilReturn: "/devil-alone-street-v2.webp",
+    devilReturn: "/supplication-street-v1.webp",
     supplication: "/devil-alone-street-v2.webp",
     testament: "/testament-study-v2.webp",
   };
@@ -1403,7 +1403,7 @@ export default function Home() {
         {info.act && <div className="scene-kicker chapter-kicker">{info.act}</div>}
         <h1 className="chapter-title">{info.title}</h1>
         {info.subtitle && <div className="scene-pt">{info.subtitle}</div>}
-        {selectedHotspot && <SourceSlip item={selectedHotspot} />}
+        {selectedHotspot && !["market", "room", "luxury", "beijing", "mission", "renounce"].includes(stage) && <SourceSlip item={selectedHotspot} />}
 
         {stage === "intro" && (
           <div className="intro-content">
@@ -1440,6 +1440,7 @@ export default function Home() {
           <div className="scene-body market-scene">
             <BilingualQuote pt="Tinha tomado o hábito discreto de comprar na Feira da Ladra antigos volumes desirmanados, e à noite, no meu quarto, repastava-me dessas leituras curiosas." zh="我有这么一个不为人知的习惯：我会去旧货市场淘些孤本旧书，晚上回到房间后，拿它们当作精神食粮。" />
             <p>旧货市场的摊位沿着斜坡铺开。旧望远镜、失去圣骨的匣子、剥釉的圣像与停摆的怀表挤在一起。书摊上那些稀奇古怪的旧书，总比一顿晚餐更容易落入我的预算。</p>
+            {selectedHotspot && <SourceSlip item={selectedHotspot} />}
             <div className="hotspot-index">
               {(sceneHotspots.market ?? []).map((item) => (
                 <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -1460,6 +1461,7 @@ export default function Home() {
         {stage === "room" && (
           <div className="scene-body room-scene-copy">
             <p>刚从旧货市场带回的书摊在桌上，正翻至绿色缎带所在的那一页。</p>
+            {selectedHotspot && <SourceSlip item={selectedHotspot} />}
             <div className="hotspot-index">
               {(sceneHotspots.room ?? []).map((item) => (
                 <button key={item.id} className={roomFinds.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -1468,7 +1470,7 @@ export default function Home() {
               ))}
             </div>
             <p className="discovery-count">已查看 {currentVisited.length} / {currentHotspots.length} </p>
-            <button className="primary-action room-book-action" onClick={() => go("book")}>仔细翻阅 <span>→</span></button>
+            <button className="primary-action room-book-action" onClick={() => go("book")}>仔细翻阅旧书 <span>→</span></button>
           </div>
         )}
 
@@ -1584,6 +1586,7 @@ export default function Home() {
           <div className="scene-body">
             <BilingualQuote pt="Então começou a minha vida de milionário." zh="于是，我的百万富翁生活开始了。" />
             <p>人世间的享乐我应有尽有，可那时不时便向我显现的不详身影使一切都变得索然无味。</p>
+            {selectedHotspot && <SourceSlip item={selectedHotspot} />}
             <div className="hotspot-index">
               {(sceneHotspots.luxury ?? []).map((item) => (
                 <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -1658,6 +1661,7 @@ export default function Home() {
           <div className="scene-body beijing-arrival-scene">
             <BilingualQuote pt="Pequim está diante de mim! É uma vasta muralha, monumental e bárbara, de um negro baço, estendendo-se a perder de vista […]" zh="北京就在我眼前！那是一道辽阔、雄伟而粗犷的城墙，暗沉发黑，一直伸向视线尽头……" />
             <p>城门层叠的飞檐衬在血色紫红的落日上；北面，蒙古群山像悬在淡紫烟霭中。黑墙脚下挤着一片异国集市，摇曳的灯笼把暮色割成血红斑块，白色棚布像停在墙边的一群蝴蝶。</p>
+            {selectedHotspot && <SourceSlip item={selectedHotspot} />}
             <div className="hotspot-index">
               {(sceneHotspots.beijing ?? []).map((item) => (
                 <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -1758,6 +1762,7 @@ export default function Home() {
             <BilingualQuote pt="[…] um sino tocava a matinas. […] rolaram-me das pálpebras duas lágrimas mudas." zh="晨祷的钟声响了起来（……）两滴无声的泪从我的眼中滚落。" />
             <p>两位遣使会神父清晨在路上发现了昏迷的我，用担架把我抬回了修道院。后来我才知道，萨托虽然负了伤，但总算是逃回了北京。</p>
             <BilingualQuote compact pt="O superior lazarista era o excelente padre Giulio. […] com a sua túnica roxa, o rabicho longo, a barba venerável, agitando devagar um enorme leque — […]" zh="遣使会的院长是善良的朱利奥神父（……）他身着紫袍，留着长辫和庄严的胡须，此时正缓缓扇动着一把大折扇（……）" />
+            {selectedHotspot && <SourceSlip item={selectedHotspot} />}
             <div className="hotspot-index">
               {(sceneHotspots.mission ?? []).map((item) => (
                 <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -1826,6 +1831,7 @@ export default function Home() {
           <div className="scene-body">
             <BilingualQuote pt="Abandonei o palacete ao Loreto, a existência de nababo." zh="我抛下了洛雷托的豪宅，也抛下富豪的生活。" />
             <p>我重新租下马克斯太太家的旧房间，却再也回不到从前那种安静的贫穷。</p>
+            {selectedHotspot && <SourceSlip item={selectedHotspot} />}
             <div className="hotspot-index">
               {(sceneHotspots.renounce ?? []).map((item) => (
                 <button key={item.id} className={currentVisited.includes(item.id) ? "is-found" : ""} onClick={() => inspectHotspot(item)}>
@@ -1965,6 +1971,13 @@ export default function Home() {
             sound.tone(98, 1.8, 0.12, 0, "sine");
           }}
         />
+      )}
+
+      {stage === "devilReturn" && (
+        <figure className="devil-return-figure" aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/devil-standing-v1.webp" alt="" />
+        </figure>
       )}
 
       {stage === "bell" && <DevilFigure />}

@@ -1049,6 +1049,15 @@ blockquote {
   line-height: 1.55;
 }
 
+.scene-body .source-slip {
+  margin-bottom: 0;
+}
+
+.scene-body .source-slip + .hotspot-index {
+  margin-top: 0;
+  border-top-color: transparent;
+}
+
 @keyframes slip-in {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
@@ -3540,6 +3549,26 @@ blockquote {
   z-index: 14;
   right: 31%;
   bottom: 31%;
+}
+
+.devil-return-figure {
+  position: fixed;
+  z-index: 6;
+  right: 4vw;
+  bottom: 0;
+  width: clamp(250px, 25vw, 430px);
+  height: calc(100svh - 74px);
+  margin: 0;
+  pointer-events: none;
+  filter: drop-shadow(10px 18px 28px rgba(0, 0, 0, 0.72));
+}
+
+.devil-return-figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right bottom;
 }
 
 .route {
@@ -6088,6 +6117,9 @@ blockquote {
 .closed-letter-paper span { font-size: clamp(21px, 3vw, 34px); letter-spacing: 0.14em; }
 .closed-letter-paper i { position: absolute; right: 24px; bottom: 18px; color: #843229; font: normal 700 9px Arial, sans-serif; letter-spacing: 0.18em; }
 .write-reply-action {
+  position: relative;
+  z-index: 2;
+  margin-top: -118px;
   width: fit-content;
   min-width: 0;
   padding-right: 28px;
@@ -6687,5 +6719,47 @@ blockquote {
   .stage-supplication .corpse-toggle {
     right: 27vw;
     bottom: 23vh;
+  }
+
+  .beijing-destination-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .beijing-destination-grid button {
+    min-height: 92px;
+    padding: 10px 12px;
+  }
+
+  .beijing-destination-grid span { margin-bottom: 7px; }
+  .beijing-destination-grid strong { font-size: 14px; }
+  .beijing-destination-grid small { margin-top: 6px; font-size: 9px; line-height: 1.35; }
+
+  .incoming-letter-closed {
+    position: relative;
+    min-height: calc(100svh - 74px);
+    gap: 0;
+  }
+
+  .closed-letter-paper {
+    width: min(620px, 72vw);
+    min-height: 230px;
+  }
+
+  .write-reply-action {
+    position: absolute;
+    z-index: 3;
+    right: calc(14vw + 22px);
+    bottom: calc(50% - 104px);
+    margin: 0;
+    padding: 9px 15px;
+    background: rgba(76, 43, 31, 0.88);
+  }
+
+  .devil-return-figure {
+    right: 4vw;
+    bottom: 0;
+    width: 22vw;
+    height: calc(100svh - 54px);
   }
 }
