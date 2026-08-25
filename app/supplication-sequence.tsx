@@ -96,15 +96,12 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
     <div className={styles.integratedPage}>
       <section className={`${styles.stage} ${styles.integratedStage} ${styles[phase]}`} aria-label="特奥多罗跪求魔鬼">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.street} src="/supplication-street-v1.webp" alt="煤气灯照亮的湿石路，远处垃圾堆旁有一条瘦狗" />
+        <img className={styles.street} src="/supplication-street-v1.webp" alt="煤气灯照亮的湿石路" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className={styles.waitingTableau} src="/devil-alone-street-v2.webp" alt="魔鬼独自站在煤气灯照亮的湿石路上，雨伞夹在腋下" />
         <div className={styles.streetShade} aria-hidden="true" />
         <div className={styles.gasGlow} aria-hidden="true" />
         {children}
-        <div className={styles.dogReveal} aria-hidden="true" />
-        <div className={styles.dogMask} aria-hidden="true" />
-
         <aside className={`${styles.storyPanel} ${styles.integratedPanel}`}>
           <p className={`${styles.eyebrow} chapter-kicker`}>第八幕 · 夜路</p>
           <h1 className="chapter-title">乞求</h1>

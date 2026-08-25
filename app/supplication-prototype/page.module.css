@@ -39,8 +39,7 @@
 .street,
 .waitingTableau,
 .streetShade,
-.gasGlow,
-.dogReveal {
+.gasGlow {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -93,29 +92,6 @@
     radial-gradient(circle at 91.2% 18%, rgba(237, 181, 92, 0.23), transparent 13%);
   animation: lampFlicker 4.5s ease-in-out infinite;
   transition: opacity 1.5s ease;
-}
-
-.dogReveal {
-  z-index: 7;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(circle at 89.5% 59.5%, rgba(217, 177, 108, 0.24) 0 4%, rgba(113, 73, 39, 0.08) 7%, transparent 14%);
-  transition: opacity 1.2s ease 0.18s;
-}
-
-.dogMask {
-  position: absolute;
-  z-index: 6;
-  right: 1%;
-  bottom: 15%;
-  width: 19%;
-  height: 30%;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 54% 54%, rgba(4, 6, 6, 0.98) 0 39%, rgba(4, 6, 6, 0.9) 56%, rgba(4, 6, 6, 0) 79%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  opacity: 1;
-  transition: opacity 1.35s ease;
 }
 
 .header {
@@ -392,14 +368,6 @@
   opacity: 0.08;
 }
 
-.aftermath .dogReveal {
-  opacity: 1;
-}
-
-.aftermath .dogMask {
-  opacity: 0;
-}
-
 @keyframes runToDevil {
   0% { transform: translateX(-16%) translateY(0) rotate(-1deg); }
   18% { transform: translateX(-8%) translateY(-1.2%) rotate(0.5deg); }
@@ -582,7 +550,14 @@
     font-size: 13px;
   }
 
-  .devil { right: 1%; height: 64%; }
+  .devil {
+    right: 0;
+    height: 64%;
+  }
+
+  .devil img {
+    transform: translateX(24%);
+  }
 
   .teodoroRunning {
     left: 48%;
@@ -591,14 +566,14 @@
 
   .teodoroKneeling,
   .teodoroVanishing {
-    left: 60%;
-    height: 42%;
+    left: 55%;
+    height: 52%;
   }
 
   .teodoroFalling,
   .teodoroAftermath {
-    left: 59%;
-    height: 18%;
+    left: 53%;
+    height: 30%;
   }
 }
 
