@@ -269,7 +269,7 @@ function useSound() {
   const currentVolume = useRef(0.22);
   const fadeFrame = useRef<number | null>(null);
   const enabledRef = useRef(false);
-  const churchBellPlayers = useRef<HTMLAudioElement[]>([]);
+  const churchBellPlayer = useRef<HTMLAudioElement | null>(null);
   const [enabled, setEnabled] = useState(false);
 
   const ensure = () => {
@@ -484,13 +484,11 @@ function useSound() {
 
   const churchBell = () => {
     if (typeof window === "undefined" || !enabledRef.current) return;
-    const bell = new Audio("/audio/church-bell-real-v1.mp3");
-    bell.preload = "auto";
+    const bell = churchBellPlayer.current ?? new Audio("/audio/church-bell-real-v1.mp3");
+    churchBellPlayer.current = bell;
+    bell.pause();
+    bell.currentTime = 0;
     bell.volume = 0.68;
-    churchBellPlayers.current.push(bell);
-    bell.addEventListener("ended", () => {
-      churchBellPlayers.current = churchBellPlayers.current.filter((player) => player !== bell);
-    }, { once: true });
     void bell.play().catch(() => undefined);
   };
 
@@ -502,6 +500,19 @@ function useSound() {
   const setAudio = (next: boolean) => {
     const ctx = ensure();
     const audioPlayers = ensurePlayers();
+    if (typeof window !== "undefined" && !churchBellPlayer.current) {
+      churchBellPlayer.current = new Audio("/audio/church-bell-real-v1.mp3");
+      churchBellPlayer.current.preload = "auto";
+      churchBellPlayer.current.load();
+    }
+    if (next && churchBellPlayer.current) {
+      const bell = churchBellPlayer.current;
+      bell.volume = 0;
+      void bell.play().then(() => {
+        bell.pause();
+        bell.currentTime = 0;
+      }).catch(() => undefined);
+    }
     enabledRef.current = next;
     setEnabled(next);
     if (master.current && ctx) {
@@ -1373,7 +1384,7 @@ export default function Home() {
           ) : beijingDestination === "chinese" ? (
             <>
               <BilingualQuote pt="E lá fomos penetrando na Cidade Chinesa, pela porta monstruosa de Tchin-Men. Aqui habita a burguesia, o mercador, a populaça." zh="我们从巨大的前门进入老百姓的街坊，商人和平民都住在这里。" />
-              <p>石板铺就得路面污秽而泥泞，饥饿的野狗在空地上哀叫，污水散发着刺鼻的气味，尘土让空气里昏黄一片。骆驼商队缓慢地挤过破旧的棚屋，经过一群群苦役和乞丐。越靠近天坛，贫困越像是一堵没有尽头的墙。</p>
+              <p>石板铺就的路面污秽而泥泞，饥饿的野狗在空地上哀叫，污水散发着刺鼻的气味，尘土让空气里昏黄一片。骆驼商队缓慢地挤过破旧的棚屋，经过一群群苦役和乞丐。越靠近天坛，贫困越像是一堵没有尽头的墙。</p>
               <BilingualQuote compact pt="Uma multidão rumorosa e espessa, onde domina o tom pardo e azulado dos trajes, circula sem cessar; a poeira envolve tudo de uma névoa amarelada; um fedor acre exala-se dos enxurros negros […]" zh="人群川流不息，大多穿着土黄色或蓝色的衣服，喧闹而拥挤……灰尘把一切都笼罩在一层黄雾中，黑色的污水沟散发出刺鼻的恶臭。" />
             </>
           ) : null}

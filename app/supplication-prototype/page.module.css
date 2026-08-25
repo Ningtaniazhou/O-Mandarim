@@ -311,19 +311,12 @@
 
 .devil {
   z-index: 13;
-  right: 5%;
+  right: 11.5%;
   bottom: 4.8%;
   height: 74%;
   opacity: 1;
   transform: translateZ(0);
   transition: opacity 1.42s ease, filter 1.42s ease, transform 1.42s ease;
-}
-
-.running .devil,
-.kneeling .devil {
-  opacity: 1;
-  filter: drop-shadow(8px 19px 22px rgba(0, 0, 0, 0.72));
-  transform: translateZ(0);
 }
 
 .devil img,
@@ -589,7 +582,7 @@
     font-size: 13px;
   }
 
-  .devil { right: -1%; height: 64%; }
+  .devil { right: 1%; height: 64%; }
 
   .teodoroRunning {
     left: 48%;

@@ -141,7 +141,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
           )}
         </aside>
 
-        <figure key={`devil-${replayKey}`} className={styles.devil} aria-label="魔鬼站在煤气灯下">
+        <figure className={styles.devil} aria-label="魔鬼站在煤气灯下">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/devil-standing-v1.webp" alt="身穿黑衣、戴高礼帽并夹着雨伞的魔鬼" />
         </figure>
