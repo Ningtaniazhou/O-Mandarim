@@ -94,6 +94,25 @@
   transition: opacity 1.5s ease;
 }
 
+/* Keep the globally positioned corpse and its toggle in one bounded layer.
+   Their own z-index values can no longer rise above the animated characters. */
+.corpseLayer {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  pointer-events: none;
+}
+
+.corpseLayer :global(.ti-figure),
+.corpseLayer :global(.corpse-toggle) {
+  z-index: 1;
+}
+
+.corpseLayer :global(.ti-figure),
+.corpseLayer :global(.corpse-toggle) {
+  pointer-events: auto;
+}
+
 .header {
   position: absolute;
   z-index: 30;
@@ -293,6 +312,14 @@
   opacity: 1;
   transform: translateZ(0);
   transition: opacity 1.42s ease, filter 1.42s ease, transform 1.42s ease;
+}
+
+/* A replay must explicitly clear the terminal blur/fade state. */
+.running .devil,
+.kneeling .devil {
+  opacity: 1;
+  filter: drop-shadow(8px 19px 22px rgba(0, 0, 0, 0.72));
+  transform: translateZ(0);
 }
 
 .devil img,
@@ -552,7 +579,7 @@
 
   .devil {
     right: 0;
-    height: 64%;
+    height: 54%;
   }
 
   .devil img {

@@ -101,7 +101,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
         <img className={styles.waitingTableau} src="/devil-alone-street-v2.webp" alt="魔鬼独自站在煤气灯照亮的湿石路上，雨伞夹在腋下" />
         <div className={styles.streetShade} aria-hidden="true" />
         <div className={styles.gasGlow} aria-hidden="true" />
-        {children}
+        <div className={styles.corpseLayer}>{children}</div>
         <aside className={`${styles.storyPanel} ${styles.integratedPanel}`}>
           <p className={`${styles.eyebrow} chapter-kicker`}>第八幕 · 夜路</p>
           <h1 className="chapter-title">乞求</h1>
@@ -138,7 +138,7 @@ export default function SupplicationSequence({ soundEnabled, onContinue, childre
           )}
         </aside>
 
-        <figure className={styles.devil} aria-label="魔鬼站在煤气灯下">
+        <figure key={`devil-${replayKey}`} className={styles.devil} aria-label="魔鬼站在煤气灯下">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/devil-standing-v1.webp" alt="身穿黑衣、戴高礼帽并夹着雨伞的魔鬼" />
         </figure>
